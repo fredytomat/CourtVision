@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CourtVision - Basketball Video Analysis Tool</title>
+  <meta name="description" content="Professional basketball video analysis tool for coaches. Tag plays, track outcomes, and analyze game footage directly on YouTube.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1E3A5F;
+      --navy-light: #2D4A6F;
+      --navy-dark: #152A45;
+      --white: #FFFFFF;
+      --gray-50: #F8FAFC;
+      --gray-100: #F1F5F9;
+      --gray-200: #E2E8F0;
+      --gray-300: #CBD5E1;
+      --gray-400: #94A3B8;
+      --gray-500: #64748B;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-800: #1E293B;
+      --gray-900: #0F172A;
+      --green: #10B981;
+      --green-dark: #059669;
+      --red: #EF4444;
+      --orange: #F59E0B;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--gray-800);
+      line-height: 1.6;
+      background: var(--white);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--gray-200);
+      z-index: 1000;
+      padding: 16px 0;
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-light));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .logo-text {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span {
+      color: var(--gray-400);
+      font-weight: 600;
+      font-size: 12px;
+      margin-left: 8px;
+      padding: 3px 8px;
+      background: var(--gray-100);
+      border-radius: 4px;
+      vertical-align: middle;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--gray-600);
+      font-weight: 500;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--navy);
+    }
+
+    .lang-toggle {
+      display: flex;
+      background: var(--gray-100);
+      border-radius: 8px;
+      padding: 4px;
+    }
+
+    .lang-btn {
+      padding: 8px 14px;
+      border: none;
+      background: transparent;
+      color: var(--gray-500);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background: var(--white);
+      color: var(--navy);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .nav-cta {
+      padding: 12px 24px;
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .nav-cta:hover {
+      background: var(--navy-light);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 160px 0 100px;
+      background: linear-gradient(180deg, var(--gray-50) 0%, var(--white) 100%);
+    }
+
+    .hero .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-content h1 {
+      font-size: 52px;
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--gray-900);
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+
+    .hero-content h1 span {
+      color: var(--navy);
+    }
+
+    .hero-content p {
+      font-size: 20px;
+      color: var(--gray-600);
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--navy-light);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(30, 58, 95, 0.3);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      background: var(--white);
+      color: var(--navy);
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--navy);
+      background: var(--gray-50);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .hero-stat {
+      text-align: left;
+    }
+
+    .hero-stat-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .hero-stat-label {
+      font-size: 14px;
+      color: var(--gray-500);
+      margin-top: 4px;
+    }
+
+    .hero-image {
+      position: relative;
+    }
+
+    .hero-mockup {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+      border: 1px solid var(--gray-200);
+    }
+
+    .hero-badge {
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      background: var(--green);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Features Section */
+    .features {
+      padding: 100px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      padding: 8px 16px;
+      background: var(--navy);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .section-header h2 {
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--gray-900);
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .section-header p {
+      font-size: 18px;
+      color: var(--gray-500);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .feature-card {
+      padding: 36px;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--navy);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-light));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+    }
+
+    /* How It Works */
+    .how-it-works {
+      padding: 100px 0;
+      background: var(--gray-50);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .step {
+      text-align: center;
+      padding: 32px 24px;
+      position: relative;
+    }
+
+    .step-number {
+      width: 48px;
+      height: 48px;
+      background: var(--navy);
+      color: white;
+      font-size: 20px;
+      font-weight: 800;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .step h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 14px;
+      color: var(--gray-500);
+    }
+
+    .step-arrow {
+      position: absolute;
+      right: -12px;
+      top: 50px;
+      color: var(--gray-300);
+      font-size: 24px;
+    }
+
+    .step:last-child .step-arrow {
+      display: none;
+    }
+
+    /* Pricing Section */
+    .pricing {
+      padding: 100px 0;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    .pricing-card {
+      background: var(--white);
+      border: 2px solid var(--gray-200);
+      border-radius: 20px;
+      padding: 40px 32px;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .pricing-card:hover {
+      border-color: var(--navy);
+    }
+
+    .pricing-card.popular {
+      border-color: var(--navy);
+      box-shadow: 0 20px 60px rgba(30, 58, 95, 0.15);
+      transform: scale(1.05);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--navy);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .pricing-card h3 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+    }
+
+    .pricing-card .price {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--navy);
+      margin: 24px 0;
+    }
+
+    .pricing-card .price span {
+      font-size: 16px;
+      color: var(--gray-500);
+      font-weight: 500;
+    }
+
+    .pricing-card .price-idr {
+      font-size: 14px;
+      color: var(--gray-400);
+      margin-top: -16px;
+      margin-bottom: 24px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+
+    .pricing-features li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 15px;
+      color: var(--gray-600);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pricing-features li:last-child {
+      border-bottom: none;
+    }
+
+    .pricing-features .check {
+      color: var(--green);
+      font-weight: bold;
+    }
+
+    .pricing-features .x {
+      color: var(--gray-300);
+    }
+
+    .pricing-btn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+    }
+
+    .pricing-btn.primary {
+      background: var(--navy);
+      color: white;
+      border: none;
+    }
+
+    .pricing-btn.primary:hover {
+      background: var(--navy-light);
+    }
+
+    .pricing-btn.secondary {
+      background: var(--white);
+      color: var(--navy);
+      border: 2px solid var(--gray-200);
+    }
+
+    .pricing-btn.secondary:hover {
+      border-color: var(--navy);
+    }
+
+    /* CTA Section */
+    .cta {
+      padding: 100px 0;
+      background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: 42px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 36px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta .btn-primary {
+      background: white;
+      color: var(--navy);
+    }
+
+    .cta .btn-primary:hover {
+      background: var(--gray-100);
+    }
+
+    /* Footer */
+    footer {
+      padding: 60px 0 30px;
+      background: var(--gray-900);
+      color: var(--gray-400);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 30px;
+      border-bottom: 1px solid var(--gray-700);
+      margin-bottom: 30px;
+    }
+
+    .footer-logo .logo-icon {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-logo .logo-text {
+      color: white;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .footer-links a {
+      color: var(--gray-400);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--gray-600);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero .container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero-content h1 {
+        font-size: 40px;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+
+      .hero-stats {
+        justify-content: center;
+      }
+
+      .hero-image {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .step-arrow {
+        display: none;
+      }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .pricing-card.popular {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .hero {
+        padding: 120px 0 60px;
+      }
+
+      .hero-content h1 {
+        font-size: 32px;
+      }
+
+      .hero-content p {
+        font-size: 16px;
+      }
+
+      .section-header h2 {
+        font-size: 32px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .cta h2 {
+        font-size: 28px;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        gap: 24px;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <a href="#" class="logo">
+        <div class="logo-icon">CV</div>
+        <div class="logo-text">CourtVision <span>PRO</span></div>
+      </a>
+      <div class="nav-links">
+        <a href="#features" data-en="Features" data-id="Fitur">Features</a>
+        <a href="#how-it-works" data-en="How It Works" data-id="Cara Kerja">How It Works</a>
+        <a href="#pricing" data-en="Pricing" data-id="Harga">Pricing</a>
+        <div class="lang-toggle">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="id">ID</button>
+        </div>
+        <a href="#download" class="nav-cta" data-en="Download Free" data-id="Download Gratis">Download Free</a>
+      </div>
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 data-en="Analyze Basketball Like a <span>Pro Coach</span>" data-id="Analisis Basket Seperti <span>Coach Pro</span>">Analyze Basketball Like a <span>Pro Coach</span></h1>
+        <p data-en="Tag plays, track outcomes, and generate professional game analysis — directly from YouTube videos. The affordable alternative to expensive coaching software." data-id="Tag permainan, lacak hasil, dan buat analisis pertandingan profesional — langsung dari video YouTube. Alternatif terjangkau untuk software coaching mahal.">Tag plays, track outcomes, and generate professional game analysis — directly from YouTube videos. The affordable alternative to expensive coaching software.</p>
+        <div class="hero-buttons">
+          <a href="#download" class="btn-primary">
+            <span>⬇</span>
+            <span data-en="Download Extension" data-id="Download Extension">Download Extension</span>
+          </a>
+          <a href="#how-it-works" class="btn-secondary">
+            <span>▶</span>
+            <span data-en="See How It Works" data-id="Lihat Cara Kerja">See How It Works</span>
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-value">100%</div>
+            <div class="hero-stat-label" data-en="Free to Start" data-id="Gratis untuk Mulai">Free to Start</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">1-Click</div>
+            <div class="hero-stat-label" data-en="Quick Tagging" data-id="Tag Cepat">Quick Tagging</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">8+</div>
+            <div class="hero-stat-label" data-en="Play Categories" data-id="Kategori Play">Play Categories</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <svg class="hero-mockup" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" rx="12" fill="#0F172A"/>
+          <rect x="16" y="16" width="368" height="208" rx="8" fill="#1E293B"/>
+          <rect x="32" y="32" width="160" height="90" rx="4" fill="#334155"/>
+          <circle cx="112" cy="77" r="20" fill="#475569"/>
+          <polygon points="106,70 106,84 122,77" fill="white"/>
+          <rect x="32" y="138" width="80" height="10" rx="2" fill="#475569"/>
+          <rect x="32" y="156" width="120" height="8" rx="2" fill="#334155"/>
+          <rect x="220" y="32" width="148" height="176" rx="8" fill="#1E3A5F"/>
+          <rect x="232" y="48" width="124" height="24" rx="4" fill="#2D4A6F"/>
+          <text x="250" y="65" fill="white" font-size="10" font-weight="bold">COURTVISION</text>
+          <rect x="232" y="84" width="56" height="32" rx="4" fill="#334155"/>
+          <text x="245" y="105" fill="white" font-size="14" font-weight="bold">12</text>
+          <rect x="296" y="84" width="56" height="32" rx="4" fill="#10B981" opacity="0.2"/>
+          <text x="313" y="105" fill="#10B981" font-size="14" font-weight="bold">8</text>
+          <rect x="232" y="128" width="124" height="28" rx="4" fill="#F59E0B" opacity="0.2"/>
+          <text x="246" y="147" fill="#F59E0B" font-size="11" font-weight="bold">Transition</text>
+          <rect x="232" y="162" width="124" height="28" rx="4" fill="#10B981" opacity="0.2"/>
+          <text x="246" y="181" fill="#10B981" font-size="11" font-weight="bold">Set Play</text>
+          <rect x="16" y="240" width="368" height="44" rx="8" fill="#1E293B"/>
+          <rect x="32" y="252" width="60" height="20" rx="4" fill="#1E3A5F"/>
+          <rect x="100" y="252" width="60" height="20" rx="4" fill="#334155"/>
+          <rect x="168" y="252" width="60" height="20" rx="4" fill="#334155"/>
+        </svg>
+        <div class="hero-badge" data-en="✓ Works on YouTube" data-id="✓ Untuk YouTube">✓ Works on YouTube</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-en="Features" data-id="Fitur">Features</span>
+        <h2 data-en="Everything You Need to Analyze Games" data-id="Semua yang Kamu Butuhkan untuk Analisis">Everything You Need to Analyze Games</h2>
+        <p data-en="Professional-grade analysis tools designed for coaches at every level" data-id="Tools analisis profesional yang dirancang untuk coach di semua level">Professional-grade analysis tools designed for coaches at every level</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🏀</div>
+          <h3 data-en="1-Click Play Tagging" data-id="Tag Play 1-Klik">1-Click Play Tagging</h3>
+          <p data-en="Tag transition, set plays, defense, BLOB, SLOB and more with a single click. Keyboard shortcuts for even faster tagging." data-id="Tag transisi, set play, defense, BLOB, SLOB dan lainnya dengan satu klik. Shortcut keyboard untuk tagging lebih cepat.">Tag transition, set plays, defense, BLOB, SLOB and more with a single click. Keyboard shortcuts for even faster tagging.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 data-en="Outcome Tracking" data-id="Tracking Hasil">Outcome Tracking</h3>
+          <p data-en="Track made/missed for every play. See success rates by play type, team, or game to identify what's working." data-id="Lacak berhasil/gagal untuk setiap play. Lihat persentase sukses per tipe play, tim, atau game.">Track made/missed for every play. See success rates by play type, team, or game to identify what's working.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚙️</div>
+          <h3 data-en="Custom Categories" data-id="Kategori Custom">Custom Categories</h3>
+          <p data-en="Create unlimited custom play categories. Rename teams, change colors, and organize plays your way." data-id="Buat kategori play custom tanpa batas. Rename tim, ubah warna, dan atur play sesuai keinginan.">Create unlimited custom play categories. Rename teams, change colors, and organize plays your way.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3 data-en="WhatsApp Export" data-id="Export WhatsApp">WhatsApp Export</h3>
+          <p data-en="Share game analysis instantly with your team via WhatsApp. Formatted summaries with clickable video timestamps." data-id="Bagikan analisis game ke tim via WhatsApp secara instan. Summary terformat dengan timestamp video yang bisa diklik.">Share game analysis instantly with your team via WhatsApp. Formatted summaries with clickable video timestamps.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎬</div>
+          <h3 data-en="Auto-Stop Playback" data-id="Auto-Stop Playback">Auto-Stop Playback</h3>
+          <p data-en="Review clips with automatic playback control. Video stops at the exact end of each clip — no manual pausing needed." data-id="Review klip dengan kontrol playback otomatis. Video berhenti tepat di akhir setiap klip — tanpa perlu pause manual.">Review clips with automatic playback control. Video stops at the exact end of each clip — no manual pausing needed.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📁</div>
+          <h3 data-en="JSON/CSV Export" data-id="Export JSON/CSV">JSON/CSV Export</h3>
+          <p data-en="Export all your data in standard formats. Import into spreadsheets, databases, or other analysis tools." data-id="Export semua data dalam format standar. Import ke spreadsheet, database, atau tools analisis lainnya.">Export all your data in standard formats. Import into spreadsheets, databases, or other analysis tools.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-en="How It Works" data-id="Cara Kerja">How It Works</span>
+        <h2 data-en="Start Analyzing in 60 Seconds" data-id="Mulai Analisis dalam 60 Detik">Start Analyzing in 60 Seconds</h2>
+        <p data-en="No complicated setup. Just install and start tagging." data-id="Tanpa setup rumit. Tinggal install dan mulai tagging.">No complicated setup. Just install and start tagging.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3 data-en="Install Extension" data-id="Install Extension">Install Extension</h3>
+          <p data-en="Download and add to Chrome in one click" data-id="Download dan tambahkan ke Chrome dengan satu klik">Download and add to Chrome in one click</p>
+          <span class="step-arrow">→</span>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3 data-en="Open YouTube" data-id="Buka YouTube">Open YouTube</h3>
+          <p data-en="Navigate to any basketball game video" data-id="Buka video pertandingan basket apapun">Navigate to any basketball game video</p>
+          <span class="step-arrow">→</span>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3 data-en="Tag Plays" data-id="Tag Play">Tag Plays</h3>
+          <p data-en="Click or use Ctrl+1-8 to tag play types" data-id="Klik atau gunakan Ctrl+1-8 untuk tag tipe play">Click or use Ctrl+1-8 to tag play types</p>
+          <span class="step-arrow">→</span>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3 data-en="Share Analysis" data-id="Bagikan Analisis">Share Analysis</h3>
+          <p data-en="Export to WhatsApp, JSON, or CSV" data-id="Export ke WhatsApp, JSON, atau CSV">Export to WhatsApp, JSON, or CSV</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-en="Pricing" data-id="Harga">Pricing</span>
+        <h2 data-en="Simple, Affordable Pricing" data-id="Harga Simple & Terjangkau">Simple, Affordable Pricing</h2>
+        <p data-en="Start free, upgrade when you need more" data-id="Mulai gratis, upgrade saat butuh lebih">Start free, upgrade when you need more</p>
+      </div>
+      <div class="pricing-grid">
+        <!-- Free Plan -->
+        <div class="pricing-card">
+          <h3>Free</h3>
+          <div class="price">$0 <span data-en="/forever" data-id="/selamanya">/forever</span></div>
+          <div class="price-idr">Rp 0</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> <span data-en="20 clips per video" data-id="20 klip per video">20 clips per video</span></li>
+            <li><span class="check">✓</span> <span data-en="8 default categories" data-id="8 kategori default">8 default categories</span></li>
+            <li><span class="check">✓</span> <span data-en="Outcome tracking" data-id="Tracking hasil">Outcome tracking</span></li>
+            <li><span class="check">✓</span> <span data-en="WhatsApp export" data-id="Export WhatsApp">WhatsApp export</span></li>
+            <li><span class="x">✗</span> <span data-en="Custom categories" data-id="Kategori custom">Custom categories</span></li>
+            <li><span class="x">✗</span> <span data-en="Unlimited clips" data-id="Klip unlimited">Unlimited clips</span></li>
+          </ul>
+          <a href="#download" class="pricing-btn secondary" data-en="Get Started" data-id="Mulai Sekarang">Get Started</a>
+        </div>
+        <!-- Pro Plan -->
+        <div class="pricing-card popular">
+          <div class="pricing-badge" data-en="Most Popular" data-id="Paling Populer">Most Popular</div>
+          <h3>Pro</h3>
+          <div class="price">$7 <span data-en="/month" data-id="/bulan">/month</span></div>
+          <div class="price-idr">~Rp 99.000</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> <span data-en="Unlimited clips" data-id="Klip unlimited">Unlimited clips</span></li>
+            <li><span class="check">✓</span> <span data-en="Custom categories" data-id="Kategori custom">Custom categories</span></li>
+            <li><span class="check">✓</span> <span data-en="Custom team names" data-id="Nama tim custom">Custom team names</span></li>
+            <li><span class="check">✓</span> <span data-en="All export formats" data-id="Semua format export">All export formats</span></li>
+            <li><span class="check">✓</span> <span data-en="Priority support" data-id="Support prioritas">Priority support</span></li>
+            <li><span class="check">✓</span> <span data-en="Early access features" data-id="Akses fitur baru">Early access features</span></li>
+          </ul>
+          <a href="#download" class="pricing-btn primary" data-en="Start Pro Trial" data-id="Mulai Trial Pro">Start Pro Trial</a>
+        </div>
+        <!-- Team Plan -->
+        <div class="pricing-card">
+          <h3>Team</h3>
+          <div class="price">$19 <span data-en="/month" data-id="/bulan">/month</span></div>
+          <div class="price-idr">~Rp 299.000</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> <span data-en="Everything in Pro" data-id="Semua fitur Pro">Everything in Pro</span></li>
+            <li><span class="check">✓</span> <span data-en="5 team members" data-id="5 anggota tim">5 team members</span></li>
+            <li><span class="check">✓</span> <span data-en="Cloud sync" data-id="Sync cloud">Cloud sync</span></li>
+            <li><span class="check">✓</span> <span data-en="Shared clip library" data-id="Library klip bersama">Shared clip library</span></li>
+            <li><span class="check">✓</span> <span data-en="Team analytics" data-id="Analitik tim">Team analytics</span></li>
+            <li><span class="check">✓</span> <span data-en="Dedicated support" data-id="Support dedicated">Dedicated support</span></li>
+          </ul>
+          <a href="#download" class="pricing-btn secondary" data-en="Contact Sales" data-id="Hubungi Sales">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta" id="download">
+    <div class="container">
+      <h2 data-en="Ready to Level Up Your Coaching?" data-id="Siap Tingkatkan Level Coaching Kamu?">Ready to Level Up Your Coaching?</h2>
+      <p data-en="Download CourtVision now and start analyzing games like a pro. It's free to get started." data-id="Download CourtVision sekarang dan mulai analisis game seperti pro. Gratis untuk mulai.">Download CourtVision now and start analyzing games like a pro. It's free to get started.</p>
+      <a href="CourtVision-v2.6.0.zip" download class="btn-primary">
+        <span>⬇</span>
+        <span data-en="Download for Chrome" data-id="Download untuk Chrome">Download for Chrome</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <a href="#" class="logo footer-logo">
+          <div class="logo-icon">CV</div>
+          <div class="logo-text">CourtVision</div>
+        </a>
+        <div class="footer-links">
+          <a href="#features" data-en="Features" data-id="Fitur">Features</a>
+          <a href="#pricing" data-en="Pricing" data-id="Harga">Pricing</a>
+          <a href="mailto:support@courtvision.app" data-en="Support" data-id="Bantuan">Support</a>
+          <a href="#" data-en="Privacy" data-id="Privasi">Privacy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 CourtVision. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Language Toggle
+    const langBtns = document.querySelectorAll('.lang-btn');
+    let currentLang = 'en';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      
+      // Update button states
+      langBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      // Update all translatable elements
+      document.querySelectorAll('[data-en][data-id]').forEach(el => {
+        el.innerHTML = el.dataset[lang];
+      });
+
+      // Update HTML lang attribute
+      document.documentElement.lang = lang;
+    }
+
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Navbar background on scroll
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 50) {
+        nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+      } else {
+        nav.style.boxShadow = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
