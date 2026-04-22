@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CourtVision - Basketball Video Analysis Tool</title>
+  <title>CourtVision - Basketball Video Analysis Tool for Coaches</title>
   <meta name="description" content="Professional basketball video analysis tool for coaches. Tag plays, track outcomes, and analyze game footage directly on YouTube.">
+  <meta name="keywords" content="basketball, video analysis, coaching, tagging, plays, YouTube, sports analysis">
+  <meta property="og:title" content="CourtVision - Basketball Video Analysis Tool">
+  <meta property="og:description" content="Tag plays, track outcomes, and analyze games directly from YouTube. The affordable alternative to expensive coaching software.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://CourtVision.id">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -95,17 +100,6 @@
       letter-spacing: -0.5px;
     }
 
-    .logo-text span {
-      color: var(--gray-400);
-      font-weight: 600;
-      font-size: 12px;
-      margin-left: 8px;
-      padding: 3px 8px;
-      background: var(--gray-100);
-      border-radius: 4px;
-      vertical-align: middle;
-    }
-
     .nav-links {
       display: flex;
       align-items: center;
@@ -165,6 +159,16 @@
     .nav-cta:hover {
       background: var(--navy-light);
       transform: translateY(-1px);
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--gray-600);
     }
 
     /* Hero Section */
@@ -247,6 +251,16 @@
     .btn-secondary:hover {
       border-color: var(--navy);
       background: var(--gray-50);
+    }
+
+    .hero-trial {
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--gray-500);
+    }
+
+    .hero-trial strong {
+      color: var(--green);
     }
 
     .hero-stats {
@@ -442,86 +456,137 @@
       padding: 100px 0;
     }
 
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-      margin-top: 48px;
-    }
-
-    .pricing-card {
+    .pricing-card-single {
+      max-width: 500px;
+      margin: 48px auto 0;
       background: var(--white);
-      border: 2px solid var(--gray-200);
-      border-radius: 20px;
-      padding: 40px 32px;
+      border: 2px solid var(--navy);
+      border-radius: 24px;
+      padding: 48px 40px;
+      text-align: center;
       position: relative;
-      transition: all 0.3s;
-    }
-
-    .pricing-card:hover {
-      border-color: var(--navy);
-    }
-
-    .pricing-card.popular {
-      border-color: var(--navy);
-      box-shadow: 0 20px 60px rgba(30, 58, 95, 0.15);
-      transform: scale(1.05);
+      box-shadow: 0 25px 60px rgba(30, 58, 95, 0.15);
     }
 
     .pricing-badge {
       position: absolute;
-      top: -14px;
+      top: -16px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--navy);
+      background: var(--green);
       color: white;
-      padding: 8px 20px;
+      padding: 10px 24px;
       border-radius: 20px;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 700;
-      text-transform: uppercase;
     }
 
-    .pricing-card h3 {
-      font-size: 24px;
-      font-weight: 700;
+    .pricing-card-single h3 {
+      font-size: 28px;
+      font-weight: 800;
       color: var(--gray-900);
       margin-bottom: 8px;
+      margin-top: 16px;
     }
 
-    .pricing-card .price {
-      font-size: 48px;
+    .pricing-card-single .tagline {
+      color: var(--gray-500);
+      font-size: 16px;
+      margin-bottom: 32px;
+    }
+
+    .pricing-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      background: var(--gray-100);
+      padding: 6px;
+      border-radius: 12px;
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .pricing-toggle-btn {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      background: transparent;
+      color: var(--gray-500);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .pricing-toggle-btn.active {
+      background: var(--white);
+      color: var(--navy);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .pricing-toggle-btn .save {
+      color: var(--green);
+      font-size: 12px;
+      margin-left: 6px;
+    }
+
+    .price-display {
+      margin-bottom: 32px;
+    }
+
+    .price-amount {
+      font-size: 64px;
       font-weight: 800;
       color: var(--navy);
-      margin: 24px 0;
+      line-height: 1;
     }
 
-    .pricing-card .price span {
-      font-size: 16px;
-      color: var(--gray-500);
+    .price-amount span {
+      font-size: 24px;
+      color: var(--gray-400);
       font-weight: 500;
     }
 
-    .pricing-card .price-idr {
+    .price-yearly {
+      display: none;
+    }
+
+    .price-yearly.active {
+      display: block;
+    }
+
+    .price-monthly {
+      display: block;
+    }
+
+    .price-monthly.hidden {
+      display: none;
+    }
+
+    .price-note {
       font-size: 14px;
-      color: var(--gray-400);
-      margin-top: -16px;
-      margin-bottom: 24px;
+      color: var(--gray-500);
+      margin-top: 8px;
     }
 
     .pricing-features {
       list-style: none;
+      text-align: left;
       margin-bottom: 32px;
+      padding: 0 20px;
     }
 
     .pricing-features li {
-      padding: 12px 0;
+      padding: 14px 0;
       border-bottom: 1px solid var(--gray-100);
-      font-size: 15px;
-      color: var(--gray-600);
+      font-size: 16px;
+      color: var(--gray-700);
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
     .pricing-features li:last-child {
@@ -530,44 +595,80 @@
 
     .pricing-features .check {
       color: var(--green);
+      font-size: 18px;
       font-weight: bold;
     }
 
-    .pricing-features .x {
-      color: var(--gray-300);
-    }
-
-    .pricing-btn {
+    .pricing-cta {
       width: 100%;
-      padding: 16px;
-      border-radius: 10px;
-      font-size: 16px;
+      padding: 18px 32px;
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
-      text-align: center;
       text-decoration: none;
       display: block;
     }
 
-    .pricing-btn.primary {
-      background: var(--navy);
-      color: white;
-      border: none;
-    }
-
-    .pricing-btn.primary:hover {
+    .pricing-cta:hover {
       background: var(--navy-light);
+      transform: translateY(-2px);
     }
 
-    .pricing-btn.secondary {
+    .pricing-guarantee {
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--gray-500);
+    }
+
+    /* Testimonials Placeholder */
+    .social-proof {
+      padding: 60px 0;
+      background: var(--gray-50);
+      text-align: center;
+    }
+
+    .social-proof p {
+      font-size: 18px;
+      color: var(--gray-500);
+      font-style: italic;
+    }
+
+    /* FAQ Section */
+    .faq {
+      padding: 100px 0;
+      background: var(--gray-50);
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .faq-item {
       background: var(--white);
-      color: var(--navy);
-      border: 2px solid var(--gray-200);
+      padding: 28px;
+      border-radius: 12px;
+      border: 1px solid var(--gray-200);
     }
 
-    .pricing-btn.secondary:hover {
-      border-color: var(--navy);
+    .faq-item h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 12px;
+    }
+
+    .faq-item p {
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
     }
 
     /* CTA Section */
@@ -602,6 +703,12 @@
       background: var(--gray-100);
     }
 
+    .cta-trial {
+      margin-top: 16px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+    }
+
     /* Footer */
     footer {
       padding: 60px 0 30px;
@@ -612,7 +719,7 @@
     .footer-content {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       padding-bottom: 30px;
       border-bottom: 1px solid var(--gray-700);
       margin-bottom: 30px;
@@ -628,33 +735,46 @@
 
     .footer-links {
       display: flex;
-      gap: 32px;
+      gap: 48px;
     }
 
-    .footer-links a {
+    .footer-links-col h4 {
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-links-col a {
+      display: block;
       color: var(--gray-400);
       text-decoration: none;
       font-size: 14px;
+      margin-bottom: 10px;
       transition: color 0.2s;
     }
 
-    .footer-links a:hover {
+    .footer-links-col a:hover {
       color: white;
     }
 
     .footer-bottom {
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-size: 14px;
     }
 
-    /* Mobile Menu */
-    .mobile-menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: var(--gray-600);
+    .footer-bottom a {
+      color: var(--gray-400);
+      text-decoration: none;
+      margin-left: 24px;
+    }
+
+    .footer-bottom a:hover {
+      color: white;
     }
 
     /* Responsive */
@@ -693,15 +813,8 @@
         display: none;
       }
 
-      .pricing-grid {
+      .faq-grid {
         grid-template-columns: 1fr;
-        max-width: 400px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .pricing-card.popular {
-        transform: none;
       }
     }
 
@@ -726,6 +839,11 @@
         font-size: 16px;
       }
 
+      .hero-stats {
+        flex-direction: column;
+        gap: 20px;
+      }
+
       .section-header h2 {
         font-size: 32px;
       }
@@ -738,30 +856,38 @@
         grid-template-columns: 1fr;
       }
 
+      .pricing-card-single {
+        padding: 32px 24px;
+      }
+
+      .price-amount {
+        font-size: 48px;
+      }
+
       .cta h2 {
         font-size: 28px;
       }
 
       .footer-content {
         flex-direction: column;
+        gap: 32px;
+      }
+
+      .footer-links {
+        flex-direction: column;
         gap: 24px;
       }
-    }
 
-    /* Animations */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
+      .footer-bottom {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
 
-    .animate {
-      animation: fadeInUp 0.6s ease forwards;
+      .footer-bottom a {
+        margin-left: 0;
+        margin: 0 12px;
+      }
     }
   </style>
 </head>
@@ -771,17 +897,18 @@
     <div class="container">
       <a href="#" class="logo">
         <div class="logo-icon">CV</div>
-        <div class="logo-text">CourtVision <span>PRO</span></div>
+        <div class="logo-text">CourtVision</div>
       </a>
       <div class="nav-links">
         <a href="#features" data-en="Features" data-id="Fitur">Features</a>
         <a href="#how-it-works" data-en="How It Works" data-id="Cara Kerja">How It Works</a>
         <a href="#pricing" data-en="Pricing" data-id="Harga">Pricing</a>
+        <a href="#faq" data-en="FAQ" data-id="FAQ">FAQ</a>
         <div class="lang-toggle">
           <button class="lang-btn active" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="id">ID</button>
         </div>
-        <a href="#download" class="nav-cta" data-en="Download Free" data-id="Download Gratis">Download Free</a>
+        <a href="https://chrome.google.com/webstore/detail/oklbkdldkcchgihmadhbgojnamadihig" target="_blank" class="nav-cta" data-en="Download Free" data-id="Download Gratis">Download Free</a>
       </div>
       <button class="mobile-menu-btn">☰</button>
     </div>
@@ -794,8 +921,8 @@
         <h1 data-en="Analyze Basketball Like a <span>Pro Coach</span>" data-id="Analisis Basket Seperti <span>Coach Pro</span>">Analyze Basketball Like a <span>Pro Coach</span></h1>
         <p data-en="Tag plays, track outcomes, and generate professional game analysis — directly from YouTube videos. The affordable alternative to expensive coaching software." data-id="Tag permainan, lacak hasil, dan buat analisis pertandingan profesional — langsung dari video YouTube. Alternatif terjangkau untuk software coaching mahal.">Tag plays, track outcomes, and generate professional game analysis — directly from YouTube videos. The affordable alternative to expensive coaching software.</p>
         <div class="hero-buttons">
-          <a href="#download" class="btn-primary">
-            <span>⬇</span>
+          <a href="https://chrome.google.com/webstore/detail/oklbkdldkcchgihmadhbgojnamadihig" target="_blank" class="btn-primary">
+            <span>🌐</span>
             <span data-en="Download Extension" data-id="Download Extension">Download Extension</span>
           </a>
           <a href="#how-it-works" class="btn-secondary">
@@ -803,18 +930,19 @@
             <span data-en="See How It Works" data-id="Lihat Cara Kerja">See How It Works</span>
           </a>
         </div>
+        <p class="hero-trial" data-en="<strong>100% Free</strong> to install from Chrome Web Store" data-id="<strong>100% Gratis</strong> install dari Chrome Web Store"><strong>100% Free</strong> to install from Chrome Web Store</p>
         <div class="hero-stats">
           <div class="hero-stat">
-            <div class="hero-stat-value">100%</div>
-            <div class="hero-stat-label" data-en="Free to Start" data-id="Gratis untuk Mulai">Free to Start</div>
+            <div class="hero-stat-value">$8</div>
+            <div class="hero-stat-label" data-en="/month after trial" data-id="/bulan setelah trial">/month after trial</div>
           </div>
           <div class="hero-stat">
             <div class="hero-stat-value">1-Click</div>
             <div class="hero-stat-label" data-en="Quick Tagging" data-id="Tag Cepat">Quick Tagging</div>
           </div>
           <div class="hero-stat">
-            <div class="hero-stat-value">8+</div>
-            <div class="hero-stat-label" data-en="Play Categories" data-id="Kategori Play">Play Categories</div>
+            <div class="hero-stat-value">∞</div>
+            <div class="hero-stat-label" data-en="Unlimited Clips" data-id="Klip Unlimited">Unlimited Clips</div>
           </div>
         </div>
       </div>
@@ -860,7 +988,7 @@
         <div class="feature-card">
           <div class="feature-icon">🏀</div>
           <h3 data-en="1-Click Play Tagging" data-id="Tag Play 1-Klik">1-Click Play Tagging</h3>
-          <p data-en="Tag transition, set plays, defense, BLOB, SLOB and more with a single click. Keyboard shortcuts for even faster tagging." data-id="Tag transisi, set play, defense, BLOB, SLOB dan lainnya dengan satu klik. Shortcut keyboard untuk tagging lebih cepat.">Tag transition, set plays, defense, BLOB, SLOB and more with a single click. Keyboard shortcuts for even faster tagging.</p>
+          <p data-en="Tag transition, set plays, defense, BLOB, SLOB and more with a single click. Keyboard shortcuts (Ctrl+1-9) for even faster tagging." data-id="Tag transisi, set play, defense, BLOB, SLOB dan lainnya dengan satu klik. Shortcut keyboard (Ctrl+1-9) untuk tagging lebih cepat.">Tag transition, set plays, defense, BLOB, SLOB and more with a single click. Keyboard shortcuts (Ctrl+1-9) for even faster tagging.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">📊</div>
@@ -869,13 +997,13 @@
         </div>
         <div class="feature-card">
           <div class="feature-icon">⚙️</div>
-          <h3 data-en="Custom Categories" data-id="Kategori Custom">Custom Categories</h3>
-          <p data-en="Create unlimited custom play categories. Rename teams, change colors, and organize plays your way." data-id="Buat kategori play custom tanpa batas. Rename tim, ubah warna, dan atur play sesuai keinginan.">Create unlimited custom play categories. Rename teams, change colors, and organize plays your way.</p>
+          <h3 data-en="Unlimited Custom Categories" data-id="Kategori Custom Unlimited">Unlimited Custom Categories</h3>
+          <p data-en="Create unlimited custom play categories. Rename teams, change colors, drag & drop to reorder — organize plays your way." data-id="Buat kategori play custom tanpa batas. Rename tim, ubah warna, drag & drop untuk reorder — atur play sesuai keinginan.">Create unlimited custom play categories. Rename teams, change colors, drag & drop to reorder — organize plays your way.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">📱</div>
           <h3 data-en="WhatsApp Export" data-id="Export WhatsApp">WhatsApp Export</h3>
-          <p data-en="Share game analysis instantly with your team via WhatsApp. Formatted summaries with clickable video timestamps." data-id="Bagikan analisis game ke tim via WhatsApp secara instan. Summary terformat dengan timestamp video yang bisa diklik.">Share game analysis instantly with your team via WhatsApp. Formatted summaries with clickable video timestamps.</p>
+          <p data-en="Share game analysis instantly with your team via WhatsApp. Formatted summaries with clickable YouTube timestamps." data-id="Bagikan analisis game ke tim via WhatsApp secara instan. Summary terformat dengan timestamp YouTube yang bisa diklik.">Share game analysis instantly with your team via WhatsApp. Formatted summaries with clickable YouTube timestamps.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">🎬</div>
@@ -884,8 +1012,8 @@
         </div>
         <div class="feature-card">
           <div class="feature-icon">📁</div>
-          <h3 data-en="JSON/CSV Export" data-id="Export JSON/CSV">JSON/CSV Export</h3>
-          <p data-en="Export all your data in standard formats. Import into spreadsheets, databases, or other analysis tools." data-id="Export semua data dalam format standar. Import ke spreadsheet, database, atau tools analisis lainnya.">Export all your data in standard formats. Import into spreadsheets, databases, or other analysis tools.</p>
+          <h3 data-en="Export Anywhere" data-id="Export Kemana Saja">Export Anywhere</h3>
+          <p data-en="Export all your data in JSON or CSV format. Import into spreadsheets, databases, or other analysis tools." data-id="Export semua data dalam format JSON atau CSV. Import ke spreadsheet, database, atau tools analisis lainnya.">Export all your data in JSON or CSV format. Import into spreadsheets, databases, or other analysis tools.</p>
         </div>
       </div>
     </div>
@@ -903,7 +1031,7 @@
         <div class="step">
           <div class="step-number">1</div>
           <h3 data-en="Install Extension" data-id="Install Extension">Install Extension</h3>
-          <p data-en="Download and add to Chrome in one click" data-id="Download dan tambahkan ke Chrome dengan satu klik">Download and add to Chrome in one click</p>
+          <p data-en="Add CourtVision to Chrome in one click" data-id="Tambahkan CourtVision ke Chrome dengan satu klik">Add CourtVision to Chrome in one click</p>
           <span class="step-arrow">→</span>
         </div>
         <div class="step">
@@ -915,13 +1043,13 @@
         <div class="step">
           <div class="step-number">3</div>
           <h3 data-en="Tag Plays" data-id="Tag Play">Tag Plays</h3>
-          <p data-en="Click or use Ctrl+1-8 to tag play types" data-id="Klik atau gunakan Ctrl+1-8 untuk tag tipe play">Click or use Ctrl+1-8 to tag play types</p>
+          <p data-en="Click categories or use Ctrl+1-9 shortcuts" data-id="Klik kategori atau gunakan shortcut Ctrl+1-9">Click categories or use Ctrl+1-9 shortcuts</p>
           <span class="step-arrow">→</span>
         </div>
         <div class="step">
           <div class="step-number">4</div>
-          <h3 data-en="Share Analysis" data-id="Bagikan Analisis">Share Analysis</h3>
-          <p data-en="Export to WhatsApp, JSON, or CSV" data-id="Export ke WhatsApp, JSON, atau CSV">Export to WhatsApp, JSON, or CSV</p>
+          <h3 data-en="Share & Export" data-id="Bagikan & Export">Share & Export</h3>
+          <p data-en="Send to WhatsApp or export as JSON/CSV" data-id="Kirim ke WhatsApp atau export sebagai JSON/CSV">Send to WhatsApp or export as JSON/CSV</p>
         </div>
       </div>
     </div>
@@ -932,55 +1060,79 @@
     <div class="container">
       <div class="section-header">
         <span class="section-tag" data-en="Pricing" data-id="Harga">Pricing</span>
-        <h2 data-en="Simple, Affordable Pricing" data-id="Harga Simple & Terjangkau">Simple, Affordable Pricing</h2>
-        <p data-en="Start free, upgrade when you need more" data-id="Mulai gratis, upgrade saat butuh lebih">Start free, upgrade when you need more</p>
+        <h2 data-en="Simple, Transparent Pricing" data-id="Harga Simple & Transparan">Simple, Transparent Pricing</h2>
+        <p data-en="One plan with everything you need. Start with 3 days free." data-id="Satu paket dengan semua yang kamu butuhkan. Mulai dengan 3 hari gratis.">One plan with everything you need. Start with 3 days free.</p>
       </div>
-      <div class="pricing-grid">
-        <!-- Free Plan -->
-        <div class="pricing-card">
-          <h3>Free</h3>
-          <div class="price">$0 <span data-en="/forever" data-id="/selamanya">/forever</span></div>
-          <div class="price-idr">Rp 0</div>
-          <ul class="pricing-features">
-            <li><span class="check">✓</span> <span data-en="20 clips per video" data-id="20 klip per video">20 clips per video</span></li>
-            <li><span class="check">✓</span> <span data-en="8 default categories" data-id="8 kategori default">8 default categories</span></li>
-            <li><span class="check">✓</span> <span data-en="Outcome tracking" data-id="Tracking hasil">Outcome tracking</span></li>
-            <li><span class="check">✓</span> <span data-en="WhatsApp export" data-id="Export WhatsApp">WhatsApp export</span></li>
-            <li><span class="x">✗</span> <span data-en="Custom categories" data-id="Kategori custom">Custom categories</span></li>
-            <li><span class="x">✗</span> <span data-en="Unlimited clips" data-id="Klip unlimited">Unlimited clips</span></li>
-          </ul>
-          <a href="#download" class="pricing-btn secondary" data-en="Get Started" data-id="Mulai Sekarang">Get Started</a>
+      
+      <div class="pricing-card-single">
+        <div class="pricing-badge" data-en="3 Days Free Trial" data-id="Trial 3 Hari Gratis">3 Days Free Trial</div>
+        
+        <h3>CourtVision Pro</h3>
+        <p class="tagline" data-en="Full access to all features" data-id="Akses penuh ke semua fitur">Full access to all features</p>
+        
+        <div class="pricing-toggle">
+          <button class="pricing-toggle-btn active" data-plan="monthly" data-en="Monthly" data-id="Bulanan">Monthly</button>
+          <button class="pricing-toggle-btn" data-plan="yearly" data-en="Yearly" data-id="Tahunan">Yearly <span class="save">-20%</span></button>
         </div>
-        <!-- Pro Plan -->
-        <div class="pricing-card popular">
-          <div class="pricing-badge" data-en="Most Popular" data-id="Paling Populer">Most Popular</div>
-          <h3>Pro</h3>
-          <div class="price">$7 <span data-en="/month" data-id="/bulan">/month</span></div>
-          <div class="price-idr">~Rp 99.000</div>
-          <ul class="pricing-features">
-            <li><span class="check">✓</span> <span data-en="Unlimited clips" data-id="Klip unlimited">Unlimited clips</span></li>
-            <li><span class="check">✓</span> <span data-en="Custom categories" data-id="Kategori custom">Custom categories</span></li>
-            <li><span class="check">✓</span> <span data-en="Custom team names" data-id="Nama tim custom">Custom team names</span></li>
-            <li><span class="check">✓</span> <span data-en="All export formats" data-id="Semua format export">All export formats</span></li>
-            <li><span class="check">✓</span> <span data-en="Priority support" data-id="Support prioritas">Priority support</span></li>
-            <li><span class="check">✓</span> <span data-en="Early access features" data-id="Akses fitur baru">Early access features</span></li>
-          </ul>
-          <a href="#download" class="pricing-btn primary" data-en="Start Pro Trial" data-id="Mulai Trial Pro">Start Pro Trial</a>
+        
+        <div class="price-display">
+          <div class="price-monthly">
+            <div class="price-amount">$8 <span data-en="/month" data-id="/bulan">/month</span></div>
+            <p class="price-note">~Rp 120.000</p>
+          </div>
+          <div class="price-yearly">
+            <div class="price-amount">$64 <span data-en="/year" data-id="/tahun">/year</span></div>
+            <p class="price-note" data-en="~Rp 960.000 (Save $32)" data-id="~Rp 960.000 (Hemat $32)">~Rp 960.000 (Save $32)</p>
+          </div>
         </div>
-        <!-- Team Plan -->
-        <div class="pricing-card">
-          <h3>Team</h3>
-          <div class="price">$19 <span data-en="/month" data-id="/bulan">/month</span></div>
-          <div class="price-idr">~Rp 299.000</div>
-          <ul class="pricing-features">
-            <li><span class="check">✓</span> <span data-en="Everything in Pro" data-id="Semua fitur Pro">Everything in Pro</span></li>
-            <li><span class="check">✓</span> <span data-en="5 team members" data-id="5 anggota tim">5 team members</span></li>
-            <li><span class="check">✓</span> <span data-en="Cloud sync" data-id="Sync cloud">Cloud sync</span></li>
-            <li><span class="check">✓</span> <span data-en="Shared clip library" data-id="Library klip bersama">Shared clip library</span></li>
-            <li><span class="check">✓</span> <span data-en="Team analytics" data-id="Analitik tim">Team analytics</span></li>
-            <li><span class="check">✓</span> <span data-en="Dedicated support" data-id="Support dedicated">Dedicated support</span></li>
-          </ul>
-          <a href="#download" class="pricing-btn secondary" data-en="Contact Sales" data-id="Hubungi Sales">Contact Sales</a>
+        
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> <span data-en="Unlimited clips & videos" data-id="Klip & video unlimited">Unlimited clips & videos</span></li>
+          <li><span class="check">✓</span> <span data-en="Unlimited custom categories" data-id="Kategori custom unlimited">Unlimited custom categories</span></li>
+          <li><span class="check">✓</span> <span data-en="Custom team names & colors" data-id="Nama & warna tim custom">Custom team names & colors</span></li>
+          <li><span class="check">✓</span> <span data-en="Outcome tracking (Made/Missed)" data-id="Tracking hasil (Berhasil/Gagal)">Outcome tracking (Made/Missed)</span></li>
+          <li><span class="check">✓</span> <span data-en="WhatsApp, JSON, CSV export" data-id="Export WhatsApp, JSON, CSV">WhatsApp, JSON, CSV export</span></li>
+          <li><span class="check">✓</span> <span data-en="Auto-stop clip playback" data-id="Auto-stop playback klip">Auto-stop clip playback</span></li>
+          <li><span class="check">✓</span> <span data-en="Priority email support" data-id="Email support prioritas">Priority email support</span></li>
+        </ul>
+        
+        <a href="https://chrome.google.com/webstore/detail/oklbkdldkcchgihmadhbgojnamadihig" target="_blank" class="pricing-cta" data-en="Get it on Chrome Web Store" data-id="Download di Chrome Web Store">Get it on Chrome Web Store</a>
+        <p class="pricing-guarantee" data-en="Free to install. Cancel anytime." data-id="Gratis install. Batalkan kapan saja.">Free to install. Cancel anytime.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">FAQ</span>
+        <h2 data-en="Frequently Asked Questions" data-id="Pertanyaan yang Sering Diajukan">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h3 data-en="How does the free trial work?" data-id="Bagaimana cara kerja trial gratis?">How does the free trial work?</h3>
+          <p data-en="You get 3 days of full access to all CourtVision Pro features. No credit card required to start. After the trial, choose monthly ($8) or yearly ($64) to continue." data-id="Kamu mendapat 3 hari akses penuh ke semua fitur CourtVision Pro. Tidak perlu kartu kredit untuk mulai. Setelah trial, pilih bulanan ($8) atau tahunan ($64) untuk lanjut.">You get 3 days of full access to all CourtVision Pro features. No credit card required to start. After the trial, choose monthly ($8) or yearly ($64) to continue.</p>
+        </div>
+        <div class="faq-item">
+          <h3 data-en="What happens after my trial ends?" data-id="Apa yang terjadi setelah trial selesai?">What happens after my trial ends?</h3>
+          <p data-en="You'll need to subscribe to continue using CourtVision. Your clips and settings are saved, so you can pick up right where you left off." data-id="Kamu perlu berlangganan untuk terus menggunakan CourtVision. Klip dan pengaturanmu disimpan, jadi kamu bisa melanjutkan dari posisi terakhir.">You'll need to subscribe to continue using CourtVision. Your clips and settings are saved, so you can pick up right where you left off.</p>
+        </div>
+        <div class="faq-item">
+          <h3 data-en="What payment methods do you accept?" data-id="Metode pembayaran apa yang diterima?">What payment methods do you accept?</h3>
+          <p data-en="We accept Visa, Mastercard, and American Express via Stripe. For Indonesian users, we also support GoPay, OVO, Dana, and bank transfer via Midtrans." data-id="Kami menerima Visa, Mastercard, dan American Express via Stripe. Untuk pengguna Indonesia, kami juga mendukung GoPay, OVO, Dana, dan transfer bank via Midtrans.">We accept Visa, Mastercard, and American Express via Stripe. For Indonesian users, we also support GoPay, OVO, Dana, and bank transfer via Midtrans.</p>
+        </div>
+        <div class="faq-item">
+          <h3 data-en="Can I cancel anytime?" data-id="Bisakah saya batalkan kapan saja?">Can I cancel anytime?</h3>
+          <p data-en="Yes! Cancel anytime from your account dashboard. No questions asked, no cancellation fees. Your subscription remains active until the end of your billing period." data-id="Ya! Batalkan kapan saja dari dashboard akunmu. Tanpa pertanyaan, tanpa biaya pembatalan. Langgananmu tetap aktif sampai akhir periode billing.">Yes! Cancel anytime from your account dashboard. No questions asked, no cancellation fees. Your subscription remains active until the end of your billing period.</p>
+        </div>
+        <div class="faq-item">
+          <h3 data-en="Does it work with any YouTube video?" data-id="Apakah bisa untuk semua video YouTube?">Does it work with any YouTube video?</h3>
+          <p data-en="Yes! CourtVision works with any YouTube video — professional games, amateur footage, practice sessions, or game film your team recorded." data-id="Ya! CourtVision berfungsi dengan video YouTube apapun — pertandingan profesional, rekaman amatir, sesi latihan, atau rekaman game timmu.">Yes! CourtVision works with any YouTube video — professional games, amateur footage, practice sessions, or game film your team recorded.</p>
+        </div>
+        <div class="faq-item">
+          <h3 data-en="Is my data secure?" data-id="Apakah data saya aman?">Is my data secure?</h3>
+          <p data-en="Absolutely. Your clips are stored locally in your browser and synced securely to your account. We never share your data with third parties." data-id="Tentu saja. Klipmu disimpan secara lokal di browsermu dan disinkronkan dengan aman ke akunmu. Kami tidak pernah membagikan datamu ke pihak ketiga.">Absolutely. Your clips are stored locally in your browser and synced securely to your account. We never share your data with third parties.</p>
         </div>
       </div>
     </div>
@@ -989,12 +1141,13 @@
   <!-- CTA Section -->
   <section class="cta" id="download">
     <div class="container">
-      <h2 data-en="Ready to Level Up Your Coaching?" data-id="Siap Tingkatkan Level Coaching Kamu?">Ready to Level Up Your Coaching?</h2>
-      <p data-en="Download CourtVision now and start analyzing games like a pro. It's free to get started." data-id="Download CourtVision sekarang dan mulai analisis game seperti pro. Gratis untuk mulai.">Download CourtVision now and start analyzing games like a pro. It's free to get started.</p>
-      <a href="CourtVision-v2.6.0.zip" download class="btn-primary">
-        <span>⬇</span>
-        <span data-en="Download for Chrome" data-id="Download untuk Chrome">Download for Chrome</span>
+      <h2 data-en="Ready to Coach Smarter?" data-id="Siap Melatih Lebih Cerdas?">Ready to Coach Smarter?</h2>
+      <p data-en="Join coaches who are using CourtVision to analyze games faster and more effectively." data-id="Bergabung dengan coach yang menggunakan CourtVision untuk analisis game lebih cepat dan efektif.">Join coaches who are using CourtVision to analyze games faster and more effectively.</p>
+      <a href="https://chrome.google.com/webstore/detail/oklbkdldkcchgihmadhbgojnamadihig" target="_blank" class="btn-primary">
+        <span>🌐</span>
+        <span data-en="Get it on Chrome Web Store" data-id="Download di Chrome Web Store">Get it on Chrome Web Store</span>
       </a>
+      <p class="cta-trial" data-en="Free to install • Pro features $8/month" data-id="Gratis install • Fitur Pro $8/bulan">Free to install • Pro features $8/month</p>
     </div>
   </section>
 
@@ -1007,14 +1160,29 @@
           <div class="logo-text">CourtVision</div>
         </a>
         <div class="footer-links">
-          <a href="#features" data-en="Features" data-id="Fitur">Features</a>
-          <a href="#pricing" data-en="Pricing" data-id="Harga">Pricing</a>
-          <a href="mailto:support@courtvision.app" data-en="Support" data-id="Bantuan">Support</a>
-          <a href="#" data-en="Privacy" data-id="Privasi">Privacy</a>
+          <div class="footer-links-col">
+            <h4>Product</h4>
+            <a href="#features" data-en="Features" data-id="Fitur">Features</a>
+            <a href="#pricing" data-en="Pricing" data-id="Harga">Pricing</a>
+            <a href="#faq" data-en="FAQ" data-id="FAQ">FAQ</a>
+          </div>
+          <div class="footer-links-col">
+            <h4>Legal</h4>
+            <a href="privacy.html" data-en="Privacy Policy" data-id="Kebijakan Privasi">Privacy Policy</a>
+            <a href="terms.html" data-en="Terms of Service" data-id="Ketentuan Layanan">Terms of Service</a>
+          </div>
+          <div class="footer-links-col">
+            <h4>Contact</h4>
+            <a href="mailto:support@CourtVision.id">support@CourtVision.id</a>
+          </div>
         </div>
       </div>
       <div class="footer-bottom">
         <p>© 2026 CourtVision. All rights reserved.</p>
+        <div>
+          <a href="privacy.html" data-en="Privacy" data-id="Privasi">Privacy</a>
+          <a href="terms.html" data-en="Terms" data-id="Ketentuan">Terms</a>
+        </div>
       </div>
     </div>
   </footer>
@@ -1027,22 +1195,39 @@
     function setLanguage(lang) {
       currentLang = lang;
       
-      // Update button states
       langBtns.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === lang);
       });
 
-      // Update all translatable elements
       document.querySelectorAll('[data-en][data-id]').forEach(el => {
         el.innerHTML = el.dataset[lang];
       });
 
-      // Update HTML lang attribute
       document.documentElement.lang = lang;
     }
 
     langBtns.forEach(btn => {
       btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+    });
+
+    // Pricing Toggle
+    const pricingBtns = document.querySelectorAll('.pricing-toggle-btn');
+    const priceMonthly = document.querySelector('.price-monthly');
+    const priceYearly = document.querySelector('.price-yearly');
+
+    pricingBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        pricingBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        if (btn.dataset.plan === 'yearly') {
+          priceMonthly.classList.add('hidden');
+          priceYearly.classList.add('active');
+        } else {
+          priceMonthly.classList.remove('hidden');
+          priceYearly.classList.remove('active');
+        }
+      });
     });
 
     // Smooth scroll
@@ -1056,7 +1241,7 @@
       });
     });
 
-    // Navbar background on scroll
+    // Navbar shadow on scroll
     window.addEventListener('scroll', () => {
       const nav = document.querySelector('nav');
       if (window.scrollY > 50) {
