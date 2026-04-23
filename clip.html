@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CourtVision Clip</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231E3A5F' rx='20' width='100' height='100'/><text x='50' y='62' text-anchor='middle' fill='white' font-family='Arial Black' font-size='36'>CV</text></svg>">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0F172A;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      background: #1E3A5F;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .logo-text {
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .clip-badge {
+      background: #10B981;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Video container */
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 aspect ratio */
+      background: #000;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Clip info */
+    .clip-info {
+      background: #1E293B;
+      padding: 16px;
+    }
+
+    .time-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .time-box {
+      background: #334155;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .time-label {
+      font-size: 10px;
+      color: #94A3B8;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .time-value {
+      font-size: 20px;
+      font-weight: 800;
+      font-family: 'SF Mono', 'Monaco', monospace;
+    }
+
+    .time-box.start .time-value {
+      color: #10B981;
+    }
+
+    .time-box.end .time-value {
+      color: #EF4444;
+    }
+
+    .time-arrow {
+      color: #64748B;
+      font-size: 20px;
+    }
+
+    .duration-badge {
+      background: #1E3A5F;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Progress bar */
+    .progress-container {
+      margin-top: 12px;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: #334155;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #10B981;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    .progress-text {
+      text-align: center;
+      margin-top: 6px;
+      font-size: 12px;
+      color: #94A3B8;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 12px;
+      padding: 16px;
+      background: #1E293B;
+      border-top: 1px solid #334155;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #10B981;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #059669;
+    }
+
+    .btn-secondary {
+      background: #334155;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #475569;
+    }
+
+    /* Status overlay */
+    .status-overlay {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.9);
+      padding: 24px 32px;
+      border-radius: 16px;
+      text-align: center;
+      z-index: 100;
+      display: none;
+    }
+
+    .status-overlay.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .status-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .status-text {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .status-subtext {
+      font-size: 14px;
+      color: #94A3B8;
+      margin-top: 4px;
+    }
+
+    /* Footer */
+    .footer {
+      background: #1E3A5F;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .footer a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .footer a:hover {
+      color: white;
+    }
+
+    /* Error state */
+    .error-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      text-align: center;
+    }
+
+    .error-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .error-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .error-text {
+      color: #94A3B8;
+      margin-bottom: 24px;
+    }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+      .main {
+        max-width: 800px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .controls {
+        padding: 20px;
+      }
+
+      .btn {
+        padding: 16px 24px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="https://courtvision.id" class="logo">
+      <div class="logo-icon">CV</div>
+      <span class="logo-text">CourtVision</span>
+    </a>
+    <span class="clip-badge">CLIP</span>
+  </header>
+
+  <main class="main" id="main-content">
+    <!-- Content loaded by JavaScript -->
+  </main>
+
+  <footer class="footer">
+    <a href="https://courtvision.id">courtvision.id</a>
+  </footer>
+
+  <!-- Status overlay -->
+  <div class="status-overlay" id="status-overlay">
+    <div class="status-icon" id="status-icon">⏹</div>
+    <div class="status-text" id="status-text">Clip Selesai</div>
+    <div class="status-subtext" id="status-subtext">Klik Replay untuk putar ulang</div>
+  </div>
+
+  <script>
+    // Parse URL parameters
+    const params = new URLSearchParams(window.location.search);
+    const videoId = params.get('v');
+    const startTime = parseInt(params.get('start')) || 0;
+    const endTime = parseInt(params.get('end')) || 0;
+
+    // Format time helper
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = Math.floor(seconds % 60);
+      return m + ':' + String(s).padStart(2, '0');
+    }
+
+    // Calculate duration
+    const duration = endTime - startTime;
+
+    // Main content element
+    const mainContent = document.getElementById('main-content');
+    const statusOverlay = document.getElementById('status-overlay');
+
+    // Validate parameters
+    if (!videoId || !startTime || !endTime || endTime <= startTime) {
+      mainContent.innerHTML = `
+        <div class="error-container">
+          <div class="error-icon">❌</div>
+          <div class="error-title">Link Tidak Valid</div>
+          <div class="error-text">Parameter video tidak lengkap atau tidak valid.</div>
+          <a href="https://courtvision.id" class="btn btn-primary">Ke Homepage</a>
+        </div>
+      `;
+    } else {
+      // Render player
+      mainContent.innerHTML = `
+        <div class="video-container">
+          <div id="player"></div>
+        </div>
+        
+        <div class="clip-info">
+          <div class="time-display">
+            <div class="time-box start">
+              <div class="time-label">Mulai</div>
+              <div class="time-value">${formatTime(startTime)}</div>
+            </div>
+            <div class="time-arrow">→</div>
+            <div class="time-box end">
+              <div class="time-label">Stop</div>
+              <div class="time-value">${formatTime(endTime)}</div>
+            </div>
+            <div class="duration-badge">${duration}s</div>
+          </div>
+          
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0:00 / ${formatTime(duration)}</div>
+          </div>
+        </div>
+        
+        <div class="controls">
+          <button class="btn btn-primary" id="btn-replay" style="display:none;">
+            🔄 Replay
+          </button>
+          <button class="btn btn-secondary" id="btn-youtube">
+            ▶ Buka di YouTube
+          </button>
+        </div>
+      `;
+
+      // Load YouTube IFrame API
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      let player;
+      let checkInterval;
+      let clipEnded = false;
+
+      // YouTube API ready callback
+      window.onYouTubeIframeAPIReady = function() {
+        player = new YT.Player('player', {
+          videoId: videoId,
+          playerVars: {
+            start: startTime,
+            autoplay: 1,
+            playsinline: 1,
+            rel: 0,
+            modestbranding: 1,
+            controls: 1
+          },
+          events: {
+            onReady: onPlayerReady,
+            onStateChange: onPlayerStateChange
+          }
+        });
+      };
+
+      function onPlayerReady(event) {
+        // Start checking time
+        startTimeCheck();
+      }
+
+      function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.PLAYING && !clipEnded) {
+          startTimeCheck();
+        }
+      }
+
+      function startTimeCheck() {
+        // Clear any existing interval
+        if (checkInterval) clearInterval(checkInterval);
+        
+        checkInterval = setInterval(() => {
+          if (!player || typeof player.getCurrentTime !== 'function') return;
+          
+          const currentTime = player.getCurrentTime();
+          const elapsed = currentTime - startTime;
+          const progress = Math.min((elapsed / duration) * 100, 100);
+          
+          // Update progress bar
+          const progressFill = document.getElementById('progress-fill');
+          const progressText = document.getElementById('progress-text');
+          
+          if (progressFill) {
+            progressFill.style.width = progress + '%';
+          }
+          if (progressText) {
+            progressText.textContent = formatTime(Math.max(0, elapsed)) + ' / ' + formatTime(duration);
+          }
+          
+          // Check if reached end time
+          if (currentTime >= endTime && !clipEnded) {
+            clipEnded = true;
+            player.pauseVideo();
+            clearInterval(checkInterval);
+            
+            // Show status overlay
+            statusOverlay.classList.add('show');
+            
+            // Show replay button
+            document.getElementById('btn-replay').style.display = 'flex';
+            
+            // Hide overlay after 2 seconds
+            setTimeout(() => {
+              statusOverlay.classList.remove('show');
+            }, 2000);
+          }
+        }, 200);
+      }
+
+      // Replay button
+      document.getElementById('btn-replay').onclick = function() {
+        clipEnded = false;
+        player.seekTo(startTime, true);
+        player.playVideo();
+        statusOverlay.classList.remove('show');
+        startTimeCheck();
+      };
+
+      // Open in YouTube button
+      document.getElementById('btn-youtube').onclick = function() {
+        window.open(`https://www.youtube.com/watch?v=${videoId}&t=${startTime}s`, '_blank');
+      };
+    }
+  </script>
+</body>
+</html>
