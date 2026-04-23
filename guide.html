@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panduan Lengkap - CourtVision</title>
+  <meta name="description" content="Tutorial lengkap cara install dan menggunakan CourtVision untuk analisis video basket">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1E3A5F;
+      --navy-light: #2D4A6F;
+      --white: #FFFFFF;
+      --gray-50: #F8FAFC;
+      --gray-100: #F1F5F9;
+      --gray-200: #E2E8F0;
+      --gray-400: #94A3B8;
+      --gray-500: #64748B;
+      --gray-800: #1E293B;
+      --green: #10B981;
+      --green-light: #D1FAE5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--gray-800);
+      line-height: 1.7;
+      background: var(--white);
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--navy), var(--navy-light));
+      color: white;
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .header-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      opacity: 0.8;
+      font-size: 16px;
+    }
+
+    /* Language Toggle */
+    .lang-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .lang-btn {
+      padding: 8px 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      background: transparent;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .lang-btn.active {
+      background: white;
+      color: var(--navy);
+      border-color: white;
+    }
+
+    /* Container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* Table of Contents */
+    .toc {
+      background: var(--gray-50);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 40px;
+    }
+
+    .toc h3 {
+      font-size: 16px;
+      margin-bottom: 16px;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-list li {
+      margin-bottom: 10px;
+    }
+
+    .toc-list a {
+      color: var(--navy);
+      text-decoration: none;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toc-list a:hover {
+      text-decoration: underline;
+    }
+
+    .toc-num {
+      width: 28px;
+      height: 28px;
+      background: var(--navy);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 50px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .section-num {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-light));
+      color: white;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .section h2 {
+      font-size: 24px;
+      color: var(--gray-800);
+    }
+
+    .section p {
+      margin-bottom: 16px;
+      color: var(--gray-800);
+    }
+
+    /* Steps */
+    .steps {
+      background: var(--gray-50);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .step:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      background: var(--green);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-content h4 {
+      font-size: 16px;
+      margin-bottom: 6px;
+      color: var(--gray-800);
+    }
+
+    .step-content p {
+      font-size: 14px;
+      color: var(--gray-500);
+      margin-bottom: 0;
+    }
+
+    /* Button */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, var(--green), #059669);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 16px;
+      margin-top: 16px;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Info Box */
+    .info-box {
+      background: var(--green-light);
+      border-left: 4px solid var(--green);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+
+    .info-box p {
+      margin: 0;
+      color: #065F46;
+      font-size: 14px;
+    }
+
+    /* Warning Box */
+    .warning-box {
+      background: #FEF3C7;
+      border-left: 4px solid #F59E0B;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+
+    .warning-box p {
+      margin: 0;
+      color: #92400E;
+      font-size: 14px;
+    }
+
+    /* Image placeholder */
+    .img-placeholder {
+      background: var(--gray-100);
+      border: 2px dashed var(--gray-200);
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      color: var(--gray-400);
+      margin: 20px 0;
+    }
+
+    /* Keyboard shortcut */
+    .kbd {
+      display: inline-block;
+      padding: 4px 8px;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 13px;
+      color: var(--gray-800);
+    }
+
+    /* Feature list */
+    .feature-list {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .feature-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-100);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+
+    .feature-icon {
+      font-size: 18px;
+    }
+
+    /* Table */
+    .shortcut-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    .shortcut-table th,
+    .shortcut-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .shortcut-table th {
+      background: var(--gray-50);
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--gray-500);
+    }
+
+    .shortcut-table td {
+      font-size: 14px;
+    }
+
+    /* FAQ */
+    .faq-item {
+      margin-bottom: 20px;
+    }
+
+    .faq-q {
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .faq-a {
+      color: var(--gray-500);
+      font-size: 14px;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--gray-50);
+      padding: 30px 24px;
+      text-align: center;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .footer p {
+      color: var(--gray-500);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .footer a {
+      color: var(--navy);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .section h2 {
+        font-size: 20px;
+      }
+
+      .section-num {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
+    }
+
+    /* Language switching */
+    [data-lang="id"] { display: none; }
+    body.lang-id [data-lang="en"] { display: none; }
+    body.lang-id [data-lang="id"] { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <a href="index.html" class="header-logo">
+      <div class="logo-icon">CV</div>
+      <div class="logo-text">CourtVision</div>
+    </a>
+    <h1 data-lang="en">Complete User Guide</h1>
+    <h1 data-lang="id">Panduan Lengkap Pengguna</h1>
+    <p data-lang="en">From download to your first game analysis</p>
+    <p data-lang="id">Dari download sampai analisis game pertama</p>
+    
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-setlang="en">English</button>
+      <button class="lang-btn" data-setlang="id">Indonesia</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Table of Contents -->
+    <div class="toc">
+      <h3 data-lang="en">Contents</h3>
+      <h3 data-lang="id">Daftar Isi</h3>
+      <ul class="toc-list">
+        <li>
+          <a href="#requirements">
+            <span class="toc-num">1</span>
+            <span data-lang="en">System Requirements</span>
+            <span data-lang="id">Persyaratan Sistem</span>
+          </a>
+        </li>
+        <li>
+          <a href="#install">
+            <span class="toc-num">2</span>
+            <span data-lang="en">Download & Install</span>
+            <span data-lang="id">Download & Install</span>
+          </a>
+        </li>
+        <li>
+          <a href="#first-use">
+            <span class="toc-num">3</span>
+            <span data-lang="en">First Time Setup</span>
+            <span data-lang="id">Pengaturan Pertama</span>
+          </a>
+        </li>
+        <li>
+          <a href="#tagging">
+            <span class="toc-num">4</span>
+            <span data-lang="en">How to Tag Plays</span>
+            <span data-lang="id">Cara Tag Play</span>
+          </a>
+        </li>
+        <li>
+          <a href="#review">
+            <span class="toc-num">5</span>
+            <span data-lang="en">Review & Edit Clips</span>
+            <span data-lang="id">Review & Edit Klip</span>
+          </a>
+        </li>
+        <li>
+          <a href="#export">
+            <span class="toc-num">6</span>
+            <span data-lang="en">Export & Share</span>
+            <span data-lang="id">Export & Share</span>
+          </a>
+        </li>
+        <li>
+          <a href="#shortcuts">
+            <span class="toc-num">7</span>
+            <span data-lang="en">Keyboard Shortcuts</span>
+            <span data-lang="id">Shortcut Keyboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="#pro">
+            <span class="toc-num">8</span>
+            <span data-lang="en">Activate Pro License</span>
+            <span data-lang="id">Aktivasi License Pro</span>
+          </a>
+        </li>
+        <li>
+          <a href="#faq">
+            <span class="toc-num">9</span>
+            <span data-lang="en">FAQ</span>
+            <span data-lang="id">FAQ</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Section 1: Requirements -->
+    <div class="section" id="requirements">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <h2 data-lang="en">System Requirements</h2>
+        <h2 data-lang="id">Persyaratan Sistem</h2>
+      </div>
+      
+      <ul class="feature-list">
+        <li>
+          <span class="feature-icon">💻</span>
+          <div>
+            <strong data-lang="en">Computer/Laptop</strong>
+            <strong data-lang="id">Komputer/Laptop</strong>
+            <p data-lang="en">Windows, Mac, or Linux. Mobile devices are not supported yet.</p>
+            <p data-lang="id">Windows, Mac, atau Linux. Perangkat mobile belum didukung.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon">🌐</span>
+          <div>
+            <strong data-lang="en">Google Chrome Browser</strong>
+            <strong data-lang="id">Browser Google Chrome</strong>
+            <p data-lang="en">CourtVision only works on Chrome. Download at <a href="https://google.com/chrome" target="_blank">google.com/chrome</a></p>
+            <p data-lang="id">CourtVision hanya berjalan di Chrome. Download di <a href="https://google.com/chrome" target="_blank">google.com/chrome</a></p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon">📶</span>
+          <div>
+            <strong data-lang="en">Internet Connection</strong>
+            <strong data-lang="id">Koneksi Internet</strong>
+            <p data-lang="en">Required to watch YouTube videos</p>
+            <p data-lang="id">Diperlukan untuk menonton video YouTube</p>
+          </div>
+        </li>
+      </ul>
+
+      <div class="warning-box">
+        <p data-lang="en">⚠️ <strong>Important:</strong> CourtVision does NOT work on Safari, Firefox, or Edge browsers.</p>
+        <p data-lang="id">⚠️ <strong>Penting:</strong> CourtVision TIDAK berjalan di browser Safari, Firefox, atau Edge.</p>
+      </div>
+    </div>
+
+    <!-- Section 2: Install -->
+    <div class="section" id="install">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <h2 data-lang="en">Download & Install</h2>
+        <h2 data-lang="id">Download & Install</h2>
+      </div>
+      
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4 data-lang="en">Open Chrome Web Store</h4>
+            <h4 data-lang="id">Buka Chrome Web Store</h4>
+            <p data-lang="en">Click the button below or search "CourtVision" in Chrome Web Store</p>
+            <p data-lang="id">Klik tombol di bawah atau cari "CourtVision" di Chrome Web Store</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4 data-lang="en">Click "Add to Chrome"</h4>
+            <h4 data-lang="id">Klik "Add to Chrome"</h4>
+            <p data-lang="en">You'll see a blue button on the right side of the page</p>
+            <p data-lang="id">Kamu akan melihat tombol biru di sisi kanan halaman</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4 data-lang="en">Confirm Installation</h4>
+            <h4 data-lang="id">Konfirmasi Instalasi</h4>
+            <p data-lang="en">A popup will appear. Click "Add extension" to confirm</p>
+            <p data-lang="id">Akan muncul popup. Klik "Add extension" untuk konfirmasi</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4 data-lang="en">Done!</h4>
+            <h4 data-lang="id">Selesai!</h4>
+            <p data-lang="en">You'll see the CV icon in your browser toolbar</p>
+            <p data-lang="id">Kamu akan melihat icon CV di toolbar browser</p>
+          </div>
+        </div>
+      </div>
+
+      <a href="https://chrome.google.com/webstore/detail/oklbkdldkcchgihmadhbgojnamadihig" target="_blank" class="btn">
+        🌐 <span data-lang="en">Open Chrome Web Store</span><span data-lang="id">Buka Chrome Web Store</span>
+      </a>
+
+      <div class="info-box">
+        <p data-lang="en">💡 <strong>Tip:</strong> Pin the extension for easy access. Click the puzzle icon 🧩 in Chrome toolbar → Find CourtVision → Click the pin 📌</p>
+        <p data-lang="id">💡 <strong>Tip:</strong> Pin extension untuk akses mudah. Klik icon puzzle 🧩 di toolbar Chrome → Cari CourtVision → Klik pin 📌</p>
+      </div>
+    </div>
+
+    <!-- Section 3: First Use -->
+    <div class="section" id="first-use">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <h2 data-lang="en">First Time Setup</h2>
+        <h2 data-lang="id">Pengaturan Pertama</h2>
+      </div>
+      
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4 data-lang="en">Open any YouTube basketball video</h4>
+            <h4 data-lang="id">Buka video basket apapun di YouTube</h4>
+            <p data-lang="en">Go to youtube.com and play a game video</p>
+            <p data-lang="id">Buka youtube.com dan putar video pertandingan</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4 data-lang="en">Look for the CourtVision panel</h4>
+            <h4 data-lang="id">Cari panel CourtVision</h4>
+            <p data-lang="en">A floating panel will appear on the right side of the video. You can drag it anywhere.</p>
+            <p data-lang="id">Panel mengambang akan muncul di sisi kanan video. Kamu bisa drag ke mana saja.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4 data-lang="en">Customize teams (optional)</h4>
+            <h4 data-lang="id">Kustomisasi tim (opsional)</h4>
+            <p data-lang="en">Click the settings icon ⚙️ to rename teams and change colors</p>
+            <p data-lang="id">Klik icon settings ⚙️ untuk rename tim dan ganti warna</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Tagging -->
+    <div class="section" id="tagging">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <h2 data-lang="en">How to Tag Plays</h2>
+        <h2 data-lang="id">Cara Tag Play</h2>
+      </div>
+      
+      <p data-lang="en">Tagging is the core feature of CourtVision. Here's how it works:</p>
+      <p data-lang="id">Tagging adalah fitur utama CourtVision. Begini cara kerjanya:</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4 data-lang="en">Select Team</h4>
+            <h4 data-lang="id">Pilih Tim</h4>
+            <p data-lang="en">Click on "My Team" or "Opponent" at the top of the panel</p>
+            <p data-lang="id">Klik "My Team" atau "Opponent" di bagian atas panel</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4 data-lang="en">Watch & Tag</h4>
+            <h4 data-lang="id">Tonton & Tag</h4>
+            <p data-lang="en">When you see a play you want to save, click the category button (Transition, Set Play, Defense, etc.)</p>
+            <p data-lang="id">Saat melihat play yang ingin disimpan, klik tombol kategori (Transition, Set Play, Defense, dll.)</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4 data-lang="en">Mark Outcome (Optional)</h4>
+            <h4 data-lang="id">Tandai Hasil (Opsional)</h4>
+            <p data-lang="en">After tagging, click ✓ (Made) or ✗ (Missed) to track success rate</p>
+            <p data-lang="id">Setelah tag, klik ✓ (Made) atau ✗ (Missed) untuk track tingkat keberhasilan</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4 data-lang="en">Continue Watching</h4>
+            <h4 data-lang="id">Lanjut Menonton</h4>
+            <p data-lang="en">Keep watching and tagging. All clips are saved automatically!</p>
+            <p data-lang="id">Lanjut menonton dan tagging. Semua klip tersimpan otomatis!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <p data-lang="en">💡 <strong>How clips work:</strong> When you tag, CourtVision saves 7 seconds BEFORE and 17 seconds AFTER the current timestamp. This ensures you capture the full play.</p>
+        <p data-lang="id">💡 <strong>Cara kerja klip:</strong> Saat tag, CourtVision menyimpan 7 detik SEBELUM dan 17 detik SETELAH timestamp saat ini. Ini memastikan kamu menangkap play secara lengkap.</p>
+      </div>
+    </div>
+
+    <!-- Section 5: Review -->
+    <div class="section" id="review">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <h2 data-lang="en">Review & Edit Clips</h2>
+        <h2 data-lang="id">Review & Edit Klip</h2>
+      </div>
+      
+      <p data-lang="en">All your tagged clips are saved and can be reviewed anytime:</p>
+      <p data-lang="id">Semua klip yang di-tag tersimpan dan bisa direview kapan saja:</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4 data-lang="en">Open Popup</h4>
+            <h4 data-lang="id">Buka Popup</h4>
+            <p data-lang="en">Click the CV icon in your browser toolbar to see all clips</p>
+            <p data-lang="id">Klik icon CV di toolbar browser untuk melihat semua klip</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4 data-lang="en">Filter Clips</h4>
+            <h4 data-lang="id">Filter Klip</h4>
+            <p data-lang="en">Use dropdown filters to view clips by video or team</p>
+            <p data-lang="id">Gunakan dropdown filter untuk melihat klip berdasarkan video atau tim</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4 data-lang="en">Play Clip</h4>
+            <h4 data-lang="id">Putar Klip</h4>
+            <p data-lang="en">Click "Play" on any clip to watch it. Video will auto-stop at clip end.</p>
+            <p data-lang="id">Klik "Play" pada klip untuk menontonnya. Video akan berhenti otomatis di akhir klip.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4 data-lang="en">Adjust Duration</h4>
+            <h4 data-lang="id">Sesuaikan Durasi</h4>
+            <p data-lang="en">Use -1s / +1s buttons to fine-tune clip start and end times</p>
+            <p data-lang="id">Gunakan tombol -1s / +1s untuk menyesuaikan waktu mulai dan akhir klip</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 6: Export -->
+    <div class="section" id="export">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <h2 data-lang="en">Export & Share</h2>
+        <h2 data-lang="id">Export & Share</h2>
+      </div>
+      
+      <p data-lang="en">Share your analysis with your team:</p>
+      <p data-lang="id">Bagikan analisis ke tim kamu:</p>
+
+      <ul class="feature-list">
+        <li>
+          <span class="feature-icon">📱</span>
+          <div>
+            <strong data-lang="en">WhatsApp Export</strong>
+            <strong data-lang="id">Export WhatsApp</strong>
+            <p data-lang="en">Click "Copy for WhatsApp" → Paste in team group. Includes stats summary and clickable YouTube links!</p>
+            <p data-lang="id">Klik "Copy for WhatsApp" → Paste di grup tim. Termasuk ringkasan statistik dan link YouTube yang bisa diklik!</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon">📊</span>
+          <div>
+            <strong data-lang="en">CSV Export</strong>
+            <strong data-lang="id">Export CSV</strong>
+            <p data-lang="en">Download as spreadsheet file. Open in Excel or Google Sheets for further analysis.</p>
+            <p data-lang="id">Download sebagai file spreadsheet. Buka di Excel atau Google Sheets untuk analisis lanjutan.</p>
+          </div>
+        </li>
+        <li>
+          <span class="feature-icon">💾</span>
+          <div>
+            <strong data-lang="en">JSON Export</strong>
+            <strong data-lang="id">Export JSON</strong>
+            <p data-lang="en">Download raw data for backup or import to other tools.</p>
+            <p data-lang="id">Download data mentah untuk backup atau import ke tool lain.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Section 7: Shortcuts -->
+    <div class="section" id="shortcuts">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <h2 data-lang="en">Keyboard Shortcuts</h2>
+        <h2 data-lang="id">Shortcut Keyboard</h2>
+      </div>
+      
+      <p data-lang="en">Speed up your workflow with these shortcuts:</p>
+      <p data-lang="id">Percepat workflow dengan shortcut ini:</p>
+
+      <table class="shortcut-table">
+        <thead>
+          <tr>
+            <th data-lang="en">Shortcut</th>
+            <th data-lang="id">Shortcut</th>
+            <th data-lang="en">Action</th>
+            <th data-lang="id">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="kbd">Ctrl</span> + <span class="kbd">1</span></td>
+            <td data-lang="en">Tag Category 1 (Transition)</td>
+            <td data-lang="id">Tag Kategori 1 (Transition)</td>
+          </tr>
+          <tr>
+            <td><span class="kbd">Ctrl</span> + <span class="kbd">2</span></td>
+            <td data-lang="en">Tag Category 2 (Set Play)</td>
+            <td data-lang="id">Tag Kategori 2 (Set Play)</td>
+          </tr>
+          <tr>
+            <td><span class="kbd">Ctrl</span> + <span class="kbd">3</span></td>
+            <td data-lang="en">Tag Category 3 (Defense)</td>
+            <td data-lang="id">Tag Kategori 3 (Defense)</td>
+          </tr>
+          <tr>
+            <td><span class="kbd">Ctrl</span> + <span class="kbd">4-9</span></td>
+            <td data-lang="en">Tag Categories 4-9</td>
+            <td data-lang="id">Tag Kategori 4-9</td>
+          </tr>
+          <tr>
+            <td><span class="kbd">Space</span></td>
+            <td data-lang="en">Play/Pause video</td>
+            <td data-lang="id">Play/Pause video</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 8: Pro License -->
+    <div class="section" id="pro">
+      <div class="section-header">
+        <div class="section-num">8</div>
+        <h2 data-lang="en">Activate Pro License</h2>
+        <h2 data-lang="id">Aktivasi License Pro</h2>
+      </div>
+      
+      <p data-lang="en">If you have a Pro license key:</p>
+      <p data-lang="id">Jika kamu punya license key Pro:</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4 data-lang="en">Click the CV icon in browser toolbar</h4>
+            <h4 data-lang="id">Klik icon CV di toolbar browser</h4>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4 data-lang="en">Go to "License" tab</h4>
+            <h4 data-lang="id">Buka tab "License"</h4>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4 data-lang="en">Enter your license key</h4>
+            <h4 data-lang="id">Masukkan license key kamu</h4>
+            <p data-lang="en">Format: CV-XXXX-XXXX-XXXX</p>
+            <p data-lang="id">Format: CV-XXXX-XXXX-XXXX</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4 data-lang="en">Click "Activate"</h4>
+            <h4 data-lang="id">Klik "Activate"</h4>
+            <p data-lang="en">You'll see "Pro Version Active" ✓</p>
+            <p data-lang="id">Akan muncul "Pro Version Active" ✓</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <p data-lang="en">💡 Don't have a Pro license? <a href="index.html#pricing">Get it here</a></p>
+        <p data-lang="id">💡 Belum punya license Pro? <a href="index.html#pricing">Dapatkan di sini</a></p>
+      </div>
+    </div>
+
+    <!-- Section 9: FAQ -->
+    <div class="section" id="faq">
+      <div class="section-header">
+        <div class="section-num">9</div>
+        <h2>FAQ</h2>
+      </div>
+      
+      <div class="faq-item">
+        <p class="faq-q" data-lang="en">Q: Why can't I see the CourtVision panel on YouTube?</p>
+        <p class="faq-q" data-lang="id">Q: Kenapa panel CourtVision tidak muncul di YouTube?</p>
+        <p class="faq-a" data-lang="en">A: Make sure you're on a youtube.com video page (not homepage). Try refreshing the page. If issue persists, reinstall the extension.</p>
+        <p class="faq-a" data-lang="id">A: Pastikan kamu di halaman video youtube.com (bukan homepage). Coba refresh halaman. Jika masih bermasalah, reinstall extension.</p>
+      </div>
+
+      <div class="faq-item">
+        <p class="faq-q" data-lang="en">Q: Are my clips saved if I close the browser?</p>
+        <p class="faq-q" data-lang="id">Q: Apakah klip tersimpan jika browser ditutup?</p>
+        <p class="faq-a" data-lang="en">A: Yes! All clips are saved locally in your browser. They will be there when you return.</p>
+        <p class="faq-a" data-lang="id">A: Ya! Semua klip tersimpan secara lokal di browser. Akan tetap ada saat kamu kembali.</p>
+      </div>
+
+      <div class="faq-item">
+        <p class="faq-q" data-lang="en">Q: Does CourtVision work on mobile?</p>
+        <p class="faq-q" data-lang="id">Q: Apakah CourtVision bisa di HP?</p>
+        <p class="faq-a" data-lang="en">A: Not yet. Currently only desktop Chrome is supported. Mobile app is planned for the future.</p>
+        <p class="faq-a" data-lang="id">A: Belum. Saat ini hanya Chrome desktop yang didukung. Mobile app direncanakan untuk masa depan.</p>
+      </div>
+
+      <div class="faq-item">
+        <p class="faq-q" data-lang="en">Q: Can I use CourtVision for videos outside YouTube?</p>
+        <p class="faq-q" data-lang="id">Q: Bisa pakai CourtVision untuk video di luar YouTube?</p>
+        <p class="faq-a" data-lang="en">A: Currently YouTube only. Local video file support is being developed.</p>
+        <p class="faq-a" data-lang="id">A: Saat ini hanya YouTube. Dukungan file video lokal sedang dikembangkan.</p>
+      </div>
+
+      <div class="faq-item">
+        <p class="faq-q" data-lang="en">Q: How do I contact support?</p>
+        <p class="faq-q" data-lang="id">Q: Bagaimana cara menghubungi support?</p>
+        <p class="faq-a" data-lang="en">A: Email us at <a href="mailto:support@courtvision.id">support@courtvision.id</a></p>
+        <p class="faq-a" data-lang="id">A: Email kami di <a href="mailto:support@courtvision.id">support@courtvision.id</a></p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p data-lang="en">Need more help? Contact us:</p>
+    <p data-lang="id">Butuh bantuan? Hubungi kami:</p>
+    <a href="mailto:support@courtvision.id">support@courtvision.id</a>
+    <br><br>
+    <a href="index.html" data-lang="en">← Back to Home</a>
+    <a href="index.html" data-lang="id">← Kembali ke Beranda</a>
+  </div>
+
+  <script>
+    // Language switching
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        if (btn.dataset.setlang === 'id') {
+          document.body.classList.add('lang-id');
+        } else {
+          document.body.classList.remove('lang-id');
+        }
+      });
+    });
+
+    // Smooth scroll for TOC links
+    document.querySelectorAll('.toc-list a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
