@@ -28,6 +28,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
 
     .logo {
@@ -71,10 +74,17 @@
     }
 
     /* Video container */
+    .video-section {
+      position: sticky;
+      top: 56px;
+      z-index: 40;
+      background: #0F172A;
+    }
+
     .video-container {
       position: relative;
       width: 100%;
-      padding-top: 56.25%; /* 16:9 aspect ratio */
+      padding-top: 56.25%;
       background: #000;
     }
 
@@ -90,33 +100,38 @@
     /* Clip info */
     .clip-info {
       background: #1E293B;
-      padding: 16px;
+      padding: 12px 16px;
+    }
+
+    .game-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #E2E8F0;
     }
 
     .time-display {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 10px;
     }
 
     .time-box {
       background: #334155;
-      padding: 8px 16px;
-      border-radius: 8px;
+      padding: 6px 12px;
+      border-radius: 6px;
       text-align: center;
     }
 
     .time-label {
-      font-size: 10px;
+      font-size: 9px;
       color: #94A3B8;
       text-transform: uppercase;
-      margin-bottom: 2px;
+      margin-bottom: 1px;
     }
 
     .time-value {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
       font-family: 'SF Mono', 'Monaco', monospace;
     }
@@ -131,25 +146,35 @@
 
     .time-arrow {
       color: #64748B;
-      font-size: 20px;
+      font-size: 16px;
     }
 
     .duration-badge {
       background: #1E3A5F;
       color: white;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 11px;
       font-weight: 700;
+    }
+
+    .current-category {
+      background: #3B82F6;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: auto;
     }
 
     /* Progress bar */
     .progress-container {
-      margin-top: 12px;
+      margin-top: 10px;
     }
 
     .progress-bar {
-      height: 6px;
+      height: 5px;
       background: #334155;
       border-radius: 3px;
       overflow: hidden;
@@ -159,38 +184,38 @@
       height: 100%;
       background: #10B981;
       border-radius: 3px;
-      transition: width 0.3s ease;
+      transition: width 0.2s ease;
       width: 0%;
     }
 
     .progress-text {
       text-align: center;
-      margin-top: 6px;
-      font-size: 12px;
+      margin-top: 4px;
+      font-size: 11px;
       color: #94A3B8;
     }
 
-    /* Controls */
-    .controls {
+    /* Navigation controls */
+    .nav-controls {
       display: flex;
-      gap: 12px;
-      padding: 16px;
+      gap: 8px;
+      padding: 12px 16px;
       background: #1E293B;
       border-top: 1px solid #334155;
     }
 
     .btn {
       flex: 1;
-      padding: 14px 20px;
+      padding: 12px 16px;
       border: none;
-      border-radius: 10px;
-      font-size: 14px;
+      border-radius: 8px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.2s;
     }
 
@@ -203,6 +228,12 @@
       background: #059669;
     }
 
+    .btn-primary:disabled {
+      background: #334155;
+      color: #64748B;
+      cursor: not-allowed;
+    }
+
     .btn-secondary {
       background: #334155;
       color: white;
@@ -210,6 +241,124 @@
 
     .btn-secondary:hover {
       background: #475569;
+    }
+
+    .btn-nav {
+      flex: none;
+      width: 48px;
+      padding: 12px;
+    }
+
+    /* Clip List Section */
+    .clip-list-section {
+      flex: 1;
+      background: #0F172A;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .team-section {
+      margin-bottom: 20px;
+    }
+
+    .team-header {
+      font-size: 14px;
+      font-weight: 800;
+      color: #E2E8F0;
+      padding: 8px 12px;
+      background: #1E3A5F;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .category-section {
+      margin-bottom: 12px;
+    }
+
+    .category-header {
+      font-size: 12px;
+      font-weight: 700;
+      color: #94A3B8;
+      padding: 6px 12px;
+      background: #1E293B;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .category-count {
+      background: #334155;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+    }
+
+    .clip-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: #1E293B;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+
+    .clip-item:hover {
+      background: #334155;
+    }
+
+    .clip-item.active {
+      background: #1E3A5F;
+      border-color: #3B82F6;
+    }
+
+    .clip-item.watched {
+      opacity: 0.6;
+    }
+
+    .clip-item.watched .clip-status {
+      background: #10B981;
+      color: white;
+    }
+
+    .clip-status {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .clip-item.active .clip-status {
+      background: #3B82F6;
+      color: white;
+    }
+
+    .clip-time {
+      font-family: 'SF Mono', 'Monaco', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: #E2E8F0;
+    }
+
+    .clip-duration {
+      font-size: 11px;
+      color: #64748B;
+      margin-left: auto;
+    }
+
+    .clip-item.active .clip-time {
+      color: white;
     }
 
     /* Status overlay */
@@ -252,21 +401,60 @@
       margin-top: 4px;
     }
 
+    /* Auto-next toggle */
+    .auto-next-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px;
+      background: #1E293B;
+      border-top: 1px solid #334155;
+      font-size: 12px;
+      color: #94A3B8;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      background: #334155;
+      border-radius: 11px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .toggle-switch.active {
+      background: #10B981;
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.2s;
+    }
+
+    .toggle-switch.active::after {
+      transform: translateX(18px);
+    }
+
     /* Footer */
     .footer {
       background: #1E3A5F;
-      padding: 12px;
+      padding: 10px;
       text-align: center;
     }
 
     .footer a {
       color: rgba(255,255,255,0.7);
       text-decoration: none;
-      font-size: 12px;
-    }
-
-    .footer a:hover {
-      color: white;
+      font-size: 11px;
     }
 
     /* Error state */
@@ -296,21 +484,35 @@
       margin-bottom: 24px;
     }
 
+    /* Summary stats */
+    .summary-bar {
+      display: flex;
+      gap: 12px;
+      padding: 10px 16px;
+      background: #1E293B;
+      border-bottom: 1px solid #334155;
+      font-size: 11px;
+      color: #94A3B8;
+      justify-content: center;
+    }
+
+    .summary-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .summary-value {
+      font-weight: 700;
+      color: #E2E8F0;
+    }
+
     /* Responsive */
     @media (min-width: 768px) {
       .main {
-        max-width: 800px;
+        max-width: 600px;
         margin: 0 auto;
         width: 100%;
-      }
-
-      .controls {
-        padding: 20px;
-      }
-
-      .btn {
-        padding: 16px 24px;
-        font-size: 16px;
       }
     }
   </style>
@@ -328,23 +530,22 @@
     <!-- Content loaded by JavaScript -->
   </main>
 
-  <footer class="footer">
-    <a href="https://courtvision.id">courtvision.id</a>
-  </footer>
-
   <!-- Status overlay -->
   <div class="status-overlay" id="status-overlay">
-    <div class="status-icon" id="status-icon">⏹</div>
+    <div class="status-icon" id="status-icon">✅</div>
     <div class="status-text" id="status-text">Clip Selesai</div>
-    <div class="status-subtext" id="status-subtext">Klik Replay untuk putar ulang</div>
+    <div class="status-subtext" id="status-subtext">Melanjutkan ke clip berikutnya...</div>
   </div>
 
   <script>
     // Parse URL parameters
     const params = new URLSearchParams(window.location.search);
     const videoId = params.get('v');
-    const startTime = parseInt(params.get('start')) || 0;
-    const endTime = parseInt(params.get('end')) || 0;
+    const dataParam = params.get('d');
+    
+    // Legacy support for single clip
+    const legacyStart = parseInt(params.get('start')) || 0;
+    const legacyEnd = parseInt(params.get('end')) || 0;
 
     // Format time helper
     function formatTime(seconds) {
@@ -353,157 +554,437 @@
       return m + ':' + String(s).padStart(2, '0');
     }
 
-    // Calculate duration
-    const duration = endTime - startTime;
+    // Decode data
+    let clipData = null;
+    let allClips = []; // Flat array of all clips for navigation
+    let currentClipIndex = 0;
+    let autoNext = true;
+    let watchedClips = new Set();
+
+    if (dataParam) {
+      try {
+        clipData = JSON.parse(atob(dataParam));
+        
+        // Build flat clip array for navigation
+        clipData.teams.forEach((team, teamIdx) => {
+          team.categories.forEach((cat, catIdx) => {
+            cat.clips.forEach((clip, clipIdx) => {
+              allClips.push({
+                teamName: team.name,
+                categoryName: cat.name,
+                start: clip[0],
+                end: clip[1],
+                teamIdx,
+                catIdx,
+                clipIdx,
+                id: `${teamIdx}-${catIdx}-${clipIdx}`
+              });
+            });
+          });
+        });
+      } catch (e) {
+        console.error('Failed to parse clip data:', e);
+      }
+    } else if (legacyStart && legacyEnd) {
+      // Legacy single clip mode
+      allClips = [{
+        teamName: 'Clip',
+        categoryName: 'Video',
+        start: legacyStart,
+        end: legacyEnd,
+        id: '0-0-0'
+      }];
+    }
 
     // Main content element
     const mainContent = document.getElementById('main-content');
     const statusOverlay = document.getElementById('status-overlay');
 
-    // Validate parameters
-    if (!videoId || !startTime || !endTime || endTime <= startTime) {
+    // Validate
+    if (!videoId || allClips.length === 0) {
       mainContent.innerHTML = `
         <div class="error-container">
           <div class="error-icon">❌</div>
           <div class="error-title">Link Tidak Valid</div>
           <div class="error-text">Parameter video tidak lengkap atau tidak valid.</div>
-          <a href="https://courtvision.id" class="btn btn-primary">Ke Homepage</a>
+          <a href="https://courtvision.id" class="btn btn-primary" style="text-decoration:none;">Ke Homepage</a>
         </div>
       `;
     } else {
-      // Render player
+      renderPlayer();
+    }
+
+    function renderPlayer() {
+      const currentClip = allClips[currentClipIndex];
+      const duration = currentClip.end - currentClip.start;
+      const totalClips = allClips.length;
+      const watchedCount = watchedClips.size;
+
       mainContent.innerHTML = `
-        <div class="video-container">
-          <div id="player"></div>
-        </div>
-        
-        <div class="clip-info">
-          <div class="time-display">
-            <div class="time-box start">
-              <div class="time-label">Mulai</div>
-              <div class="time-value">${formatTime(startTime)}</div>
-            </div>
-            <div class="time-arrow">→</div>
-            <div class="time-box end">
-              <div class="time-label">Stop</div>
-              <div class="time-value">${formatTime(endTime)}</div>
-            </div>
-            <div class="duration-badge">${duration}s</div>
+        <div class="video-section">
+          <div class="video-container">
+            <div id="player"></div>
           </div>
           
-          <div class="progress-container">
-            <div class="progress-bar">
-              <div class="progress-fill" id="progress-fill"></div>
+          <div class="clip-info">
+            ${clipData ? `<div class="game-title">${clipData.title || 'Game Analysis'}</div>` : ''}
+            <div class="time-display">
+              <div class="time-box start">
+                <div class="time-label">Mulai</div>
+                <div class="time-value">${formatTime(currentClip.start)}</div>
+              </div>
+              <div class="time-arrow">→</div>
+              <div class="time-box end">
+                <div class="time-label">Stop</div>
+                <div class="time-value">${formatTime(currentClip.end)}</div>
+              </div>
+              <div class="duration-badge">${duration}s</div>
+              <div class="current-category">${currentClip.categoryName}</div>
             </div>
-            <div class="progress-text" id="progress-text">0:00 / ${formatTime(duration)}</div>
+            
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+              </div>
+              <div class="progress-text" id="progress-text">0:00 / ${formatTime(duration)}</div>
+            </div>
+          </div>
+          
+          <div class="nav-controls">
+            <button class="btn btn-secondary btn-nav" id="btn-prev" ${currentClipIndex === 0 ? 'disabled' : ''}>
+              ◀
+            </button>
+            <button class="btn btn-primary" id="btn-replay">
+              🔄 Replay
+            </button>
+            <button class="btn btn-secondary btn-nav" id="btn-next" ${currentClipIndex >= totalClips - 1 ? 'disabled' : ''}>
+              ▶
+            </button>
+          </div>
+          
+          <div class="auto-next-toggle">
+            <span>Auto Next</span>
+            <div class="toggle-switch ${autoNext ? 'active' : ''}" id="toggle-auto"></div>
           </div>
         </div>
         
-        <div class="controls">
-          <button class="btn btn-primary" id="btn-replay" style="display:none;">
-            🔄 Replay
-          </button>
-          <button class="btn btn-secondary" id="btn-youtube">
-            ▶ Buka di YouTube
-          </button>
+        ${totalClips > 1 ? `
+          <div class="summary-bar">
+            <div class="summary-item">
+              <span class="summary-value">${currentClipIndex + 1}</span>/<span>${totalClips}</span> clips
+            </div>
+            <div class="summary-item">
+              <span class="summary-value">${watchedCount}</span> watched
+            </div>
+          </div>
+        ` : ''}
+        
+        <div class="clip-list-section" id="clip-list">
+          ${renderClipList()}
+        </div>
+        
+        <div class="footer">
+          <a href="https://courtvision.id">courtvision.id</a>
         </div>
       `;
 
-      // Load YouTube IFrame API
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      // Setup event listeners
+      document.getElementById('btn-prev').onclick = () => navigateClip(-1);
+      document.getElementById('btn-next').onclick = () => navigateClip(1);
+      document.getElementById('btn-replay').onclick = replayClip;
+      document.getElementById('toggle-auto').onclick = toggleAutoNext;
 
-      let player;
-      let checkInterval;
-      let clipEnded = false;
-
-      // YouTube API ready callback
-      window.onYouTubeIframeAPIReady = function() {
-        player = new YT.Player('player', {
-          videoId: videoId,
-          playerVars: {
-            start: startTime,
-            autoplay: 1,
-            playsinline: 1,
-            rel: 0,
-            modestbranding: 1,
-            controls: 1
-          },
-          events: {
-            onReady: onPlayerReady,
-            onStateChange: onPlayerStateChange
+      // Setup clip item clicks
+      document.querySelectorAll('.clip-item').forEach(item => {
+        item.onclick = () => {
+          const idx = parseInt(item.dataset.index);
+          if (idx !== currentClipIndex) {
+            currentClipIndex = idx;
+            loadClip();
           }
-        });
-      };
+        };
+      });
 
-      function onPlayerReady(event) {
-        // Start checking time
+      // Load YouTube player
+      loadYouTubePlayer();
+    }
+
+    function renderClipList() {
+      if (!clipData || allClips.length <= 1) {
+        return '';
+      }
+
+      let html = '';
+      
+      clipData.teams.forEach((team, teamIdx) => {
+        html += `<div class="team-section">`;
+        html += `<div class="team-header">${team.name}</div>`;
+        
+        team.categories.forEach((cat, catIdx) => {
+          const catClipCount = cat.clips.length;
+          html += `<div class="category-section">`;
+          html += `<div class="category-header">
+            <span>${cat.name}</span>
+            <span class="category-count">${catClipCount}</span>
+          </div>`;
+          
+          cat.clips.forEach((clip, clipIdx) => {
+            const clipId = `${teamIdx}-${catIdx}-${clipIdx}`;
+            const flatIdx = allClips.findIndex(c => c.id === clipId);
+            const isActive = flatIdx === currentClipIndex;
+            const isWatched = watchedClips.has(clipId);
+            const dur = clip[1] - clip[0];
+            
+            html += `
+              <div class="clip-item ${isActive ? 'active' : ''} ${isWatched ? 'watched' : ''}" 
+                   data-index="${flatIdx}">
+                <div class="clip-status">${isWatched ? '✓' : flatIdx + 1}</div>
+                <div class="clip-time">${formatTime(clip[0])} → ${formatTime(clip[1])}</div>
+                <div class="clip-duration">${dur}s</div>
+              </div>
+            `;
+          });
+          
+          html += `</div>`;
+        });
+        
+        html += `</div>`;
+      });
+      
+      return html;
+    }
+
+    let player;
+    let checkInterval;
+    let clipEnded = false;
+
+    function loadYouTubePlayer() {
+      // Load YouTube IFrame API if not already loaded
+      if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        
+        window.onYouTubeIframeAPIReady = createPlayer;
+      } else {
+        createPlayer();
+      }
+    }
+
+    function createPlayer() {
+      const currentClip = allClips[currentClipIndex];
+      
+      if (player && typeof player.destroy === 'function') {
+        player.destroy();
+      }
+      
+      player = new YT.Player('player', {
+        videoId: videoId,
+        playerVars: {
+          start: currentClip.start,
+          autoplay: 1,
+          playsinline: 1,
+          rel: 0,
+          modestbranding: 1,
+          controls: 1
+        },
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      clipEnded = false;
+      startTimeCheck();
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.PLAYING && !clipEnded) {
         startTimeCheck();
       }
+    }
 
-      function onPlayerStateChange(event) {
-        if (event.data === YT.PlayerState.PLAYING && !clipEnded) {
-          startTimeCheck();
-        }
-      }
-
-      function startTimeCheck() {
-        // Clear any existing interval
-        if (checkInterval) clearInterval(checkInterval);
+    function startTimeCheck() {
+      const currentClip = allClips[currentClipIndex];
+      const duration = currentClip.end - currentClip.start;
+      
+      if (checkInterval) clearInterval(checkInterval);
+      
+      checkInterval = setInterval(() => {
+        if (!player || typeof player.getCurrentTime !== 'function') return;
         
-        checkInterval = setInterval(() => {
-          if (!player || typeof player.getCurrentTime !== 'function') return;
+        const currentTime = player.getCurrentTime();
+        const elapsed = currentTime - currentClip.start;
+        const progress = Math.min(Math.max((elapsed / duration) * 100, 0), 100);
+        
+        // Update progress bar
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        
+        if (progressFill) {
+          progressFill.style.width = progress + '%';
+        }
+        if (progressText) {
+          progressText.textContent = formatTime(Math.max(0, elapsed)) + ' / ' + formatTime(duration);
+        }
+        
+        // Check if reached end time
+        if (currentTime >= currentClip.end && !clipEnded) {
+          clipEnded = true;
+          player.pauseVideo();
+          clearInterval(checkInterval);
           
-          const currentTime = player.getCurrentTime();
-          const elapsed = currentTime - startTime;
-          const progress = Math.min((elapsed / duration) * 100, 100);
+          // Mark as watched
+          watchedClips.add(currentClip.id);
           
-          // Update progress bar
-          const progressFill = document.getElementById('progress-fill');
-          const progressText = document.getElementById('progress-text');
+          // Show status overlay
+          const hasNext = currentClipIndex < allClips.length - 1;
           
-          if (progressFill) {
-            progressFill.style.width = progress + '%';
+          if (autoNext && hasNext) {
+            document.getElementById('status-icon').textContent = '✅';
+            document.getElementById('status-text').textContent = 'Clip Selesai';
+            document.getElementById('status-subtext').textContent = 'Melanjutkan ke clip berikutnya...';
+          } else if (hasNext) {
+            document.getElementById('status-icon').textContent = '⏹';
+            document.getElementById('status-text').textContent = 'Clip Selesai';
+            document.getElementById('status-subtext').textContent = 'Tap ▶ untuk clip berikutnya';
+          } else {
+            document.getElementById('status-icon').textContent = '🏀';
+            document.getElementById('status-text').textContent = 'Semua Clip Selesai!';
+            document.getElementById('status-subtext').textContent = 'Great job!';
           }
-          if (progressText) {
-            progressText.textContent = formatTime(Math.max(0, elapsed)) + ' / ' + formatTime(duration);
-          }
           
-          // Check if reached end time
-          if (currentTime >= endTime && !clipEnded) {
-            clipEnded = true;
-            player.pauseVideo();
-            clearInterval(checkInterval);
-            
-            // Show status overlay
-            statusOverlay.classList.add('show');
-            
-            // Show replay button
-            document.getElementById('btn-replay').style.display = 'flex';
-            
-            // Hide overlay after 2 seconds
+          statusOverlay.classList.add('show');
+          
+          // Auto-next
+          if (autoNext && hasNext) {
             setTimeout(() => {
               statusOverlay.classList.remove('show');
+              navigateClip(1);
+            }, 1500);
+          } else {
+            setTimeout(() => {
+              statusOverlay.classList.remove('show');
+              updateClipList();
             }, 2000);
           }
-        }, 200);
+        }
+      }, 200);
+    }
+
+    function navigateClip(direction) {
+      const newIndex = currentClipIndex + direction;
+      if (newIndex >= 0 && newIndex < allClips.length) {
+        currentClipIndex = newIndex;
+        loadClip();
       }
+    }
 
-      // Replay button
-      document.getElementById('btn-replay').onclick = function() {
-        clipEnded = false;
-        player.seekTo(startTime, true);
+    function loadClip() {
+      clipEnded = false;
+      if (checkInterval) clearInterval(checkInterval);
+      
+      const currentClip = allClips[currentClipIndex];
+      
+      // Update UI
+      updateClipInfo();
+      updateClipList();
+      
+      // Seek to new clip
+      if (player && typeof player.seekTo === 'function') {
+        player.seekTo(currentClip.start, true);
         player.playVideo();
-        statusOverlay.classList.remove('show');
         startTimeCheck();
-      };
+      }
+      
+      // Scroll to active clip in list
+      const activeItem = document.querySelector('.clip-item.active');
+      if (activeItem) {
+        activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
 
-      // Open in YouTube button
-      document.getElementById('btn-youtube').onclick = function() {
-        window.open(`https://www.youtube.com/watch?v=${videoId}&t=${startTime}s`, '_blank');
-      };
+    function updateClipInfo() {
+      const currentClip = allClips[currentClipIndex];
+      const duration = currentClip.end - currentClip.start;
+      
+      // Update time display
+      const clipInfo = document.querySelector('.clip-info');
+      if (clipInfo) {
+        clipInfo.querySelector('.start .time-value').textContent = formatTime(currentClip.start);
+        clipInfo.querySelector('.end .time-value').textContent = formatTime(currentClip.end);
+        clipInfo.querySelector('.duration-badge').textContent = duration + 's';
+        clipInfo.querySelector('.current-category').textContent = currentClip.categoryName;
+        
+        const progressText = clipInfo.querySelector('#progress-text');
+        if (progressText) {
+          progressText.textContent = '0:00 / ' + formatTime(duration);
+        }
+        
+        const progressFill = document.getElementById('progress-fill');
+        if (progressFill) {
+          progressFill.style.width = '0%';
+        }
+      }
+      
+      // Update nav buttons
+      document.getElementById('btn-prev').disabled = currentClipIndex === 0;
+      document.getElementById('btn-next').disabled = currentClipIndex >= allClips.length - 1;
+      
+      // Update summary
+      const summaryBar = document.querySelector('.summary-bar');
+      if (summaryBar) {
+        summaryBar.innerHTML = `
+          <div class="summary-item">
+            <span class="summary-value">${currentClipIndex + 1}</span>/<span>${allClips.length}</span> clips
+          </div>
+          <div class="summary-item">
+            <span class="summary-value">${watchedClips.size}</span> watched
+          </div>
+        `;
+      }
+    }
+
+    function updateClipList() {
+      const clipListEl = document.getElementById('clip-list');
+      if (clipListEl) {
+        clipListEl.innerHTML = renderClipList();
+        
+        // Re-attach click listeners
+        document.querySelectorAll('.clip-item').forEach(item => {
+          item.onclick = () => {
+            const idx = parseInt(item.dataset.index);
+            if (idx !== currentClipIndex) {
+              currentClipIndex = idx;
+              loadClip();
+            }
+          };
+        });
+      }
+    }
+
+    function replayClip() {
+      const currentClip = allClips[currentClipIndex];
+      clipEnded = false;
+      
+      if (player && typeof player.seekTo === 'function') {
+        player.seekTo(currentClip.start, true);
+        player.playVideo();
+        startTimeCheck();
+      }
+      
+      statusOverlay.classList.remove('show');
+    }
+
+    function toggleAutoNext() {
+      autoNext = !autoNext;
+      const toggle = document.getElementById('toggle-auto');
+      if (toggle) {
+        toggle.classList.toggle('active', autoNext);
+      }
     }
   </script>
 </body>
