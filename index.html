@@ -612,6 +612,21 @@
       transition: all 0.2s;
       text-decoration: none;
       display: block;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .pricing-cta.hidden {
+      display: none;
+    }
+
+    .pricing-cta-yearly {
+      background: linear-gradient(135deg, #10B981, #059669);
+    }
+
+    .pricing-cta-yearly:hover {
+      background: linear-gradient(135deg, #059669, #047857) !important;
+      transform: translateY(-2px);
     }
 
     .pricing-cta:hover {
@@ -1062,28 +1077,28 @@
       <div class="section-header">
         <span class="section-tag" data-en="Pricing" data-id="Harga">Pricing</span>
         <h2 data-en="Simple, Transparent Pricing" data-id="Harga Simple & Transparan">Simple, Transparent Pricing</h2>
-        <p data-en="One plan with everything you need. Start with 3 days free." data-id="Satu paket dengan semua yang kamu butuhkan. Mulai dengan 3 hari gratis.">One plan with everything you need. Start with 3 days free.</p>
+        <p data-en="One plan with everything you need. Start with 7 days free." data-id="Satu paket dengan semua yang kamu butuhkan. Mulai dengan 7 hari gratis.">One plan with everything you need. Start with 7 days free.</p>
       </div>
       
       <div class="pricing-card-single">
-        <div class="pricing-badge" data-en="3 Days Free Trial" data-id="Trial 3 Hari Gratis">3 Days Free Trial</div>
+        <div class="pricing-badge" data-en="7 Days Free Trial" data-id="Trial 7 Hari Gratis">7 Days Free Trial</div>
         
         <h3>CourtVision Pro</h3>
         <p class="tagline" data-en="Full access to all features" data-id="Akses penuh ke semua fitur">Full access to all features</p>
         
         <div class="pricing-toggle">
           <button class="pricing-toggle-btn active" data-plan="monthly" data-en="Monthly" data-id="Bulanan">Monthly</button>
-          <button class="pricing-toggle-btn" data-plan="yearly" data-en="Yearly" data-id="Tahunan">Yearly <span class="save">-20%</span></button>
+          <button class="pricing-toggle-btn" data-plan="yearly" data-en="Yearly" data-id="Tahunan">Yearly <span class="save">-33%</span></button>
         </div>
         
         <div class="price-display">
           <div class="price-monthly">
             <div class="price-amount">$8 <span data-en="/month" data-id="/bulan">/month</span></div>
-            <p class="price-note">~Rp 120.000</p>
+            <p class="price-note">~Rp 130.000</p>
           </div>
           <div class="price-yearly">
             <div class="price-amount">$64 <span data-en="/year" data-id="/tahun">/year</span></div>
-            <p class="price-note" data-en="~Rp 960.000 (Save $32)" data-id="~Rp 960.000 (Hemat $32)">~Rp 960.000 (Save $32)</p>
+            <p class="price-note" data-en="~Rp 1.040.000 (Save 33%)" data-id="~Rp 1.040.000 (Hemat 33%)">~Rp 1.040.000 (Save 33%)</p>
           </div>
         </div>
         
@@ -1092,13 +1107,36 @@
           <li><span class="check">✓</span> <span data-en="Unlimited custom categories" data-id="Kategori custom unlimited">Unlimited custom categories</span></li>
           <li><span class="check">✓</span> <span data-en="Custom team names & colors" data-id="Nama & warna tim custom">Custom team names & colors</span></li>
           <li><span class="check">✓</span> <span data-en="Outcome tracking (Made/Missed)" data-id="Tracking hasil (Berhasil/Gagal)">Outcome tracking (Made/Missed)</span></li>
-          <li><span class="check">✓</span> <span data-en="WhatsApp, JSON, CSV export" data-id="Export WhatsApp, JSON, CSV">WhatsApp, JSON, CSV export</span></li>
+          <li><span class="check">✓</span> <span data-en="WhatsApp, JSON, CSV & XML export" data-id="Export WhatsApp, JSON, CSV & XML">WhatsApp, JSON, CSV & XML export</span></li>
+          <li><span class="check">✓</span> <span data-en="Hudl Sportscode compatible" data-id="Kompatibel dengan Hudl Sportscode">Hudl Sportscode compatible</span></li>
           <li><span class="check">✓</span> <span data-en="Auto-stop clip playback" data-id="Auto-stop playback klip">Auto-stop clip playback</span></li>
           <li><span class="check">✓</span> <span data-en="Priority email support" data-id="Email support prioritas">Priority email support</span></li>
         </ul>
-        
-        <a href="https://chrome.google.com/webstore/detail/oklbkdldkcchgihmadhbgojnamadihig" target="_blank" class="pricing-cta" data-en="Get it on Chrome Web Store" data-id="Download di Chrome Web Store">Get it on Chrome Web Store</a>
-        <p class="pricing-guarantee" data-en="Free to install. Cancel anytime." data-id="Gratis install. Batalkan kapan saja.">Free to install. Cancel anytime.</p>
+
+        <!-- Monthly CTA -->
+        <a href="https://buy.polar.sh/polar_cl_PXQUrbSaI7Igt0uyaRINQxhVbtHv534hFWoJd0G6n54"
+           target="_blank"
+           class="pricing-cta pricing-cta-monthly"
+           id="cta-monthly"
+           data-en="Start 7-Day Free Trial — Monthly"
+           data-id="Mulai Trial 7 Hari — Bulanan">
+          Start 7-Day Free Trial — Monthly
+        </a>
+
+        <!-- Yearly CTA (hidden by default) -->
+        <a href="https://buy.polar.sh/polar_cl_JwHM9741Il0vsxoMgWhKJnRBb3k9lwozlbZiX0hjbJo"
+           target="_blank"
+           class="pricing-cta pricing-cta-yearly hidden"
+           id="cta-yearly"
+           data-en="Start 7-Day Free Trial — Yearly (Save 33%)"
+           data-id="Mulai Trial 7 Hari — Tahunan (Hemat 33%)">
+          Start 7-Day Free Trial — Yearly (Save 33%)
+        </a>
+
+        <p class="pricing-guarantee" data-en="No credit card required for trial. Cancel anytime." data-id="Tidak perlu kartu kredit untuk trial. Batalkan kapan saja.">No credit card required for trial. Cancel anytime.</p>
+        <p class="pricing-powered" style="text-align:center; font-size:11px; color:#94A3B8; margin-top:8px;">
+          Secure payment by <a href="https://polar.sh" target="_blank" style="color:#64748B;">Polar</a>
+        </p>
       </div>
     </div>
   </section>
@@ -1216,6 +1254,8 @@
     const pricingBtns = document.querySelectorAll('.pricing-toggle-btn');
     const priceMonthly = document.querySelector('.price-monthly');
     const priceYearly = document.querySelector('.price-yearly');
+    const ctaMonthly = document.getElementById('cta-monthly');
+    const ctaYearly = document.getElementById('cta-yearly');
 
     pricingBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1225,10 +1265,17 @@
         if (btn.dataset.plan === 'yearly') {
           priceMonthly.classList.add('hidden');
           priceYearly.classList.add('active');
+          if (ctaMonthly) ctaMonthly.classList.add('hidden');
+          if (ctaYearly) ctaYearly.classList.remove('hidden');
         } else {
           priceMonthly.classList.remove('hidden');
           priceYearly.classList.remove('active');
+          if (ctaMonthly) ctaMonthly.classList.remove('hidden');
+          if (ctaYearly) ctaYearly.classList.add('hidden');
         }
+
+        // Re-apply language to new CTA text
+        setLanguage(currentLang);
       });
     });
 
