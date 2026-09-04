@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CourtVision</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="brand">
+        <span class="logo">CV</span>
+        <div class="brand-text">
+          <h1>CourtVision</h1>
+          <span class="pro">PRO</span>
+        </div>
+      </div>
+      <button class="btn-icon" id="btn-refresh" title="Refresh">R</button>
+    </header>
+
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat">
+        <span class="stat-value" id="stat-total">0</span>
+        <span class="stat-label">Total</span>
+      </div>
+      <div class="stat success">
+        <span class="stat-value" id="stat-success">0</span>
+        <span class="stat-label">Made</span>
+      </div>
+      <div class="stat fail">
+        <span class="stat-value" id="stat-fail">0</span>
+        <span class="stat-label">Missed</span>
+      </div>
+    </div>
+
+    <!-- Trial Banner -->
+    <div id="trial-banner" style="display:none; padding: 6px 16px; text-align:center; font-size:11px; font-weight:700; background:#D1FAE5; color:#059669; cursor:pointer;" onclick="document.querySelector('[data-tab=license]').click()">
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="clips">All Clips</button>
+      <button class="tab" data-tab="export">Export</button>
+      <button class="tab" data-tab="license">License</button>
+    </div>
+
+    <div class="tab-content active" id="tab-clips">
+      <div class="filter-bar">
+        <select id="filter-video" class="filter-select">
+          <option value="all">All Videos</option>
+        </select>
+        <select id="filter-team" class="filter-select">
+          <option value="all">All Teams</option>
+        </select>
+      </div>
+
+      <div class="clips-container" id="clips-container">
+        <div class="empty-state" id="empty-state">
+          <p>No clips yet</p>
+          <small>Open YouTube and start tagging</small>
+        </div>
+        <div class="clips-list" id="clips-list"></div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-export">
+      <div class="export-section">
+        <button class="export-btn primary" id="btn-copy-wa">
+          Copy for WhatsApp
+        </button>
+        <div class="export-row">
+          <button class="export-btn" id="btn-export-json">JSON</button>
+          <button class="export-btn" id="btn-export-csv">CSV</button>
+          <button class="export-btn" id="btn-export-xml">XML</button>
+        </div>
+        <button class="export-btn danger" id="btn-clear-all">
+          Delete All Clips
+        </button>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-license">
+      <div class="license-section">
+        <div class="license-status" id="license-status">
+          <span class="license-icon">🎁</span>
+          <span class="license-text">Free Trial</span>
+        </div>
+
+        <div class="license-input-group">
+          <label for="license-key">Have a license key?</label>
+          <input type="text" id="license-key" placeholder="Paste license key from Polar email" maxlength="50">
+          <button class="license-btn" id="btn-activate">Activate</button>
+        </div>
+
+        <div class="license-info" id="license-info"></div>
+
+        <div class="license-features">
+          <p class="features-title">Pro Features:</p>
+          <ul>
+            <li>✓ WhatsApp Export</li>
+            <li>✓ CSV, JSON & XML Export</li>
+            <li>✓ Unlimited Clips</li>
+            <li>✓ Hudl Sportscode Compatible</li>
+            <li>✓ Priority Support</li>
+          </ul>
+        </div>
+
+        <div class="upgrade-options" id="btn-upgrade">
+          <p class="upgrade-title">Choose your plan:</p>
+          <a href="https://buy.polar.sh/polar_cl_PXQUrbSaI7Igt0uyaRINQxhVbtHv534hFWoJd0G6n54"
+             target="_blank" class="upgrade-btn monthly">
+            <span class="plan-name">Pro Monthly</span>
+            <span class="plan-price">$8 / month</span>
+            <span class="plan-trial">7-day free trial</span>
+          </a>
+          <a href="https://buy.polar.sh/polar_cl_JwHM9741Il0vsxoMgWhKJnRBb3k9lwozlbZiX0hjbJo"
+             target="_blank" class="upgrade-btn yearly">
+            <span class="plan-name">Pro Yearly</span>
+            <span class="plan-price">$64 / year</span>
+            <span class="plan-save">Save 33%</span>
+          </a>
+          <p class="upgrade-note">Cancel anytime · Secure payment by Polar</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <span>v3.2.2</span>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
