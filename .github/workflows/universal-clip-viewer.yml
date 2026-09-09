@@ -1,0 +1,32 @@
+name: Universal Clip Viewer
+
+on:
+  pull_request:
+    paths:
+      - clip.html
+      - viewer-core.js
+      - viewer-core.test.js
+      - .github/workflows/universal-clip-viewer.yml
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Compatibility tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check viewer core syntax
+        run: node --check viewer-core.js
+
+      - name: Run compatibility tests
+        run: node --test viewer-core.test.js
