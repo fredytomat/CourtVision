@@ -99,9 +99,10 @@
     <div class="status-text" id="status-text">Clip Selesai</div>
     <div class="status-subtext" id="status-subtext">Melanjutkan ke clip berikutnya...</div>
   </div>
+  <script src="viewer-core.js"></script>
   <script>
     const params = new URLSearchParams(window.location.search);
-    const videoId = params.get('v');
+    let videoId = params.get('v');
     const dataParam = params.get('d');
     const legacyStart = parseInt(params.get('start')) || 0;
     const legacyEnd = parseInt(params.get('end')) || 0;
@@ -112,15 +113,44 @@
       return m + ':' + String(s).padStart(2, '0');
     }
 
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function groupForLegacyViewer(parsed) {
+      const teams = [];
+      parsed.clips.forEach(clip => {
+        let team = teams.find(item => item.name === clip.teamName);
+        if (!team) {
+          team = { name: clip.teamName, categories: [] };
+          teams.push(team);
+        }
+        let category = team.categories.find(item => item.name === clip.categoryName);
+        if (!category) {
+          category = { name: clip.categoryName, clips: [] };
+          team.categories.push(category);
+        }
+        category.clips.push([clip.start, clip.end, clip.notes, clip.pinned ? 1 : 0]);
+      });
+      return { title: parsed.title, teams };
+    }
+
     let clipData = null;
     let allClips = [];
     let currentClipIndex = 0;
     let autoNext = true;
     let watchedClips = new Set();
 
-    if (dataParam) {
+    if (dataParam || (legacyStart && legacyEnd)) {
       try {
-        clipData = JSON.parse(atob(dataParam));
+        const parsed = CourtVisionViewer.parseShareUrl(window.location.search);
+        videoId = parsed.videoId;
+        clipData = groupForLegacyViewer(parsed);
         clipData.teams.forEach((team, teamIdx) => {
           team.categories.forEach((cat, catIdx) => {
             // Sort: pinned first within category
@@ -140,8 +170,6 @@
           });
         });
       } catch (e) { console.error('Failed to parse clip data:', e); }
-    } else if (legacyStart && legacyEnd) {
-      allClips = [{ teamName: 'Clip', categoryName: 'Video', start: legacyStart, end: legacyEnd, notes: '', pinned: false, id: '0-0-0' }];
     }
 
     const mainContent = document.getElementById('main-content');
@@ -163,13 +191,13 @@
         <div class="video-section">
           <div class="video-container"><div id="player"></div></div>
           <div class="clip-info">
-            ${clipData ? `<div class="game-title">${clipData.title || 'Game Analysis'}</div>` : ''}
+            ${clipData ? `<div class="game-title">${escapeHtml(clipData.title || 'Game Analysis')}</div>` : ''}
             <div class="time-display">
               <div class="time-box start"><div class="time-label">Mulai</div><div class="time-value">${formatTime(currentClip.start)}</div></div>
               <div class="time-arrow">→</div>
               <div class="time-box end"><div class="time-label">Stop</div><div class="time-value">${formatTime(currentClip.end)}</div></div>
               <div class="duration-badge">${duration}s</div>
-              <div class="current-category">${currentClip.categoryName}</div>
+              <div class="current-category">${escapeHtml(currentClip.categoryName)}</div>
             </div>
             <div class="progress-container">
               <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
@@ -205,11 +233,11 @@
       if (!clipData || allClips.length <= 1) return '';
       let html = '';
       clipData.teams.forEach((team, teamIdx) => {
-        html += `<div class="team-section"><div class="team-header">${team.name}</div>`;
+        html += `<div class="team-section"><div class="team-header">${escapeHtml(team.name)}</div>`;
         team.categories.forEach((cat, catIdx) => {
           // Sort pinned first
           const sortedClips = [...cat.clips].sort((a, b) => (b[3] || 0) - (a[3] || 0));
-          html += `<div class="category-section"><div class="category-header"><span>${cat.name}</span><span class="category-count">${cat.clips.length}</span></div>`;
+          html += `<div class="category-section"><div class="category-header"><span>${escapeHtml(cat.name)}</span><span class="category-count">${cat.clips.length}</span></div>`;
           sortedClips.forEach((clip, clipIdx) => {
             const isPinned = clip[3] === 1;
             const notes = clip[2] || '';
@@ -227,7 +255,7 @@
                     <span class="clip-time">${formatTime(clip[0])} → ${formatTime(clip[1])}</span>
                     <span class="clip-duration">${dur}s</span>
                   </div>
-                  ${notes ? `<div class="clip-notes-text">${notes}</div>` : ''}
+                  ${notes ? `<div class="clip-notes-text">${escapeHtml(notes)}</div>` : ''}
                 </div>
               </div>`;
           });
