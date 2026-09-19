@@ -285,7 +285,8 @@
     const fragment = new URLSearchParams((hash || '').replace(/^#/, ''));
     const rawSearch = (search || '').replace(/^\?/, '');
     const queryVideoId = safeText(params.get('v'), '');
-    const data = rawSearch.startsWith('cv2.') ? rawSearch.slice(4) : fragment.get('cv2') || params.get('d');
+    const opaqueData = /^[A-Za-z0-9_-]+$/.test(rawSearch) ? rawSearch : '';
+    const data = opaqueData || (rawSearch.startsWith('cv2.') ? rawSearch.slice(4) : fragment.get('cv2') || params.get('d'));
     let normalized;
 
     if (data) {
@@ -315,9 +316,11 @@
     const params = new URLSearchParams(window.location.search);
     const rawSearch = window.location.search.replace(/^\?/, '');
     let videoId = params.get('v');
-    const dataParam = rawSearch.startsWith('cv2.')
-      ? rawSearch.slice(4)
-      : new URLSearchParams(window.location.hash.replace(/^#/, '')).get('cv2') || params.get('d');
+    const dataParam = /^[A-Za-z0-9_-]+$/.test(rawSearch)
+      ? rawSearch
+      : rawSearch.startsWith('cv2.')
+        ? rawSearch.slice(4)
+        : new URLSearchParams(window.location.hash.replace(/^#/, '')).get('cv2') || params.get('d');
     const legacyStart = parseInt(params.get('start')) || 0;
     const legacyEnd = parseInt(params.get('end')) || 0;
 
