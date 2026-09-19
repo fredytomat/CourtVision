@@ -127,13 +127,14 @@
     };
   }
 
-  function parseShareUrl(search, hash) {
+  function parseShareUrl(search, hash, pathname) {
     const params = new URLSearchParams(search || '');
     const fragment = new URLSearchParams((hash || '').replace(/^#/, ''));
     const rawSearch = (search || '').replace(/^\?/, '');
+    const pathMatch = (pathname || '').match(/^\/c\/([A-Za-z0-9_-]+)\/?$/);
     const queryVideoId = safeText(params.get('v'), '');
     const opaqueData = /^[A-Za-z0-9_-]+$/.test(rawSearch) ? rawSearch : '';
-    const data = opaqueData || (rawSearch.startsWith('cv2.') ? rawSearch.slice(4) : fragment.get('cv2') || params.get('d'));
+    const data = (pathMatch && pathMatch[1]) || opaqueData || (rawSearch.startsWith('cv2.') ? rawSearch.slice(4) : fragment.get('cv2') || params.get('d'));
     let normalized;
 
     if (data) {
