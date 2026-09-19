@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CourtVision Clip</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231E3A5F' rx='20' width='100' height='100'/><text x='50' y='62' text-anchor='middle' fill='white' font-family='Arial Black' font-size='36'>CV</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23111813' rx='20' width='100' height='100'/><text x='50' y='62' text-anchor='middle' fill='%23C9DF57' font-family='Arial Black' font-size='36'>CV</text></svg>">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0F172A; color: white; min-height: 100vh; display: flex; flex-direction: column; }
@@ -76,7 +76,6 @@
     .footer { background: #1E3A5F; padding: 10px; text-align: center; }
     .footer a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 11px; }
     .error-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; }
-    .error-container > .btn { flex: none; min-height: 44px; }
     .error-icon { font-size: 64px; margin-bottom: 16px; }
     .error-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
     .error-text { color: #94A3B8; margin-bottom: 24px; }
@@ -84,6 +83,56 @@
     .summary-item { display: flex; align-items: center; gap: 4px; }
     .summary-value { font-weight: 700; color: #E2E8F0; }
     @media (min-width: 768px) { .main { max-width: 600px; margin: 0 auto; width: 100%; } }
+
+    /* CourtVision Mobile dark theme */
+    :root {
+      --cv-bg: #111813;
+      --cv-surface: #1D2820;
+      --cv-surface-2: #2B382E;
+      --cv-border: #354238;
+      --cv-text: #F4F6EE;
+      --cv-muted: #87958B;
+      --cv-lime: #C9DF57;
+      --cv-lime-dark: #AFC63F;
+      --cv-success: #5CBC82;
+      --cv-danger: #E07265;
+      --cv-warning: #E2A85F;
+    }
+    body { background: var(--cv-bg); color: var(--cv-text); }
+    .header { background: rgba(17,24,19,.96); border-bottom: 1px solid var(--cv-border); backdrop-filter: blur(14px); }
+    .logo { color: var(--cv-text); }
+    .logo-icon { background: var(--cv-surface-2); color: var(--cv-lime); border: 1px solid var(--cv-border); }
+    .clip-badge { background: var(--cv-lime); color: #16211B; }
+    .video-section { background: var(--cv-bg); }
+    .video-container { background: #0B100D; }
+    .clip-info, .nav-controls, .auto-next-toggle { background: var(--cv-surface); border-color: var(--cv-border); }
+    .game-title, .clip-time, .summary-value { color: var(--cv-text); }
+    .time-box, .btn-secondary, .progress-bar, .toggle-switch, .category-count, .clip-status { background: var(--cv-surface-2); }
+    .time-label, .time-arrow, .progress-text, .auto-next-toggle, .clip-duration, .clip-notes-text, .error-text, .summary-bar { color: var(--cv-muted); }
+    .time-box.start .time-value { color: var(--cv-success); }
+    .time-box.end .time-value { color: var(--cv-danger); }
+    .duration-badge, .team-header { background: var(--cv-surface-2); color: var(--cv-text); border: 1px solid var(--cv-border); }
+    .current-category, .btn-primary, .progress-fill, .toggle-switch.active, .clip-item.active .clip-status { background: var(--cv-lime); color: #16211B; }
+    .btn-primary:hover { background: var(--cv-lime-dark); }
+    .btn-primary:disabled, .btn-secondary:disabled { background: var(--cv-surface-2); color: #647168; }
+    .btn-secondary { color: var(--cv-text); border: 1px solid var(--cv-border); }
+    .btn-secondary:hover { background: var(--cv-border); }
+    .clip-list-section { background: var(--cv-bg); }
+    .category-header, .clip-item, .summary-bar { background: var(--cv-surface); border-color: var(--cv-border); }
+    .category-header { color: var(--cv-muted); }
+    .clip-item:hover { background: var(--cv-surface-2); }
+    .clip-item.active { background: #263322; border-color: var(--cv-lime); }
+    .clip-item.active .clip-time, .clip-item.active .clip-notes-text { color: var(--cv-text); }
+    .clip-item.watched .clip-status { background: var(--cv-success); color: #102017; }
+    .clip-item.pinned-clip { border-left-color: var(--cv-warning); }
+    .pin-badge { background: var(--cv-warning); color: #23180C; }
+    .status-overlay { background: rgba(11,16,13,.96); border: 1px solid var(--cv-border); }
+    .footer { background: var(--cv-bg); border-top: 1px solid var(--cv-border); }
+    .footer a { color: var(--cv-lime); }
+    @media (min-width: 768px) {
+      body { background: radial-gradient(circle at top, #1D2820 0, var(--cv-bg) 52%); }
+      .main { margin: 24px auto 36px; border: 1px solid var(--cv-border); border-radius: 18px; overflow: hidden; box-shadow: 0 18px 60px rgba(0,0,0,.28); }
+    }
   </style>
 </head>
 <body>
@@ -122,8 +171,7 @@
     let normalized = value.replace(/\s/g, '+').replace(/-/g, '+').replace(/_/g, '/');
     normalized += '='.repeat((4 - (normalized.length % 4)) % 4);
     const binary = atob(normalized);
-    const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
-    return new TextDecoder().decode(bytes);
+    return decodeURIComponent(Array.from(binary, char => '%' + char.charCodeAt(0).toString(16).padStart(2, '0')).join(''));
   }
 
   function finiteNumber(value) {
@@ -175,12 +223,29 @@
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
       throw new Error('Format data clip tidak dikenal.');
     }
-    if (payload.version !== undefined && payload.version !== 2) {
+    const payloadVersion = payload.version ?? payload.v;
+    if (payloadVersion !== undefined && payloadVersion !== 2) {
       throw new Error('Versi link CourtVision tidak didukung.');
     }
 
     const clips = [];
-    if (Array.isArray(payload.teams)) {
+    if (Array.isArray(payload.c)) {
+      payload.c.forEach(raw => {
+        if (!Array.isArray(raw)) return;
+        const clip = normalizeClip({
+          tagTime: raw[2],
+          startTime: raw[3],
+          endTime: raw[4],
+          notes: raw[5],
+          pinned: raw[6],
+          outcome: raw[7]
+        }, {
+          teamName: raw[0],
+          categoryName: raw[1]
+        });
+        if (clip) clips.push(clip);
+      });
+    } else if (Array.isArray(payload.teams)) {
       payload.teams.forEach(team => {
         if (!team || !Array.isArray(team.categories)) return;
         team.categories.forEach(category => {
@@ -208,17 +273,19 @@
     if (clips.length > MAX_CLIPS) throw new Error('Jumlah clip melebihi batas.');
 
     return {
-      version: payload.version === 2 ? 2 : 1,
-      title: safeText(payload.title, 'Game Analysis'),
-      videoId: safeText(payload.videoId, ''),
+      version: payloadVersion === 2 ? 2 : 1,
+      title: safeText(payload.title ?? payload.t, 'Game Analysis'),
+      videoId: safeText(payload.videoId ?? payload.y, ''),
       clips
     };
   }
 
-  function parseShareUrl(search) {
+  function parseShareUrl(search, hash) {
     const params = new URLSearchParams(search || '');
+    const fragment = new URLSearchParams((hash || '').replace(/^#/, ''));
+    const rawSearch = (search || '').replace(/^\?/, '');
     const queryVideoId = safeText(params.get('v'), '');
-    const data = params.get('d');
+    const data = rawSearch.startsWith('cv2.') ? rawSearch.slice(4) : fragment.get('cv2') || params.get('d');
     let normalized;
 
     if (data) {
@@ -244,11 +311,13 @@
   return { decodeBase64Utf8, normalizePayload, parseShareUrl };
 });
   </script>
-  
   <script>
     const params = new URLSearchParams(window.location.search);
+    const rawSearch = window.location.search.replace(/^\?/, '');
     let videoId = params.get('v');
-    const dataParam = params.get('d');
+    const dataParam = rawSearch.startsWith('cv2.')
+      ? rawSearch.slice(4)
+      : new URLSearchParams(window.location.hash.replace(/^#/, '')).get('cv2') || params.get('d');
     const legacyStart = parseInt(params.get('start')) || 0;
     const legacyEnd = parseInt(params.get('end')) || 0;
 
@@ -291,9 +360,9 @@
     let autoNext = true;
     let watchedClips = new Set();
 
-    if (dataParam || (params.has('start') && params.has('end'))) {
+    if (dataParam || (legacyStart && legacyEnd)) {
       try {
-        const parsed = CourtVisionViewer.parseShareUrl(window.location.search);
+        const parsed = CourtVisionViewer.parseShareUrl(window.location.search, window.location.hash);
         videoId = parsed.videoId;
         clipData = groupForLegacyViewer(parsed);
         clipData.teams.forEach((team, teamIdx) => {
