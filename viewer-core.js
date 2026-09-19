@@ -132,7 +132,8 @@
     const fragment = new URLSearchParams((hash || '').replace(/^#/, ''));
     const rawSearch = (search || '').replace(/^\?/, '');
     const queryVideoId = safeText(params.get('v'), '');
-    const data = rawSearch.startsWith('cv2.') ? rawSearch.slice(4) : fragment.get('cv2') || params.get('d');
+    const opaqueData = /^[A-Za-z0-9_-]+$/.test(rawSearch) ? rawSearch : '';
+    const data = opaqueData || (rawSearch.startsWith('cv2.') ? rawSearch.slice(4) : fragment.get('cv2') || params.get('d'));
     let normalized;
 
     if (data) {
