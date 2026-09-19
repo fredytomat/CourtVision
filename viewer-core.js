@@ -12,11 +12,13 @@
     if (typeof value !== 'string' || !value || value.length > MAX_DATA_LENGTH) {
       throw new Error('Data clip kosong atau terlalu besar.');
     }
-    let normalized = value.replace(/-/g, '+').replace(/_/g, '/');
+    // URLSearchParams decodes a literal "+" as a space. Older CourtVision
+    // share links used standard Base64, so restore those spaces before
+    // normalizing newer Base64URL links.
+    let normalized = value.replace(/\s/g, '+').replace(/-/g, '+').replace(/_/g, '/');
     normalized += '='.repeat((4 - (normalized.length % 4)) % 4);
     const binary = atob(normalized);
-    const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
-    return new TextDecoder().decode(bytes);
+    return decodeURIComponent(Array.from(binary, char => '%' + char.charCodeAt(0).toString(16).padStart(2, '0')).join(''));
   }
 
   function finiteNumber(value) {
@@ -34,18 +36,21 @@
     let notes = '';
     let pinned = false;
     let tagTime = null;
+    let outcome = null;
 
     if (Array.isArray(raw)) {
       start = finiteNumber(raw[0]);
       end = finiteNumber(raw[1]);
       notes = safeText(raw[2], '');
       pinned = raw[3] === 1 || raw[3] === true;
+      outcome = raw[4] === 'success' || raw[4] === 'fail' ? raw[4] : null;
     } else if (raw && typeof raw === 'object') {
       start = finiteNumber(raw.startTime ?? raw.start);
       end = finiteNumber(raw.endTime ?? raw.end);
       tagTime = finiteNumber(raw.tagTime);
       notes = safeText(raw.notes, '');
       pinned = raw.pinned === true || raw.pinned === 1;
+      outcome = raw.outcome === 'success' || raw.outcome === 'fail' ? raw.outcome : null;
     }
 
     if (start === null || end === null || start < 0 || end <= start) return null;
@@ -56,7 +61,8 @@
       end: Math.ceil(end),
       tagTime,
       notes,
-      pinned
+      pinned,
+      outcome
     };
   }
 
@@ -64,9 +70,29 @@
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
       throw new Error('Format data clip tidak dikenal.');
     }
+    const payloadVersion = payload.version ?? payload.v;
+    if (payloadVersion !== undefined && payloadVersion !== 2) {
+      throw new Error('Versi link CourtVision tidak didukung.');
+    }
 
     const clips = [];
-    if (Array.isArray(payload.teams)) {
+    if (Array.isArray(payload.c)) {
+      payload.c.forEach(raw => {
+        if (!Array.isArray(raw)) return;
+        const clip = normalizeClip({
+          tagTime: raw[2],
+          startTime: raw[3],
+          endTime: raw[4],
+          notes: raw[5],
+          pinned: raw[6],
+          outcome: raw[7]
+        }, {
+          teamName: raw[0],
+          categoryName: raw[1]
+        });
+        if (clip) clips.push(clip);
+      });
+    } else if (Array.isArray(payload.teams)) {
       payload.teams.forEach(team => {
         if (!team || !Array.isArray(team.categories)) return;
         team.categories.forEach(category => {
@@ -94,16 +120,19 @@
     if (clips.length > MAX_CLIPS) throw new Error('Jumlah clip melebihi batas.');
 
     return {
-      title: safeText(payload.title, 'Game Analysis'),
-      videoId: safeText(payload.videoId, ''),
+      version: payloadVersion === 2 ? 2 : 1,
+      title: safeText(payload.title ?? payload.t, 'Game Analysis'),
+      videoId: safeText(payload.videoId ?? payload.y, ''),
       clips
     };
   }
 
-  function parseShareUrl(search) {
+  function parseShareUrl(search, hash) {
     const params = new URLSearchParams(search || '');
+    const fragment = new URLSearchParams((hash || '').replace(/^#/, ''));
+    const rawSearch = (search || '').replace(/^\?/, '');
     const queryVideoId = safeText(params.get('v'), '');
-    const data = params.get('d');
+    const data = rawSearch.startsWith('cv2.') ? rawSearch.slice(4) : fragment.get('cv2') || params.get('d');
     let normalized;
 
     if (data) {
