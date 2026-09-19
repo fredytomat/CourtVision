@@ -220,6 +220,37 @@
   }
 
   function normalizePayload(payload) {
+    if (Array.isArray(payload) && payload[0] === 3) {
+      const teams = Array.isArray(payload[3]) ? payload[3] : [];
+      const categories = Array.isArray(payload[4]) ? payload[4] : [];
+      const compactClips = Array.isArray(payload[5]) ? payload[5] : [];
+      const clips = [];
+      compactClips.forEach(raw => {
+        if (!Array.isArray(raw)) return;
+        const teamName = teams[finiteNumber(raw[0])];
+        const categoryName = categories[finiteNumber(raw[1])];
+        const startTenths = finiteNumber(raw[2]);
+        const durationTenths = finiteNumber(raw[3]);
+        const flags = finiteNumber(raw[5]) || 0;
+        if (typeof teamName !== 'string' || typeof categoryName !== 'string' || startTenths === null || durationTenths === null) return;
+        const clip = normalizeClip({
+          startTime: startTenths / 10,
+          endTime: (startTenths + durationTenths) / 10,
+          notes: raw[4],
+          pinned: Boolean(flags & 1),
+          outcome: flags & 2 ? 'success' : flags & 4 ? 'fail' : null
+        }, { teamName, categoryName });
+        if (clip) clips.push(clip);
+      });
+      if (!clips.length) throw new Error('Tidak ada clip valid di dalam link.');
+      if (clips.length > MAX_CLIPS) throw new Error('Jumlah clip melebihi batas.');
+      return {
+        version: 3,
+        title: safeText(payload[1], 'Game Analysis'),
+        videoId: safeText(payload[2], ''),
+        clips
+      };
+    }
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
       throw new Error('Format data clip tidak dikenal.');
     }
