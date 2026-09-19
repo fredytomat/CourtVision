@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CourtVision Clip</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23111813' rx='20' width='100' height='100'/><text x='50' y='62' text-anchor='middle' fill='%23C9DF57' font-family='Arial Black' font-size='36'>CV</text></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0F172A; color: white; min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: #1E3A5F; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: white; }
+    .logo-icon { width: 32px; height: 32px; background: rgba(255,255,255,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; }
+    .logo-text { font-weight: 800; font-size: 16px; }
+    .clip-badge { background: #10B981; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+    .main { flex: 1; display: flex; flex-direction: column; }
+    .video-section { position: sticky; top: 56px; z-index: 40; background: #0F172A; }
+    .video-container { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
+    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .clip-info { background: #1E293B; padding: 12px 16px; }
+    .game-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: #E2E8F0; }
+    .time-display { display: flex; align-items: center; gap: 10px; }
+    .time-box { background: #334155; padding: 6px 12px; border-radius: 6px; text-align: center; }
+    .time-label { font-size: 9px; color: #94A3B8; text-transform: uppercase; margin-bottom: 1px; }
+    .time-value { font-size: 18px; font-weight: 800; font-family: 'SF Mono', 'Monaco', monospace; }
+    .time-box.start .time-value { color: #10B981; }
+    .time-box.end .time-value { color: #EF4444; }
+    .time-arrow { color: #64748B; font-size: 16px; }
+    .duration-badge { background: #1E3A5F; color: white; padding: 4px 10px; border-radius: 16px; font-size: 11px; font-weight: 700; }
+    .current-category { background: #3B82F6; color: white; padding: 4px 10px; border-radius: 16px; font-size: 11px; font-weight: 700; margin-left: auto; }
+    .progress-container { margin-top: 10px; }
+    .progress-bar { height: 5px; background: #334155; border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; background: #10B981; border-radius: 3px; transition: width 0.2s ease; width: 0%; }
+    .progress-text { text-align: center; margin-top: 4px; font-size: 11px; color: #94A3B8; }
+    .nav-controls { display: flex; gap: 8px; padding: 12px 16px; background: #1E293B; border-top: 1px solid #334155; }
+    .btn { flex: 1; padding: 12px 16px; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s; }
+    .btn-primary { background: #10B981; color: white; }
+    .btn-primary:hover { background: #059669; }
+    .btn-primary:disabled { background: #334155; color: #64748B; cursor: not-allowed; }
+    .btn-secondary { background: #334155; color: white; }
+    .btn-secondary:hover { background: #475569; }
+    .btn-nav { flex: none; width: 48px; padding: 12px; }
+    .clip-list-section { flex: 1; background: #0F172A; padding: 16px; overflow-y: auto; }
+    .team-section { margin-bottom: 20px; }
+    .team-header { font-size: 14px; font-weight: 800; color: #E2E8F0; padding: 8px 12px; background: #1E3A5F; border-radius: 8px; margin-bottom: 10px; }
+    .category-section { margin-bottom: 12px; }
+    .category-header { font-size: 12px; font-weight: 700; color: #94A3B8; padding: 6px 12px; background: #1E293B; border-radius: 6px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+    .category-count { background: #334155; padding: 2px 8px; border-radius: 10px; font-size: 10px; }
+    .clip-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: #1E293B; border-radius: 8px; margin-bottom: 4px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+    .clip-item:hover { background: #334155; }
+    .clip-item.active { background: #1E3A5F; border-color: #3B82F6; }
+    .clip-item.watched { opacity: 0.6; }
+    .clip-item.watched .clip-status { background: #10B981; color: white; }
+    .clip-item.pinned-clip { border-left: 3px solid #F59E0B; }
+    .clip-status { width: 24px; height: 24px; border-radius: 50%; background: #334155; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+    .clip-item.active .clip-status { background: #3B82F6; color: white; }
+    .clip-main { flex: 1; }
+    .clip-top-row { display: flex; align-items: center; gap: 8px; }
+    .clip-time { font-family: 'SF Mono', 'Monaco', monospace; font-size: 13px; font-weight: 600; color: #E2E8F0; }
+    .clip-duration { font-size: 11px; color: #64748B; margin-left: auto; }
+    .clip-item.active .clip-time { color: white; }
+    .pin-badge { background: #F59E0B; color: white; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
+    .clip-notes-text { font-size: 11px; color: #94A3B8; margin-top: 4px; font-style: italic; line-height: 1.4; }
+    .clip-item.active .clip-notes-text { color: #CBD5E1; }
+    .status-overlay { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); padding: 24px 32px; border-radius: 16px; text-align: center; z-index: 100; display: none; }
+    .status-overlay.show { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+    .status-icon { font-size: 48px; margin-bottom: 12px; }
+    .status-text { font-size: 18px; font-weight: 700; }
+    .status-subtext { font-size: 14px; color: #94A3B8; margin-top: 4px; }
+    .auto-next-toggle { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; background: #1E293B; border-top: 1px solid #334155; font-size: 12px; color: #94A3B8; }
+    .toggle-switch { position: relative; width: 40px; height: 22px; background: #334155; border-radius: 11px; cursor: pointer; transition: background 0.2s; }
+    .toggle-switch.active { background: #10B981; }
+    .toggle-switch::after { content: ''; position: absolute; width: 18px; height: 18px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: transform 0.2s; }
+    .toggle-switch.active::after { transform: translateX(18px); }
+    .footer { background: #1E3A5F; padding: 10px; text-align: center; }
+    .footer a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 11px; }
+    .error-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; }
+    .error-icon { font-size: 64px; margin-bottom: 16px; }
+    .error-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .error-text { color: #94A3B8; margin-bottom: 24px; }
+    .summary-bar { display: flex; gap: 12px; padding: 10px 16px; background: #1E293B; border-bottom: 1px solid #334155; font-size: 11px; color: #94A3B8; justify-content: center; }
+    .summary-item { display: flex; align-items: center; gap: 4px; }
+    .summary-value { font-weight: 700; color: #E2E8F0; }
+    @media (min-width: 768px) { .main { max-width: 600px; margin: 0 auto; width: 100%; } }
+
+    /* CourtVision Mobile dark theme */
+    :root {
+      --cv-bg: #111813;
+      --cv-surface: #1D2820;
+      --cv-surface-2: #2B382E;
+      --cv-border: #354238;
+      --cv-text: #F4F6EE;
+      --cv-muted: #87958B;
+      --cv-lime: #C9DF57;
+      --cv-lime-dark: #AFC63F;
+      --cv-success: #5CBC82;
+      --cv-danger: #E07265;
+      --cv-warning: #E2A85F;
+    }
+    body { background: var(--cv-bg); color: var(--cv-text); }
+    .header { background: rgba(17,24,19,.96); border-bottom: 1px solid var(--cv-border); backdrop-filter: blur(14px); }
+    .logo { color: var(--cv-text); }
+    .logo-icon { background: var(--cv-surface-2); color: var(--cv-lime); border: 1px solid var(--cv-border); }
+    .clip-badge { background: var(--cv-lime); color: #16211B; }
+    .video-section { background: var(--cv-bg); }
+    .video-container { background: #0B100D; }
+    .clip-info, .nav-controls, .auto-next-toggle { background: var(--cv-surface); border-color: var(--cv-border); }
+    .game-title, .clip-time, .summary-value { color: var(--cv-text); }
+    .time-box, .btn-secondary, .progress-bar, .toggle-switch, .category-count, .clip-status { background: var(--cv-surface-2); }
+    .time-label, .time-arrow, .progress-text, .auto-next-toggle, .clip-duration, .clip-notes-text, .error-text, .summary-bar { color: var(--cv-muted); }
+    .time-box.start .time-value { color: var(--cv-success); }
+    .time-box.end .time-value { color: var(--cv-danger); }
+    .duration-badge, .team-header { background: var(--cv-surface-2); color: var(--cv-text); border: 1px solid var(--cv-border); }
+    .current-category, .btn-primary, .progress-fill, .toggle-switch.active, .clip-item.active .clip-status { background: var(--cv-lime); color: #16211B; }
+    .btn-primary:hover { background: var(--cv-lime-dark); }
+    .btn-primary:disabled, .btn-secondary:disabled { background: var(--cv-surface-2); color: #647168; }
+    .btn-secondary { color: var(--cv-text); border: 1px solid var(--cv-border); }
+    .btn-secondary:hover { background: var(--cv-border); }
+    .clip-list-section { background: var(--cv-bg); }
+    .category-header, .clip-item, .summary-bar { background: var(--cv-surface); border-color: var(--cv-border); }
+    .category-header { color: var(--cv-muted); }
+    .clip-item:hover { background: var(--cv-surface-2); }
+    .clip-item.active { background: #263322; border-color: var(--cv-lime); }
+    .clip-item.active .clip-time, .clip-item.active .clip-notes-text { color: var(--cv-text); }
+    .clip-item.watched .clip-status { background: var(--cv-success); color: #102017; }
+    .clip-item.pinned-clip { border-left-color: var(--cv-warning); }
+    .pin-badge { background: var(--cv-warning); color: #23180C; }
+    .status-overlay { background: rgba(11,16,13,.96); border: 1px solid var(--cv-border); }
+    .footer { background: var(--cv-bg); border-top: 1px solid var(--cv-border); }
+    .footer a { color: var(--cv-lime); }
+    @media (min-width: 768px) {
+      body { background: radial-gradient(circle at top, #1D2820 0, var(--cv-bg) 52%); }
+      .main { margin: 24px auto 36px; border: 1px solid var(--cv-border); border-radius: 18px; overflow: hidden; box-shadow: 0 18px 60px rgba(0,0,0,.28); }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="https://courtvision.id" class="logo">
+      <div class="logo-icon">CV</div>
+      <span class="logo-text">CourtVision</span>
+    </a>
+    <span class="clip-badge">CLIP</span>
+  </header>
+  <main class="main" id="main-content"></main>
+  <div class="status-overlay" id="status-overlay">
+    <div class="status-icon" id="status-icon">✅</div>
+    <div class="status-text" id="status-text">Clip Selesai</div>
+    <div class="status-subtext" id="status-subtext">Melanjutkan ke clip berikutnya...</div>
+  </div>
+  <!-- CourtVision share reader: inline to prevent stale cross-file cache. -->
+  <script>
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.CourtVisionViewer = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const MAX_DATA_LENGTH = 180000;
+  const MAX_CLIPS = 1000;
+
+  function decodeBase64Utf8(value) {
+    if (typeof value !== 'string' || !value || value.length > MAX_DATA_LENGTH) {
+      throw new Error('Data clip kosong atau terlalu besar.');
+    }
+    // URLSearchParams decodes a literal "+" as a space. Older CourtVision
+    // share links used standard Base64, so restore those spaces before
+    // normalizing newer Base64URL links.
+    let normalized = value.replace(/\s/g, '+').replace(/-/g, '+').replace(/_/g, '/');
+    normalized += '='.repeat((4 - (normalized.length % 4)) % 4);
+    const binary = atob(normalized);
+    return decodeURIComponent(Array.from(binary, char => '%' + char.charCodeAt(0).toString(16).padStart(2, '0')).join(''));
+  }
+
+  function finiteNumber(value) {
+    const number = Number(value);
+    return Number.isFinite(number) ? number : null;
+  }
+
+  function safeText(value, fallback) {
+    return typeof value === 'string' && value.trim() ? value.trim().slice(0, 500) : fallback;
+  }
+
+  function normalizeClip(raw, context) {
+    let start;
+    let end;
+    let notes = '';
+    let pinned = false;
+    let tagTime = null;
+    let outcome = null;
+
+    if (Array.isArray(raw)) {
+      start = finiteNumber(raw[0]);
+      end = finiteNumber(raw[1]);
+      notes = safeText(raw[2], '');
+      pinned = raw[3] === 1 || raw[3] === true;
+      outcome = raw[4] === 'success' || raw[4] === 'fail' ? raw[4] : null;
+    } else if (raw && typeof raw === 'object') {
+      start = finiteNumber(raw.startTime ?? raw.start);
+      end = finiteNumber(raw.endTime ?? raw.end);
+      tagTime = finiteNumber(raw.tagTime);
+      notes = safeText(raw.notes, '');
+      pinned = raw.pinned === true || raw.pinned === 1;
+      outcome = raw.outcome === 'success' || raw.outcome === 'fail' ? raw.outcome : null;
+    }
+
+    if (start === null || end === null || start < 0 || end <= start) return null;
+    return {
+      teamName: safeText(context.teamName, 'Team'),
+      categoryName: safeText(context.categoryName, 'Clip'),
+      start: Math.floor(start),
+      end: Math.ceil(end),
+      tagTime,
+      notes,
+      pinned,
+      outcome
+    };
+  }
+
+  function normalizePayload(payload) {
+    if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+      throw new Error('Format data clip tidak dikenal.');
+    }
+    const payloadVersion = payload.version ?? payload.v;
+    if (payloadVersion !== undefined && payloadVersion !== 2) {
+      throw new Error('Versi link CourtVision tidak didukung.');
+    }
+
+    const clips = [];
+    if (Array.isArray(payload.c)) {
+      payload.c.forEach(raw => {
+        if (!Array.isArray(raw)) return;
+        const clip = normalizeClip({
+          tagTime: raw[2],
+          startTime: raw[3],
+          endTime: raw[4],
+          notes: raw[5],
+          pinned: raw[6],
+          outcome: raw[7]
+        }, {
+          teamName: raw[0],
+          categoryName: raw[1]
+        });
+        if (clip) clips.push(clip);
+      });
+    } else if (Array.isArray(payload.teams)) {
+      payload.teams.forEach(team => {
+        if (!team || !Array.isArray(team.categories)) return;
+        team.categories.forEach(category => {
+          if (!category || !Array.isArray(category.clips)) return;
+          category.clips.forEach(raw => {
+            const clip = normalizeClip(raw, {
+              teamName: team.name,
+              categoryName: category.name
+            });
+            if (clip) clips.push(clip);
+          });
+        });
+      });
+    } else if (Array.isArray(payload.clips)) {
+      payload.clips.forEach(raw => {
+        const clip = normalizeClip(raw, {
+          teamName: raw && raw.teamName,
+          categoryName: raw && raw.categoryName
+        });
+        if (clip) clips.push(clip);
+      });
+    }
+
+    if (!clips.length) throw new Error('Tidak ada clip valid di dalam link.');
+    if (clips.length > MAX_CLIPS) throw new Error('Jumlah clip melebihi batas.');
+
+    return {
+      version: payloadVersion === 2 ? 2 : 1,
+      title: safeText(payload.title ?? payload.t, 'Game Analysis'),
+      videoId: safeText(payload.videoId ?? payload.y, ''),
+      clips
+    };
+  }
+
+  function parseShareUrl(search, hash, pathname) {
+    const params = new URLSearchParams(search || '');
+    const fragment = new URLSearchParams((hash || '').replace(/^#/, ''));
+    const rawSearch = (search || '').replace(/^\?/, '');
+    const pathMatch = (pathname || '').match(/^\/c\/([A-Za-z0-9_-]+)\/?$/);
+    const queryVideoId = safeText(params.get('v'), '');
+    const opaqueData = /^[A-Za-z0-9_-]+$/.test(rawSearch) ? rawSearch : '';
+    const data = (pathMatch && pathMatch[1]) || opaqueData || (rawSearch.startsWith('cv2.') ? rawSearch.slice(4) : fragment.get('cv2') || params.get('d'));
+    let normalized;
+
+    if (data) {
+      normalized = normalizePayload(JSON.parse(decodeBase64Utf8(data)));
+    } else {
+      const start = finiteNumber(params.get('start'));
+      const end = finiteNumber(params.get('end'));
+      if (start === null || end === null || start < 0 || end <= start) {
+        throw new Error('Parameter video tidak lengkap atau tidak valid.');
+      }
+      normalized = normalizePayload({
+        title: 'CourtVision Clip',
+        clips: [{ teamName: 'Clip', categoryName: 'Video', startTime: start, endTime: end }]
+      });
+    }
+
+    const videoId = queryVideoId || normalized.videoId;
+    if (!/^[A-Za-z0-9_-]{6,20}$/.test(videoId)) throw new Error('ID video tidak valid.');
+    normalized.videoId = videoId;
+    return normalized;
+  }
+
+  return { decodeBase64Utf8, normalizePayload, parseShareUrl };
+});
+  </script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const rawSearch = window.location.search.replace(/^\?/, '');
+    const pathMatch = window.location.pathname.match(/^\/c\/([A-Za-z0-9_-]+)\/?$/);
+    let videoId = params.get('v');
+    const dataParam = pathMatch?.[1] || (/^[A-Za-z0-9_-]+$/.test(rawSearch)
+      ? rawSearch
+      : rawSearch.startsWith('cv2.')
+        ? rawSearch.slice(4)
+        : new URLSearchParams(window.location.hash.replace(/^#/, '')).get('cv2') || params.get('d'));
+    const legacyStart = parseInt(params.get('start')) || 0;
+    const legacyEnd = parseInt(params.get('end')) || 0;
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = Math.floor(seconds % 60);
+      return m + ':' + String(s).padStart(2, '0');
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function groupForLegacyViewer(parsed) {
+      const teams = [];
+      parsed.clips.forEach(clip => {
+        let team = teams.find(item => item.name === clip.teamName);
+        if (!team) {
+          team = { name: clip.teamName, categories: [] };
+          teams.push(team);
+        }
+        let category = team.categories.find(item => item.name === clip.categoryName);
+        if (!category) {
+          category = { name: clip.categoryName, clips: [] };
+          team.categories.push(category);
+        }
+        category.clips.push([clip.start, clip.end, clip.notes, clip.pinned ? 1 : 0]);
+      });
+      return { title: parsed.title, teams };
+    }
+
+    let clipData = null;
+    let allClips = [];
+    let currentClipIndex = 0;
+    let autoNext = true;
+    let watchedClips = new Set();
+
+    if (dataParam || (legacyStart && legacyEnd)) {
+      try {
+        const parsed = CourtVisionViewer.parseShareUrl(window.location.search, window.location.hash, window.location.pathname);
+        videoId = parsed.videoId;
+        clipData = groupForLegacyViewer(parsed);
+        clipData.teams.forEach((team, teamIdx) => {
+          team.categories.forEach((cat, catIdx) => {
+            // Sort: pinned first within category
+            const sorted = [...cat.clips].sort((a, b) => (b[3] || 0) - (a[3] || 0));
+            sorted.forEach((clip, clipIdx) => {
+              allClips.push({
+                teamName: team.name,
+                categoryName: cat.name,
+                start: clip[0],
+                end: clip[1],
+                notes: clip[2] || '',
+                pinned: clip[3] === 1,
+                teamIdx, catIdx, clipIdx,
+                id: `${teamIdx}-${catIdx}-${clipIdx}`
+              });
+            });
+          });
+        });
+      } catch (e) { console.error('Failed to parse clip data:', e); }
+    }
+
+    const mainContent = document.getElementById('main-content');
+    const statusOverlay = document.getElementById('status-overlay');
+
+    if (!videoId || allClips.length === 0) {
+      mainContent.innerHTML = `<div class="error-container"><div class="error-icon">❌</div><div class="error-title">Link Tidak Valid</div><div class="error-text">Parameter video tidak lengkap atau tidak valid.</div><a href="https://courtvision.id" class="btn btn-primary" style="text-decoration:none;">Ke Homepage</a></div>`;
+    } else {
+      renderPlayer();
+    }
+
+    function renderPlayer() {
+      const currentClip = allClips[currentClipIndex];
+      const duration = currentClip.end - currentClip.start;
+      const totalClips = allClips.length;
+      const watchedCount = watchedClips.size;
+
+      mainContent.innerHTML = `
+        <div class="video-section">
+          <div class="video-container"><div id="player"></div></div>
+          <div class="clip-info">
+            ${clipData ? `<div class="game-title">${escapeHtml(clipData.title || 'Game Analysis')}</div>` : ''}
+            <div class="time-display">
+              <div class="time-box start"><div class="time-label">Mulai</div><div class="time-value">${formatTime(currentClip.start)}</div></div>
+              <div class="time-arrow">→</div>
+              <div class="time-box end"><div class="time-label">Stop</div><div class="time-value">${formatTime(currentClip.end)}</div></div>
+              <div class="duration-badge">${duration}s</div>
+              <div class="current-category">${escapeHtml(currentClip.categoryName)}</div>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+              <div class="progress-text" id="progress-text">0:00 / ${formatTime(duration)}</div>
+            </div>
+          </div>
+          <div class="nav-controls">
+            <button class="btn btn-secondary btn-nav" id="btn-prev" ${currentClipIndex === 0 ? 'disabled' : ''}>◀</button>
+            <button class="btn btn-primary" id="btn-replay">Replay</button>
+            <button class="btn btn-secondary btn-nav" id="btn-next" ${currentClipIndex >= totalClips - 1 ? 'disabled' : ''}>▶</button>
+          </div>
+          <div class="auto-next-toggle">
+            <span>Auto Next</span>
+            <div class="toggle-switch ${autoNext ? 'active' : ''}" id="toggle-auto"></div>
+          </div>
+        </div>
+        ${totalClips > 1 ? `<div class="summary-bar"><div class="summary-item"><span class="summary-value">${currentClipIndex + 1}</span>/<span>${totalClips}</span> clips</div><div class="summary-item"><span class="summary-value">${watchedCount}</span> watched</div></div>` : ''}
+        <div class="clip-list-section" id="clip-list">${renderClipList()}</div>
+        <div class="footer"><a href="https://courtvision.id">courtvision.id</a></div>
+      `;
+
+      document.getElementById('btn-prev').onclick = () => navigateClip(-1);
+      document.getElementById('btn-next').onclick = () => navigateClip(1);
+      document.getElementById('btn-replay').onclick = replayClip;
+      document.getElementById('toggle-auto').onclick = toggleAutoNext;
+      document.querySelectorAll('.clip-item').forEach(item => {
+        item.onclick = () => { const idx = parseInt(item.dataset.index); if (idx !== currentClipIndex) { currentClipIndex = idx; loadClip(); } };
+      });
+      loadYouTubePlayer();
+    }
+
+    function renderClipList() {
+      if (!clipData || allClips.length <= 1) return '';
+      let html = '';
+      clipData.teams.forEach((team, teamIdx) => {
+        html += `<div class="team-section"><div class="team-header">${escapeHtml(team.name)}</div>`;
+        team.categories.forEach((cat, catIdx) => {
+          // Sort pinned first
+          const sortedClips = [...cat.clips].sort((a, b) => (b[3] || 0) - (a[3] || 0));
+          html += `<div class="category-section"><div class="category-header"><span>${escapeHtml(cat.name)}</span><span class="category-count">${cat.clips.length}</span></div>`;
+          sortedClips.forEach((clip, clipIdx) => {
+            const isPinned = clip[3] === 1;
+            const notes = clip[2] || '';
+            const clipId = `${teamIdx}-${catIdx}-${clipIdx}`;
+            const flatIdx = allClips.findIndex(c => c.teamIdx === teamIdx && c.catIdx === catIdx && c.start === clip[0] && c.end === clip[1]);
+            const isActive = flatIdx === currentClipIndex;
+            const isWatched = watchedClips.has(clipId);
+            const dur = clip[1] - clip[0];
+            html += `
+              <div class="clip-item ${isActive ? 'active' : ''} ${isWatched ? 'watched' : ''} ${isPinned ? 'pinned-clip' : ''}" data-index="${flatIdx}">
+                <div class="clip-status">${isWatched ? '✓' : flatIdx + 1}</div>
+                <div class="clip-main">
+                  <div class="clip-top-row">
+                    ${isPinned ? '<span class="pin-badge">PIN</span>' : ''}
+                    <span class="clip-time">${formatTime(clip[0])} → ${formatTime(clip[1])}</span>
+                    <span class="clip-duration">${dur}s</span>
+                  </div>
+                  ${notes ? `<div class="clip-notes-text">${escapeHtml(notes)}</div>` : ''}
+                </div>
+              </div>`;
+          });
+          html += `</div>`;
+        });
+        html += `</div>`;
+      });
+      return html;
+    }
+
+    let player, checkInterval, clipEnded = false;
+
+    function loadYouTubePlayer() {
+      if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.getElementsByTagName('script')[0].parentNode.insertBefore(tag, document.getElementsByTagName('script')[0]);
+        window.onYouTubeIframeAPIReady = createPlayer;
+      } else { createPlayer(); }
+    }
+
+    function createPlayer() {
+      const c = allClips[currentClipIndex];
+      if (player && typeof player.destroy === 'function') player.destroy();
+      player = new YT.Player('player', {
+        videoId,
+        playerVars: { start: c.start, autoplay: 1, playsinline: 1, rel: 0, modestbranding: 1, controls: 1 },
+        events: { onReady: onPlayerReady, onStateChange: onPlayerStateChange }
+      });
+    }
+
+    function onPlayerReady() { clipEnded = false; startTimeCheck(); }
+    function onPlayerStateChange(event) { if (event.data === YT.PlayerState.PLAYING && !clipEnded) startTimeCheck(); }
+
+    function startTimeCheck() {
+      const c = allClips[currentClipIndex];
+      const duration = c.end - c.start;
+      if (checkInterval) clearInterval(checkInterval);
+      checkInterval = setInterval(() => {
+        if (!player || typeof player.getCurrentTime !== 'function') return;
+        const ct = player.getCurrentTime();
+        const elapsed = ct - c.start;
+        const progress = Math.min(Math.max((elapsed / duration) * 100, 0), 100);
+        const pf = document.getElementById('progress-fill');
+        const pt = document.getElementById('progress-text');
+        if (pf) pf.style.width = progress + '%';
+        if (pt) pt.textContent = formatTime(Math.max(0, elapsed)) + ' / ' + formatTime(duration);
+        if (ct >= c.end && !clipEnded) {
+          clipEnded = true;
+          player.pauseVideo();
+          clearInterval(checkInterval);
+          watchedClips.add(c.id);
+          const hasNext = currentClipIndex < allClips.length - 1;
+          if (autoNext && hasNext) {
+            document.getElementById('status-icon').textContent = '✅';
+            document.getElementById('status-text').textContent = 'Clip Selesai';
+            document.getElementById('status-subtext').textContent = 'Melanjutkan ke clip berikutnya...';
+          } else if (hasNext) {
+            document.getElementById('status-icon').textContent = '⏹';
+            document.getElementById('status-text').textContent = 'Clip Selesai';
+            document.getElementById('status-subtext').textContent = 'Tap ▶ untuk clip berikutnya';
+          } else {
+            document.getElementById('status-icon').textContent = '🏀';
+            document.getElementById('status-text').textContent = 'Semua Clip Selesai!';
+            document.getElementById('status-subtext').textContent = 'Great job!';
+          }
+          statusOverlay.classList.add('show');
+          if (autoNext && hasNext) {
+            setTimeout(() => { statusOverlay.classList.remove('show'); navigateClip(1); }, 1500);
+          } else {
+            setTimeout(() => { statusOverlay.classList.remove('show'); updateClipList(); }, 2000);
+          }
+        }
+      }, 200);
+    }
+
+    function navigateClip(dir) { const n = currentClipIndex + dir; if (n >= 0 && n < allClips.length) { currentClipIndex = n; loadClip(); } }
+
+    function loadClip() {
+      clipEnded = false;
+      if (checkInterval) clearInterval(checkInterval);
+      const c = allClips[currentClipIndex];
+      updateClipInfo();
+      updateClipList();
+      if (player && typeof player.seekTo === 'function') { player.seekTo(c.start, true); player.playVideo(); startTimeCheck(); }
+      const activeItem = document.querySelector('.clip-item.active');
+      if (activeItem) activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function updateClipInfo() {
+      const c = allClips[currentClipIndex];
+      const duration = c.end - c.start;
+      const ci = document.querySelector('.clip-info');
+      if (ci) {
+        ci.querySelector('.start .time-value').textContent = formatTime(c.start);
+        ci.querySelector('.end .time-value').textContent = formatTime(c.end);
+        ci.querySelector('.duration-badge').textContent = duration + 's';
+        ci.querySelector('.current-category').textContent = c.categoryName;
+        const pt = ci.querySelector('#progress-text');
+        if (pt) pt.textContent = '0:00 / ' + formatTime(duration);
+        const pf = document.getElementById('progress-fill');
+        if (pf) pf.style.width = '0%';
+      }
+      document.getElementById('btn-prev').disabled = currentClipIndex === 0;
+      document.getElementById('btn-next').disabled = currentClipIndex >= allClips.length - 1;
+      const sb = document.querySelector('.summary-bar');
+      if (sb) sb.innerHTML = `<div class="summary-item"><span class="summary-value">${currentClipIndex + 1}</span>/<span>${allClips.length}</span> clips</div><div class="summary-item"><span class="summary-value">${watchedClips.size}</span> watched</div>`;
+    }
+
+    function updateClipList() {
+      const el = document.getElementById('clip-list');
+      if (el) {
+        el.innerHTML = renderClipList();
+        document.querySelectorAll('.clip-item').forEach(item => {
+          item.onclick = () => { const idx = parseInt(item.dataset.index); if (idx !== currentClipIndex) { currentClipIndex = idx; loadClip(); } };
+        });
+      }
+    }
+
+    function replayClip() {
+      const c = allClips[currentClipIndex];
+      clipEnded = false;
+      if (player && typeof player.seekTo === 'function') { player.seekTo(c.start, true); player.playVideo(); startTimeCheck(); }
+      statusOverlay.classList.remove('show');
+    }
+
+    function toggleAutoNext() {
+      autoNext = !autoNext;
+      const t = document.getElementById('toggle-auto');
+      if (t) t.classList.toggle('active', autoNext);
+    }
+  </script>
+</body>
+</html>
