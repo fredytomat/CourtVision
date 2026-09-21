@@ -1,0 +1,61 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "courtvision-license-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "ALLOWED_ORIGINS": "https://courtvision.id",
+    "ACCESS_TOKEN_TTL_SECONDS": "900",
+    "REFRESH_TOKEN_TTL_DAYS": "30",
+    "TRIAL_DAYS": "7",
+    "MAX_ACTIVE_DEVICES": "1",
+    "GOOGLE_CLIENT_IDS": "replace-with-google-oauth-client-id",
+    "POLAR_API_BASE_URL": "https://api.polar.sh",
+    "POLAR_ORGANIZATION_ID": "0be66be6-c4e2-4c59-8980-6e0a418fe30f",
+    "DUITKU_MERCHANT_CODE": "replace-with-duitku-production-merchant-code",
+    "DUITKU_API_BASE_URL": "https://passport.duitku.com/webapi/api/merchant",
+    "DUITKU_CALLBACK_URL": "https://courtvision-license-api.fredy-xau.workers.dev/v1/webhooks/duitku",
+    "DUITKU_RETURN_URL": "https://courtvision.id/payment-result.html"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "courtvision-license",
+      "database_id": "local",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "env": {
+    "staging": {
+      "name": "courtvision-license-api-staging",
+      "vars": {
+        "ALLOWED_ORIGINS": "https://courtvision.id,chrome-extension://oklbkdldkcchgihmadhbgojnamadihig",
+        "ACCESS_TOKEN_TTL_SECONDS": "900",
+        "REFRESH_TOKEN_TTL_DAYS": "30",
+        "TRIAL_DAYS": "7",
+        "MAX_ACTIVE_DEVICES": "1",
+        "GOOGLE_CLIENT_IDS": "593776146486-ereu1ifkfk85hf321rjlu8ik3vig85si.apps.googleusercontent.com",
+        "POLAR_API_BASE_URL": "https://sandbox-api.polar.sh",
+        "POLAR_ORGANIZATION_ID": "62fe0244-6d57-4e1e-a5bd-703234ae7b95",
+        "DUITKU_MERCHANT_CODE": "DS35648",
+        "DUITKU_API_BASE_URL": "https://sandbox.duitku.com/webapi/api/merchant",
+        "DUITKU_CALLBACK_URL": "https://courtvision-license-api-staging.fredy-xau.workers.dev/v1/webhooks/duitku",
+        "DUITKU_RETURN_URL": "https://courtvision.id/payment-result.html"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "courtvision-license-staging",
+          "database_id": "54a09491-d9e7-430e-a04f-af8a788a2661",
+          "migrations_dir": "migrations"
+        }
+      ]
+    }
+  },
+  "observability": {
+    "enabled": true,
+    "logs": { "head_sampling_rate": 1 },
+    "traces": { "enabled": true, "head_sampling_rate": 0.05 }
+  }
+}

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Checkout CourtVision Pro melalui payment gateway Duitku.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://courtvision-license-api-staging.fredy-xau.workers.dev; style-src 'self' 'unsafe-inline'; img-src 'self' https://images.duitku.com data:; script-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'self'">
+  <title>Checkout CourtVision Pro</title>
+  <style>
+    :root { --bg:#09140e; --panel:#13231a; --panel-2:#1a2d21; --line:#30483a; --lime:#c9e94c; --mint:#62d39a; --white:#f7faF5; --muted:#a7b1aa; --danger:#ff7b6e; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; background:var(--bg); color:var(--white); font:16px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    a { color:inherit; }
+    header { border-bottom:1px solid var(--line); padding:20px 24px; }
+    .header-inner,.layout { width:min(1060px,100%); margin:auto; }
+    .brand { display:flex; align-items:center; gap:12px; text-decoration:none; font-size:20px; font-weight:850; }
+    .mark { display:grid; place-items:center; width:44px; height:44px; border-radius:12px; background:#243a2b; color:var(--lime); }
+    .layout { display:grid; grid-template-columns:.9fr 1.1fr; gap:28px; padding:48px 24px 72px; }
+    .summary,.checkout { border:1px solid var(--line); background:var(--panel); border-radius:24px; padding:28px; }
+    .eyebrow { color:var(--lime); font-size:12px; font-weight:800; letter-spacing:.15em; text-transform:uppercase; }
+    h1 { margin:8px 0 12px; font-size:clamp(30px,5vw,46px); line-height:1.1; }
+    h2 { margin:0 0 20px; font-size:24px; }
+    .muted { color:var(--muted); }
+    .plans { display:grid; gap:12px; margin:28px 0; }
+    .plan { display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; padding:18px; border:1px solid var(--line); border-radius:16px; cursor:pointer; }
+    .plan:has(input:checked) { border-color:var(--lime); background:#1f321d; box-shadow:0 0 0 1px var(--lime); }
+    .plan input { accent-color:var(--lime); width:20px; height:20px; }
+    .plan strong,.plan span { display:block; }
+    .price { text-align:right; font-weight:850; }
+    .benefits { list-style:none; padding:0; margin:24px 0 0; display:grid; gap:10px; color:var(--muted); }
+    .benefits li::before { content:"✓"; color:var(--mint); font-weight:900; margin-right:10px; }
+    form { display:grid; gap:18px; }
+    label { display:grid; gap:8px; font-weight:700; }
+    input,select { width:100%; border:1px solid var(--line); border-radius:13px; background:var(--panel-2); color:var(--white); padding:15px 16px; font:inherit; }
+    input:focus,select:focus { outline:2px solid var(--lime); outline-offset:2px; }
+    button { border:0; border-radius:14px; background:var(--lime); color:#0d160f; padding:17px 20px; font:800 17px/1 inherit; cursor:pointer; }
+    button:disabled { opacity:.5; cursor:wait; }
+    .status { min-height:24px; color:var(--muted); }
+    .status.error { color:var(--danger); }
+    .sandbox-notice { margin:0 0 20px; padding:12px 14px; border:1px solid #6f8730; border-radius:12px; background:#26371b; color:#def58a; font-size:14px; font-weight:750; }
+    .security { margin:2px 0 0; color:var(--muted); font-size:13px; text-align:center; }
+    .support { margin-top:22px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+    @media (max-width:760px) { .layout { grid-template-columns:1fr; padding-top:28px; } .summary,.checkout { padding:22px; border-radius:20px; } }
+  </style>
+</head>
+<body>
+  <header><div class="header-inner"><a class="brand" href="index.html"><span class="mark">CV</span> CourtVision</a></div></header>
+  <main class="layout">
+    <section class="summary">
+      <div class="eyebrow">Perangkat lunak analisis video basket</div>
+      <h1>CourtVision Pro</h1>
+      <p class="muted">Tandai momen pertandingan, susun klip, catat hasil, lalu bagikan laporan analisis dari video YouTube. Klip tetap tersimpan secara lokal di perangkat Anda.</p>
+      <div class="plans" aria-label="Pilih paket">
+        <label class="plan"><input type="radio" name="plan" value="monthly" checked><span><strong>Bulanan</strong><small class="muted">Akses Pro selama 30 hari</small></span><span class="price">Rp130.000</span></label>
+        <label class="plan"><input type="radio" name="plan" value="yearly"><span><strong>Tahunan</strong><small class="muted">Akses Pro selama 365 hari</small></span><span class="price">Rp1.040.000</span></label>
+      </div>
+      <ul class="benefits">
+        <li>Tagging dan kategori tanpa batas</li>
+        <li>Ekspor WhatsApp, JSON, CSV, dan XML</li>
+        <li>Pemutaran klip otomatis</li>
+        <li>Satu akun untuk satu laptop aktif</li>
+      </ul>
+    </section>
+    <section class="checkout">
+      <h2>Data pembelian</h2>
+      <p class="sandbox-notice">Mode Sandbox Duitku — hanya untuk pengujian. Tidak ada pembayaran atau uang nyata.</p>
+      <form id="checkout-form">
+        <label>Nama lengkap<input id="name" name="name" autocomplete="name" maxlength="50" required placeholder="Nama pembeli"></label>
+        <label>Email akun CourtVision<input id="email" name="email" type="email" autocomplete="email" maxlength="50" required placeholder="nama@email.com"></label>
+        <label>Nomor WhatsApp <span class="muted">(opsional)</span><input id="phone" name="phone" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="08xxxxxxxxxx"></label>
+        <label>Metode pembayaran<select id="payment-method" name="paymentMethod" required disabled><option value="">Memuat metode pembayaran…</option></select></label>
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <button id="pay" type="submit" disabled>Lanjut ke pembayaran</button>
+        <p class="security">Pembayaran diproses oleh Duitku. CourtVision tidak menyimpan nomor kartu, PIN, OTP, atau data rekening Anda.</p>
+      </form>
+      <p class="support">Butuh bantuan? <a href="mailto:support@courtvision.id">support@courtvision.id</a> · <a href="https://wa.me/6281343447079" target="_blank" rel="noopener noreferrer">WhatsApp 081343447079</a><br>Apartemen Bassura City, Tower C, Unit 22 CP, Jalan Basuki Rahmat No. 1A</p>
+    </section>
+  </main>
+  <script>
+    (() => {
+      'use strict';
+      const API = 'https://courtvision-license-api-staging.fredy-xau.workers.dev';
+      const form = document.getElementById('checkout-form');
+      const method = document.getElementById('payment-method');
+      const status = document.getElementById('status');
+      const pay = document.getElementById('pay');
+      const initialPlan = new URLSearchParams(location.search).get('plan');
+      if (initialPlan === 'yearly') document.querySelector('[name="plan"][value="yearly"]').checked = true;
+
+      const setStatus = (message, error = false) => {
+        status.textContent = message;
+        status.classList.toggle('error', error);
+      };
+
+      async function loadMethods() {
+        method.disabled = true;
+        pay.disabled = true;
+        method.replaceChildren(new Option('Memuat metode pembayaran…', ''));
+        setStatus('');
+        const plan = document.querySelector('[name="plan"]:checked').value;
+        try {
+          const response = await fetch(`${API}/v1/billing/duitku/methods?plan=${encodeURIComponent(plan)}`);
+          const data = await response.json();
+          if (!response.ok) throw new Error(data?.error?.message || 'Metode pembayaran gagal dimuat');
+          method.replaceChildren(new Option('Pilih metode pembayaran', ''));
+          for (const item of data.methods) {
+            const fee = item.fee ? ` — biaya Rp${Number(item.fee).toLocaleString('id-ID')}` : '';
+            method.append(new Option(`${item.name}${fee}`, item.code));
+          }
+          method.disabled = false;
+          pay.disabled = false;
+        } catch (error) {
+          method.replaceChildren(new Option('Duitku Sandbox belum siap', ''));
+          setStatus(error instanceof Error ? error.message : 'Metode pembayaran gagal dimuat', true);
+        }
+      }
+
+      document.querySelectorAll('[name="plan"]').forEach((radio) => radio.addEventListener('change', loadMethods));
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        pay.disabled = true;
+        setStatus('Membuat transaksi aman…');
+        try {
+          const response = await fetch(`${API}/v1/billing/duitku/checkout`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              plan: document.querySelector('[name="plan"]:checked').value,
+              name: document.getElementById('name').value,
+              email: document.getElementById('email').value,
+              phoneNumber: document.getElementById('phone').value,
+              paymentMethod: method.value,
+            }),
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data?.error?.message || 'Transaksi gagal dibuat');
+          location.assign(data.paymentUrl);
+        } catch (error) {
+          setStatus(error instanceof Error ? error.message : 'Transaksi gagal dibuat', true);
+          pay.disabled = false;
+        }
+      });
+      loadMethods();
+    })();
+  </script>
+</body>
+</html>

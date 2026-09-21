@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://courtvision-license-api-staging.fredy-xau.workers.dev; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'">
+  <title>Status Pembayaran | CourtVision</title>
+  <style>
+    :root { --bg:#09140e; --panel:#13231a; --line:#30483a; --lime:#c9e94c; --white:#f7faf5; --muted:#a7b1aa; }
+    * { box-sizing:border-box; } body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px; background:var(--bg); color:var(--white); font:16px/1.55 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(560px,100%); padding:34px; border:1px solid var(--line); border-radius:24px; background:var(--panel); text-align:center; }
+    .mark { display:grid; place-items:center; width:58px; height:58px; margin:0 auto 20px; border-radius:16px; background:#243a2b; color:var(--lime); font-weight:900; }
+    h1 { margin:0 0 10px; } p { color:var(--muted); } .details { margin:24px 0; padding:18px; border:1px solid var(--line); border-radius:15px; text-align:left; }
+    .details div { display:flex; justify-content:space-between; gap:16px; padding:6px 0; } .details strong { color:var(--white); }
+    a { display:inline-block; padding:14px 22px; border-radius:13px; background:var(--lime); color:#0d160f; text-decoration:none; font-weight:800; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="mark">CV</div>
+    <h1 id="title">Memeriksa pembayaran…</h1>
+    <p id="message">Status resmi diambil dari server CourtVision, bukan dari alamat halaman ini.</p>
+    <div class="details" id="details" hidden>
+      <div><span>Nomor pesanan</span><strong id="order">-</strong></div>
+      <div><span>Paket</span><strong id="plan">-</strong></div>
+      <div><span>Nominal</span><strong id="amount">-</strong></div>
+    </div>
+    <a href="index.html">Kembali ke CourtVision</a>
+  </main>
+  <script>
+    (() => {
+      'use strict';
+      const API = 'https://courtvision-license-api-staging.fredy-xau.workers.dev';
+      const params = new URLSearchParams(location.search);
+      const orderId = params.get('merchantOrderId');
+      const title = document.getElementById('title');
+      const message = document.getElementById('message');
+      const details = document.getElementById('details');
+      async function show() {
+        if (!orderId || !/^[A-Z0-9-]{10,50}$/i.test(orderId)) {
+          title.textContent = 'Nomor pesanan tidak ditemukan';
+          message.textContent = 'Silakan kembali ke halaman checkout atau hubungi support@courtvision.id.';
+          return;
+        }
+        try {
+          const response = await fetch(`${API}/v1/billing/duitku/orders/${encodeURIComponent(orderId)}`);
+          const data = await response.json();
+          if (!response.ok) throw new Error('Pesanan tidak ditemukan');
+          const copy = {
+            paid: ['Pembayaran berhasil', 'Masuk ke CourtVision menggunakan email pembelian yang sama. Akses Pro akan aktif otomatis.'],
+            pending: ['Pembayaran sedang diproses', 'Tunggu konfirmasi dari Duitku. Jangan melakukan pembayaran kedua untuk pesanan yang sama.'],
+            failed: ['Pembayaran belum berhasil', 'Anda dapat kembali ke checkout untuk membuat transaksi baru.'],
+            expired: ['Pembayaran kedaluwarsa', 'Anda dapat kembali ke checkout untuk membuat transaksi baru.'],
+          }[data.status] || ['Status belum tersedia', 'Silakan coba lagi beberapa saat lagi.'];
+          title.textContent = copy[0];
+          message.textContent = copy[1];
+          document.getElementById('order').textContent = data.orderId;
+          document.getElementById('plan').textContent = data.plan === 'yearly' ? 'Tahunan' : 'Bulanan';
+          document.getElementById('amount').textContent = `Rp${Number(data.amount).toLocaleString('id-ID')}`;
+          details.hidden = false;
+        } catch {
+          title.textContent = 'Status belum dapat diperiksa';
+          message.textContent = 'Silakan coba lagi beberapa saat atau hubungi support@courtvision.id.';
+        }
+      }
+      show();
+    })();
+  </script>
+</body>
+</html>

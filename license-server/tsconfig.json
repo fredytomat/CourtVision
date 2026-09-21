@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "esModuleInterop": true,
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "types": ["./worker-configuration.d.ts", "@cloudflare/vitest-plugin/types"]
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", "vitest.config.ts"]
+}

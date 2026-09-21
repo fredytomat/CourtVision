@@ -1,0 +1,23 @@
+{
+  "name": "@courtvision/license-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "npm run types && tsc --noEmit && npm test",
+    "dev": "wrangler dev --local",
+    "deploy:dry": "wrangler deploy --dry-run --env=\"\"",
+    "deploy:staging": "wrangler deploy --env staging",
+    "migrate:local": "wrangler d1 migrations apply courtvision-license --local",
+    "migrate:staging": "wrangler d1 migrations apply courtvision-license-staging --remote --env staging",
+    "test": "vitest run",
+    "types": "wrangler types"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "latest",
+    "@types/node": "^26.5.1",
+    "typescript": "latest",
+    "vitest": "^4.1.0",
+    "wrangler": "latest"
+  }
+}

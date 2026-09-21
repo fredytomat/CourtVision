@@ -775,6 +775,14 @@
       color: white;
     }
 
+    .footer-contact-address {
+      max-width: 280px;
+      margin: 0;
+      color: var(--gray-400);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
     .footer-bottom {
       display: flex;
       justify-content: space-between;
@@ -949,7 +957,7 @@
         <p class="hero-trial" data-en="<strong>100% Free</strong> to install from Chrome Web Store" data-id="<strong>100% Gratis</strong> install dari Chrome Web Store"><strong>100% Free</strong> to install from Chrome Web Store</p>
         <div class="hero-stats">
           <div class="hero-stat">
-            <div class="hero-stat-value">$8</div>
+            <div class="hero-stat-value">Rp130rb</div>
             <div class="hero-stat-label" data-en="/month after trial" data-id="/bulan setelah trial">/month after trial</div>
           </div>
           <div class="hero-stat">
@@ -1077,7 +1085,7 @@
       <div class="section-header">
         <span class="section-tag" data-en="Pricing" data-id="Harga">Pricing</span>
         <h2 data-en="Simple, Transparent Pricing" data-id="Harga Simple & Transparan">Simple, Transparent Pricing</h2>
-        <p data-en="One plan with everything you need. Start with 7 days free." data-id="Satu paket dengan semua yang kamu butuhkan. Mulai dengan 7 hari gratis.">One plan with everything you need. Start with 7 days free.</p>
+        <p data-en="A subscription to basketball video-analysis software for coaches and analysts. Start with 7 days free." data-id="Layanan berlangganan perangkat lunak analisis video basket untuk pelatih dan analis. Mulai dengan 7 hari gratis.">A subscription to basketball video-analysis software for coaches and analysts. Start with 7 days free.</p>
       </div>
       
       <div class="pricing-card-single">
@@ -1093,12 +1101,12 @@
         
         <div class="price-display">
           <div class="price-monthly">
-            <div class="price-amount">$8 <span data-en="/month" data-id="/bulan">/month</span></div>
-            <p class="price-note">~Rp 130.000</p>
+            <div class="price-amount">Rp130.000 <span data-en="/month" data-id="/bulan">/month</span></div>
+            <p class="price-note" data-en="30 days of CourtVision Pro access" data-id="Akses CourtVision Pro selama 30 hari">30 days of CourtVision Pro access</p>
           </div>
           <div class="price-yearly">
-            <div class="price-amount">$64 <span data-en="/year" data-id="/tahun">/year</span></div>
-            <p class="price-note" data-en="~Rp 1.040.000 (Save 33%)" data-id="~Rp 1.040.000 (Hemat 33%)">~Rp 1.040.000 (Save 33%)</p>
+            <div class="price-amount">Rp1.040.000 <span data-en="/year" data-id="/tahun">/year</span></div>
+            <p class="price-note" data-en="365 days of CourtVision Pro access (Save 33%)" data-id="Akses CourtVision Pro selama 365 hari (Hemat 33%)">365 days of CourtVision Pro access (Save 33%)</p>
           </div>
         </div>
         
@@ -1114,28 +1122,27 @@
         </ul>
 
         <!-- Monthly CTA -->
-        <a href="https://buy.polar.sh/polar_cl_PXQUrbSaI7Igt0uyaRINQxhVbtHv534hFWoJd0G6n54"
-           target="_blank"
+        <a href="checkout.html?plan=monthly"
            class="pricing-cta pricing-cta-monthly"
            id="cta-monthly"
-           data-en="Start 7-Day Free Trial — Monthly"
-           data-id="Mulai Trial 7 Hari — Bulanan">
-          Start 7-Day Free Trial — Monthly
+           data-en="Buy Monthly Access — Rp130,000"
+           data-id="Beli Akses Bulanan — Rp130.000">
+          Buy Monthly Access — Rp130,000
         </a>
 
         <!-- Yearly CTA (hidden by default) -->
-        <a href="https://buy.polar.sh/polar_cl_JwHM9741Il0vsxoMgWhKJnRBb3k9lwozlbZiX0hjbJo"
-           target="_blank"
+        <a href="checkout.html?plan=yearly"
            class="pricing-cta pricing-cta-yearly hidden"
            id="cta-yearly"
-           data-en="Start 7-Day Free Trial — Yearly (Save 33%)"
-           data-id="Mulai Trial 7 Hari — Tahunan (Hemat 33%)">
-          Start 7-Day Free Trial — Yearly (Save 33%)
+           data-en="Buy Yearly Access — Rp1,040,000"
+           data-id="Beli Akses Tahunan — Rp1.040.000">
+          Buy Yearly Access — Rp1,040,000
         </a>
+        <p class="pricing-note" data-en="Duitku Sandbox is currently enabled for onboarding tests. No real payment will be charged." data-id="Duitku Sandbox sedang digunakan untuk pengujian onboarding. Tidak ada pembayaran nyata yang ditagihkan.">Duitku Sandbox is currently enabled for onboarding tests. No real payment will be charged.</p>
 
-        <p class="pricing-guarantee" data-en="No credit card required for trial. Cancel anytime." data-id="Tidak perlu kartu kredit untuk trial. Batalkan kapan saja.">No credit card required for trial. Cancel anytime.</p>
+        <p class="pricing-guarantee" data-en="No payment is required for the 7-day trial. Paid access starts after a successful payment." data-id="Trial 7 hari tidak memerlukan pembayaran. Masa akses berbayar dimulai setelah pembayaran berhasil.">No payment is required for the 7-day trial. Paid access starts after a successful payment.</p>
         <p class="pricing-powered" style="text-align:center; font-size:11px; color:#94A3B8; margin-top:8px;">
-          Secure payment by <a href="https://polar.sh" target="_blank" style="color:#64748B;">Polar</a>
+          <span data-en="Indonesian payments are securely processed by Duitku" data-id="Pembayaran Indonesia diproses dengan aman oleh Duitku">Indonesian payments are securely processed by Duitku</span>
         </p>
       </div>
     </div>
@@ -1151,7 +1158,7 @@
       <div class="faq-grid">
         <div class="faq-item">
           <h3 data-en="How does the free trial work?" data-id="Bagaimana cara kerja trial gratis?">How does the free trial work?</h3>
-          <p data-en="You get 7 days of full access to all CourtVision Pro features. No credit card required to start. After the trial, choose monthly ($8) or yearly ($64) to continue." data-id="Kamu mendapat 7 hari akses penuh ke semua fitur CourtVision Pro. Tidak perlu kartu kredit untuk mulai. Setelah trial, pilih bulanan ($8) atau tahunan ($64) untuk lanjut.">You get 7 days of full access to all CourtVision Pro features. No credit card required to start. After the trial, choose monthly ($8) or yearly ($64) to continue.</p>
+          <p data-en="You get 7 days of full access to all CourtVision Pro features. No payment is required to start. After the trial, choose monthly access (Rp130,000) or yearly access (Rp1,040,000)." data-id="Kamu mendapat 7 hari akses penuh ke semua fitur CourtVision Pro tanpa pembayaran. Setelah trial, pilih akses bulanan Rp130.000 atau tahunan Rp1.040.000.">You get 7 days of full access to all CourtVision Pro features. No payment is required to start. After the trial, choose monthly access (Rp130,000) or yearly access (Rp1,040,000).</p>
         </div>
         <div class="faq-item">
           <h3 data-en="What happens after my trial ends?" data-id="Apa yang terjadi setelah trial selesai?">What happens after my trial ends?</h3>
@@ -1159,11 +1166,11 @@
         </div>
         <div class="faq-item">
           <h3 data-en="What payment methods do you accept?" data-id="Metode pembayaran apa yang diterima?">What payment methods do you accept?</h3>
-          <p data-en="We accept Visa, Mastercard, and American Express via Stripe. For Indonesian users, we also support GoPay, OVO, Dana, and bank transfer via Midtrans." data-id="Kami menerima Visa, Mastercard, dan American Express via Stripe. Untuk pengguna Indonesia, kami juga mendukung GoPay, OVO, Dana, dan transfer bank via Midtrans.">We accept Visa, Mastercard, and American Express via Stripe. For Indonesian users, we also support GoPay, OVO, Dana, and bank transfer via Midtrans.</p>
+          <p data-en="Available Indonesian payment channels are displayed securely on the Duitku checkout page. The exact channels depend on those activated for CourtVision." data-id="Metode pembayaran Indonesia yang tersedia ditampilkan secara aman di halaman checkout Duitku. Pilihannya mengikuti channel yang aktif untuk CourtVision.">Available Indonesian payment channels are displayed securely on the Duitku checkout page. The exact channels depend on those activated for CourtVision.</p>
         </div>
         <div class="faq-item">
           <h3 data-en="Can I cancel anytime?" data-id="Bisakah saya batalkan kapan saja?">Can I cancel anytime?</h3>
-          <p data-en="Yes! Cancel anytime from your account dashboard. No questions asked, no cancellation fees. Your subscription remains active until the end of your billing period." data-id="Ya! Batalkan kapan saja dari dashboard akunmu. Tanpa pertanyaan, tanpa biaya pembatalan. Langgananmu tetap aktif sampai akhir periode billing.">Yes! Cancel anytime from your account dashboard. No questions asked, no cancellation fees. Your subscription remains active until the end of your billing period.</p>
+          <p data-en="Duitku purchases provide access for the selected 30-day or 365-day period and are not charged automatically again. You may buy another period when it ends." data-id="Pembelian melalui Duitku memberi akses selama 30 atau 365 hari sesuai paket dan tidak ditagihkan ulang secara otomatis. Kamu dapat membeli masa akses berikutnya saat berakhir.">Duitku purchases provide access for the selected 30-day or 365-day period and are not charged automatically again. You may buy another period when it ends.</p>
         </div>
         <div class="faq-item">
           <h3 data-en="Does it work with any YouTube video?" data-id="Apakah bisa untuk semua video YouTube?">Does it work with any YouTube video?</h3>
@@ -1171,7 +1178,7 @@
         </div>
         <div class="faq-item">
           <h3 data-en="Is my data secure?" data-id="Apakah data saya aman?">Is my data secure?</h3>
-          <p data-en="Absolutely. Your clips are stored locally in your browser and synced securely to your account. We never share your data with third parties." data-id="Tentu saja. Klipmu disimpan secara lokal di browsermu dan disinkronkan dengan aman ke akunmu. Kami tidak pernah membagikan datamu ke pihak ketiga.">Absolutely. Your clips are stored locally in your browser and synced securely to your account. We never share your data with third parties.</p>
+          <p data-en="Your clip data stays locally on your device and is not uploaded to CourtVision's servers. Only limited account, license, device, and payment-status records are processed to provide access." data-id="Data klip tetap tersimpan lokal di perangkat dan tidak diunggah ke server CourtVision. Hanya data terbatas tentang akun, lisensi, perangkat, dan status pembayaran yang diproses untuk memberikan akses.">Your clip data stays locally on your device and is not uploaded to CourtVision's servers. Only limited account, license, device, and payment-status records are processed to provide access.</p>
         </div>
       </div>
     </div>
@@ -1186,7 +1193,7 @@
         <span>🌐</span>
         <span data-en="Get it on Chrome Web Store" data-id="Download di Chrome Web Store">Get it on Chrome Web Store</span>
       </a>
-      <p class="cta-trial" data-en="Free to install • Pro features $8/month" data-id="Gratis install • Fitur Pro $8/bulan">Free to install • Pro features $8/month</p>
+      <p class="cta-trial" data-en="Free to install • Pro access Rp130,000/month" data-id="Gratis diinstal • Akses Pro Rp130.000/bulan">Free to install • Pro access Rp130,000/month</p>
     </div>
   </section>
 
@@ -1214,6 +1221,8 @@
           <div class="footer-links-col">
             <h4>Contact</h4>
             <a href="mailto:support@CourtVision.id">support@CourtVision.id</a>
+            <a href="https://wa.me/6281343447079" target="_blank" rel="noopener noreferrer">WhatsApp: 081343447079</a>
+            <p class="footer-contact-address">Apartemen Bassura City, Tower C, Unit 22 CP, Jalan Basuki Rahmat No. 1A</p>
           </div>
         </div>
       </div>
