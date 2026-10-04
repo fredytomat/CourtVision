@@ -13,7 +13,7 @@
     "GOOGLE_CLIENT_IDS": "replace-with-google-oauth-client-id",
     "POLAR_API_BASE_URL": "https://api.polar.sh",
     "POLAR_ORGANIZATION_ID": "0be66be6-c4e2-4c59-8980-6e0a418fe30f",
-    "DUITKU_MERCHANT_CODE": "replace-with-duitku-production-merchant-code",
+    "DUITKU_MERCHANT_CODE": "D25016",
     "DUITKU_API_BASE_URL": "https://passport.duitku.com/webapi/api/merchant",
     "DUITKU_CALLBACK_URL": "https://courtvision-license-api.fredy-xau.workers.dev/v1/webhooks/duitku",
     "DUITKU_RETURN_URL": "https://courtvision.id/payment-result.html"
@@ -22,7 +22,7 @@
     {
       "binding": "DB",
       "database_name": "courtvision-license",
-      "database_id": "local",
+      "database_id": "bd6dd794-81ae-4802-8b7d-1ea9eb893572",
       "migrations_dir": "migrations"
     }
   ],
