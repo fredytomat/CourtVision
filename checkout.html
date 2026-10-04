@@ -63,7 +63,7 @@
     </section>
     <section class="checkout">
       <h2>Data pembelian</h2>
-      <p class="sandbox-notice">Mode Sandbox Duitku — hanya untuk pengujian. Tidak ada pembayaran atau uang nyata.</p>
+      <p class="sandbox-notice">Pembayaran Production Duitku — transaksi menggunakan uang nyata. Pastikan data pembelian dan metode pembayaran sudah benar sebelum melanjutkan.</p>
       <form id="checkout-form">
         <label>Nama lengkap<input id="name" name="name" autocomplete="name" maxlength="50" required placeholder="Nama pembeli"></label>
         <label>Email akun CourtVision<input id="email" name="email" type="email" autocomplete="email" maxlength="50" required placeholder="nama@email.com"></label>
@@ -110,7 +110,7 @@
           method.disabled = false;
           pay.disabled = false;
         } catch (error) {
-          method.replaceChildren(new Option('Duitku Sandbox belum siap', ''));
+          method.replaceChildren(new Option('Duitku belum siap', ''));
           setStatus(error instanceof Error ? error.message : 'Metode pembayaran gagal dimuat', true);
         }
       }
