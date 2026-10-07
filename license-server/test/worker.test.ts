@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import worker from "../src/index";
 
 const testEnv = {
-  ALLOWED_ORIGINS: "https://courtvision.id",
-} as Env;
+  ALLOWED_ORIGINS: "https://courtvision.id,chrome-extension://oklbkdldkcchgihmadhbgojnamadihig",
+} as unknown as Env;
 
 describe("public routes", () => {
   it("returns a health response with security headers", async () => {
