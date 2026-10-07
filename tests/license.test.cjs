@@ -1,53 +1,61 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
+const crypto = require('node:crypto');
 const fs = require('node:fs');
-const vm = require('node:vm');
 const path = require('node:path');
-const root = path.join(__dirname, '..', 'extension');
-const popup = fs.readFileSync(path.join(root, 'popup.js'), 'utf8');
-const background = fs.readFileSync(path.join(root, 'background.js'), 'utf8');
-const quiet = { log() {}, warn() {}, error() {} };
-const key = 'AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE';
-for (const code of [408, 429, 500, 502, 503]) {
-  test(`HTTP ${code} is an outage, not an invalid key`, async () => {
-    const context = vm.createContext({console: quiet, fetch: async () => ({ok:false,status:code,json:async()=>({})})});
-    vm.runInContext(background.slice(0, background.indexOf('chrome.runtime.onMessage')), context);
-    assert.equal((await vm.runInContext(`polarValidate('${key}')`, context)).valid, null);
-  });
-}
-test('granted and revoked responses remain distinct', async () => {
-  for (const status of ['granted', 'revoked']) {
-    const context = vm.createContext({console: quiet, fetch: async () => ({ok:true,status:200,json:async()=>({status})})});
-    vm.runInContext(background.slice(0, background.indexOf('chrome.runtime.onMessage')), context);
-    assert.equal((await vm.runInContext(`polarValidate('${key}')`, context)).valid, status === 'granted');
-  }
+
+const extensionRoot = path.join(__dirname, '..', 'extension');
+const read = (name) => fs.readFileSync(path.join(extensionRoot, name), 'utf8');
+const manifest = JSON.parse(read('manifest.json'));
+const background = read('background.js');
+const popup = read('popup.js');
+const popupHtml = read('popup.html');
+const content = read('content.js');
+const welcome = read('welcome.js');
+
+test('release uses the production account service and keeps the published extension identity', () => {
+  assert.equal(manifest.version, '3.4.0');
+  assert.ok(manifest.permissions.includes('identity'));
+  assert.equal(manifest.oauth2.client_id, '593776146486-ereu1ifkfk85hf321rjlu8ik3vig85si.apps.googleusercontent.com');
+  const extensionId = [...crypto.createHash('sha256').update(Buffer.from(manifest.key, 'base64')).digest().subarray(0, 16)]
+    .map((byte) => String.fromCharCode(97 + (byte >> 4), 97 + (byte & 15)))
+    .join('');
+  assert.equal(extensionId, 'oklbkdldkcchgihmadhbgojnamadihig');
+  assert.ok(manifest.host_permissions.includes('https://courtvision-license-api.fredy-xau.workers.dev/*'));
+  assert.ok(!manifest.host_permissions.some(permission => permission.includes('staging')));
+  assert.ok(!manifest.host_permissions.some(permission => permission.includes('polar')));
 });
-for (const [label, valid, age, expected, removed] of [
-  ['fresh cache', null, 1, 'pro', false],
-  ['offline grace', null, 8, 'pro', false],
-  ['outage after grace', null, 25, 'error', false],
-  ['valid old key', true, 25, 'pro', false],
-  ['revoked key', false, 25, 'expired', true],
-]) {
-  test(label, async () => {
-    const data = {courtvision_license:key, courtvision_license_cache:{key,valid:true,timestamp:Date.now()-age*3600000},courtvision_trial:{expiresAt:'2020-01-01'}};
-    const context = vm.createContext({console:quiet, chrome:{storage:{local:{get:async()=>data,set:async values=>Object.assign(data,values),remove:async keys=>keys.forEach(k=>delete data[k])}}}, validateLicenseFormat:()=>true,validateLicenseWithPolar:async()=>valid});
-    const constants = popup.slice(popup.indexOf('const LICENSE_KEY'), popup.indexOf('// Polar checkout URLs'));
-    const fn = popup.slice(popup.indexOf('async function checkUserStatus()'), popup.indexOf('// ============================================', popup.indexOf('async function checkUserStatus()')));
-    vm.runInContext(constants + fn,context);
-    assert.equal((await vm.runInContext('checkUserStatus()',context)).status,expected);
-    assert.equal(data.courtvision_license === undefined,removed);
-  });
-}
-test('successful activation stores the existing key and cache', async () => {
-  const elements = {};
-  const document = {getElementById:id=>elements[id] ||= {value:key,style:{}}};
-  let saved;
-  const context = vm.createContext({document, chrome:{storage:{local:{set:async value=>saved=value}}},validateLicenseFormat:()=>true,activateLicenseWithPolar:async()=>({success:true}),updateLicenseUI(){},updateExportButtons(){}});
-  const start = popup.indexOf("document.getElementById('btn-activate').onclick");
-  const end = popup.indexOf('// Copy WhatsApp',start);
-  vm.runInContext("const LICENSE_KEY='courtvision_license';const LICENSE_CACHE_KEY='courtvision_license_cache';let isPro=false;let trialStatus=null;"+popup.slice(start,end),context);
-  await elements['btn-activate'].onclick();
-  assert.equal(saved.courtvision_license,key);
-  assert.equal(saved.courtvision_license_cache.valid,true);
+
+test('background opens onboarding after install and routes upgrades through Duitku checkout', () => {
+  assert.match(background, /welcome\.html/);
+  assert.match(background, /https:\/\/courtvision\.id\/checkout\.html/);
+  assert.match(background, /licenseServerSignIn/);
+  assert.match(background, /openCheckout/);
+  assert.match(background, /openSampleVideo/);
+  assert.doesNotMatch(background, /polar/i);
+  assert.doesNotMatch(background, /staging/i);
+});
+
+test('popup presents one account flow without manual license keys', () => {
+  assert.match(popupHtml, /data-tab="account"/);
+  assert.match(popupHtml, /btn-google-signin/);
+  assert.match(popupHtml, /btn-upgrade-monthly/);
+  assert.match(popupHtml, /Duitku/);
+  assert.doesNotMatch(popupHtml, /license-key|btn-activate|Polar/i);
+  assert.match(popup, /licenseServerStatus/);
+  assert.match(popup, /TRIAL ·/);
+  assert.doesNotMatch(popup, /courtvision_license['"]|Polar checkout|polarValidate/i);
+});
+
+test('YouTube panel trusts only the production entitlement', () => {
+  assert.match(content, /licenseServerStatus/);
+  assert.match(content, /signed-out/);
+  assert.match(content, /AKSES BERAKHIR/);
+  assert.doesNotMatch(content, /TRIAL_KEY|TRIAL_DAYS|polarPattern|courtvision_license/);
+});
+
+test('welcome page supports sign-in and opening the sample video', () => {
+  assert.match(welcome, /licenseServerSignIn/);
+  assert.match(welcome, /licenseServerStatus/);
+  assert.match(welcome, /openSampleVideo/);
 });

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Selamat datang di CourtVision</title>
+  <link rel="stylesheet" href="welcome.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="brand" aria-label="CourtVision">
+      <span class="brand-mark">CV</span>
+      <span>CourtVision</span>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">EXTENSION BERHASIL DIPASANG</div>
+      <h1>Buat klip pertama Anda dalam satu menit.</h1>
+      <p>Masuk sekali dengan Google. Trial tujuh hari aktif otomatis—tanpa license key dan tanpa pengaturan rumit.</p>
+
+      <ol class="steps" aria-label="Langkah memulai">
+        <li class="active"><span>1</span><div><strong>Masuk Google</strong><small>Hubungkan akun CourtVision</small></div></li>
+        <li><span>2</span><div><strong>Buka video</strong><small>Kami siapkan video contoh</small></div></li>
+        <li><span>3</span><div><strong>Tekan satu tag</strong><small>Klip pertama langsung tersimpan</small></div></li>
+      </ol>
+
+      <section class="account" id="account" aria-live="polite">
+        <span class="status-dot"></span>
+        <div>
+          <strong id="account-title">Memeriksa akun…</strong>
+          <small id="account-detail">Mohon tunggu sebentar.</small>
+        </div>
+      </section>
+
+      <button class="primary" id="primary-action" disabled>Memeriksa…</button>
+      <button class="secondary" id="open-youtube">Saya ingin membuka video sendiri</button>
+      <p class="fine-print">CourtVision bekerja pada video YouTube di Chrome desktop. Klip disimpan secara lokal di laptop ini.</p>
+    </section>
+
+    <aside class="preview" aria-label="Pratinjau CourtVision">
+      <div class="preview-top"><span>COURTVISION</span><span class="badge">TRIAL</span></div>
+      <div class="court"><span class="hoop"></span><span class="ball"></span></div>
+      <div class="tag-grid">
+        <div class="tag green">Offense</div>
+        <div class="tag purple">Defense</div>
+        <div class="tag aqua">BLOB</div>
+        <div class="tag blue">SLOB</div>
+      </div>
+      <div class="clip-card"><span>✓ Klip tersimpan</span><strong>00:42 – 00:56</strong></div>
+    </aside>
+  </main>
+  <script src="welcome.js"></script>
+</body>
+</html>

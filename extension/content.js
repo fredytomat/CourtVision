@@ -1,6 +1,6 @@
 /**
  * CourtVision - Professional Basketball Video Analysis
- * Version: 2.6.0 (Custom Teams & Categories)
+ * Version: 3.4.0 (Production account onboarding)
  */
 (function() {
   'use strict';
@@ -10,19 +10,19 @@
   // ============================================
   
   const DEFAULT_TEAMS = [
-    { id: 'team-1', name: 'My Team', color: '#1E3A5F' },
-    { id: 'team-2', name: 'Opponent', color: '#DC2626' }
+    { id: 'team-1', name: 'My Team', color: '#C9DF57' },
+    { id: 'team-2', name: 'Opponent', color: '#A890ED' }
   ];
 
   const DEFAULT_CATEGORIES = [
-    { id: 'cat-1', name: 'Transition', color: '#F59E0B' },
-    { id: 'cat-2', name: 'Set Play', color: '#10B981' },
-    { id: 'cat-3', name: 'Zone Off', color: '#3B82F6' },
-    { id: 'cat-4', name: 'Defense', color: '#8B5CF6' },
-    { id: 'cat-5', name: 'Zone Def', color: '#EC4899' },
-    { id: 'cat-6', name: 'Press', color: '#F43F5E' },
-    { id: 'cat-7', name: 'BLOB', color: '#14B8A6' },
-    { id: 'cat-8', name: 'SLOB', color: '#0EA5E9' }
+    { id: 'cat-1', name: 'Transition', color: '#E2A85F' },
+    { id: 'cat-2', name: 'Set Play', color: '#5CBC82' },
+    { id: 'cat-3', name: 'Zone Off', color: '#79ADDF' },
+    { id: 'cat-4', name: 'Defense', color: '#A890ED' },
+    { id: 'cat-5', name: 'Zone Def', color: '#C987B6' },
+    { id: 'cat-6', name: 'Press', color: '#E07265' },
+    { id: 'cat-7', name: 'BLOB', color: '#52C6C0' },
+    { id: 'cat-8', name: 'SLOB', color: '#79ADDF' }
   ];
 
   const STORAGE_KEYS = {
@@ -325,12 +325,31 @@
   // TRIAL SYSTEM - Content Panel
   // ============================================
 
-  const TRIAL_KEY = 'courtvision_trial';
-  const TRIAL_DAYS = 7;
-  const POLAR_MONTHLY = 'https://buy.polar.sh/polar_cl_PXQUrbSaI7Igt0uyaRINQxhVbtHv534hFWoJd0G6n54';
-  const POLAR_YEARLY = 'https://buy.polar.sh/polar_cl_JwHM9741Il0vsxoMgWhKJnRBb3k9lwozlbZiX0hjbJo';
+  function getLicenseServerStatus() {
+    return new Promise(resolve => {
+      chrome.runtime.sendMessage({ action: 'licenseServerStatus' }, response => {
+        if (chrome.runtime.lastError) {
+          resolve(null);
+          return;
+        }
+        resolve(response || null);
+      });
+    });
+  }
 
-  // Show upgrade modal with Monthly + Yearly options
+  function sendAccountAction(action, payload = {}) {
+    return new Promise(resolve => {
+      chrome.runtime.sendMessage({ action, ...payload }, response => {
+        if (chrome.runtime.lastError) {
+          resolve({ error: chrome.runtime.lastError.message });
+          return;
+        }
+        resolve(response || { error: 'Server tidak merespons' });
+      });
+    });
+  }
+
+  // Show Duitku Production upgrade options.
   function showUpgradeModal() {
     // Remove existing modal if any
     const existing = document.getElementById('cv-upgrade-modal');
@@ -343,29 +362,29 @@
       <div class="cv-upgrade-overlay" id="cv-upgrade-overlay"></div>
       <div class="cv-upgrade-box">
         <div class="cv-upgrade-header">
-          <span>Upgrade to Pro</span>
+          <span>Aktifkan CourtVision Pro</span>
           <button class="cv-upgrade-close" id="cv-upgrade-close">✕</button>
         </div>
         <div class="cv-upgrade-body">
-          <p class="cv-upgrade-subtitle">Choose your plan:</p>
+          <p class="cv-upgrade-subtitle">Pilih masa akses:</p>
 
-          <a href="${POLAR_MONTHLY}" target="_blank" class="cv-upgrade-plan monthly">
+          <button type="button" class="cv-upgrade-plan monthly" data-checkout-plan="monthly">
             <div class="cv-plan-info">
-              <span class="cv-plan-name">Pro Monthly</span>
-              <span class="cv-plan-trial">7-day free trial</span>
+              <span class="cv-plan-name">Akses 30 hari</span>
+              <span class="cv-plan-trial">Tidak diperpanjang otomatis</span>
             </div>
-            <span class="cv-plan-price">$8<span class="cv-plan-period">/mo</span></span>
-          </a>
+            <span class="cv-plan-price">Rp130.000</span>
+          </button>
 
-          <a href="${POLAR_YEARLY}" target="_blank" class="cv-upgrade-plan yearly">
+          <button type="button" class="cv-upgrade-plan yearly" data-checkout-plan="yearly">
             <div class="cv-plan-info">
-              <span class="cv-plan-name">Pro Yearly</span>
-              <span class="cv-plan-save">Save 33%</span>
+              <span class="cv-plan-name">Akses 365 hari</span>
+              <span class="cv-plan-save">Hemat 33%</span>
             </div>
-            <span class="cv-plan-price">$64<span class="cv-plan-period">/yr</span></span>
-          </a>
+            <span class="cv-plan-price">Rp1.040.000</span>
+          </button>
 
-          <p class="cv-upgrade-note">Cancel anytime · Secure payment by Polar</p>
+          <p class="cv-upgrade-note">Pembayaran aman melalui Duitku Production</p>
 
           <div class="cv-upgrade-features">
             <p>✓ Unlimited clip tagging</p>
@@ -382,42 +401,38 @@
     // Close on overlay click
     document.getElementById('cv-upgrade-overlay').onclick = () => modal.remove();
     document.getElementById('cv-upgrade-close').onclick = () => modal.remove();
+    modal.querySelectorAll('[data-checkout-plan]').forEach(button => {
+      button.onclick = async () => {
+        button.disabled = true;
+        const result = await sendAccountAction('openCheckout', { plan: button.dataset.checkoutPlan });
+        button.disabled = false;
+        if (result.error) showNotif(result.error, 'error');
+        else modal.remove();
+      };
+    });
   }
 
   async function getTrialStatus() {
     try {
-      const result = await chrome.storage.local.get(['courtvision_license', TRIAL_KEY]);
-      
-      // Check license first
-      if (result['courtvision_license']) {
-        const polarPattern = /^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/;
-        const cvUuidPattern = /^CV-[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/;
-        const cvShortPattern = /^CV-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
-        if (polarPattern.test(result['courtvision_license'].toUpperCase()) || cvUuidPattern.test(result['courtvision_license'].toUpperCase()) || cvShortPattern.test(result['courtvision_license'].toUpperCase())) {
-          return { status: 'pro' };
-        }
+      const serverStatus = await getLicenseServerStatus();
+      if (!serverStatus) return { status: 'error', message: 'Server CourtVision tidak merespons' };
+      if (serverStatus.error) return { status: 'error', message: serverStatus.error };
+      if (!serverStatus.signedIn) return { status: 'signed-out' };
+      if (serverStatus.entitlement?.status === 'pro') {
+        return { status: 'pro', validUntil: serverStatus.entitlement.validUntil || null };
       }
-
-      // Check trial
-      let trial = result[TRIAL_KEY];
-      if (!trial) {
-        const now = new Date();
-        const expires = new Date(now.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1000);
-        trial = { installDate: now.toISOString(), expiresAt: expires.toISOString() };
-        await chrome.storage.local.set({ [TRIAL_KEY]: trial });
-        return { status: 'trial', daysLeft: TRIAL_DAYS };
+      if (serverStatus.entitlement?.status === 'trial') {
+        const trialEndsAt = Number(serverStatus.entitlement.trialEndsAt || 0);
+        const secondsLeft = Math.max(0, trialEndsAt - Math.floor(Date.now() / 1000));
+        return {
+          status: 'trial',
+          daysLeft: Math.max(1, Math.ceil(secondsLeft / 86400)),
+          validUntil: trialEndsAt || null
+        };
       }
-
-      const expiresAt = new Date(trial.expiresAt);
-      const now = new Date();
-      if (now < expiresAt) {
-        const daysLeft = Math.max(1, Math.ceil((expiresAt - now) / (1000 * 60 * 60 * 24)));
-        return { status: 'trial', daysLeft };
-      }
-
       return { status: 'expired' };
     } catch (err) {
-      return { status: 'trial', daysLeft: TRIAL_DAYS };
+      return { status: 'error', message: err instanceof Error ? err.message : 'Status akun gagal diperiksa' };
     }
   }
 
@@ -426,27 +441,55 @@
     if (!banner) return;
 
     const status = await getTrialStatus();
+    const badge = document.getElementById('cv-account-badge');
+    banner.className = 'cv-trial-banner';
 
     if (status.status === 'pro') {
       banner.style.display = 'none';
+      if (badge) badge.textContent = 'PRO';
 
     } else if (status.status === 'trial') {
       banner.style.display = 'flex';
       banner.className = 'cv-trial-banner trial';
       banner.innerHTML = `
-        <span>🎁 Free Trial: <strong>${status.daysLeft} day${status.daysLeft !== 1 ? 's' : ''} left</strong></span>
-        <button class="cv-trial-upgrade" id="cv-trial-btn">Upgrade</button>
+        <span>Trial aktif · <strong>${status.daysLeft} hari tersisa</strong></span>
+        <button class="cv-trial-upgrade" id="cv-trial-btn">Aktifkan PRO</button>
       `;
       document.getElementById('cv-trial-btn').onclick = showUpgradeModal;
+      if (badge) badge.textContent = `TRIAL · ${status.daysLeft}H`;
+
+    } else if (status.status === 'signed-out') {
+      banner.style.display = 'flex';
+      banner.className = 'cv-trial-banner signed-out';
+      banner.innerHTML = `
+        <span>Masuk dengan Google untuk memulai trial 7 hari</span>
+        <button class="cv-trial-upgrade" id="cv-trial-btn">Masuk Google</button>
+      `;
+      document.getElementById('cv-trial-btn').onclick = async () => {
+        const button = document.getElementById('cv-trial-btn');
+        button.disabled = true;
+        button.textContent = 'Menghubungkan…';
+        const result = await sendAccountAction('licenseServerSignIn');
+        if (result.error) showNotif(result.error, 'error');
+        await updateTrialBanner();
+      };
+      if (badge) badge.textContent = 'BELUM MASUK';
+
+    } else if (status.status === 'error') {
+      banner.style.display = 'flex';
+      banner.className = 'cv-trial-banner expired';
+      banner.innerHTML = '<span>Status akun belum dapat diperiksa. Periksa koneksi Anda.</span>';
+      if (badge) badge.textContent = 'OFFLINE';
 
     } else {
       banner.style.display = 'flex';
       banner.className = 'cv-trial-banner expired';
       banner.innerHTML = `
-        <span>⚠️ Trial expired</span>
-        <button class="cv-trial-upgrade" id="cv-trial-btn">Get Pro</button>
+        <span>Masa akses telah berakhir</span>
+        <button class="cv-trial-upgrade" id="cv-trial-btn">Aktifkan PRO</button>
       `;
       document.getElementById('cv-trial-btn').onclick = showUpgradeModal;
+      if (badge) badge.textContent = 'AKSES BERAKHIR';
     }
   }
 
@@ -629,14 +672,14 @@
         </div>
         <div class="cv-clip-adjust">
           <div class="cv-adjust-row">
-            <button class="cv-btn-adj" data-id="${c.id}" data-type="start" data-dir="-1">-1s</button>
-            <button class="cv-btn-adj" data-id="${c.id}" data-type="start" data-dir="1">+1s</button>
             <span class="cv-adjust-label">Start</span>
+            <button class="cv-btn-adj" data-id="${c.id}" data-type="start" data-dir="-1" aria-label="Move clip start one second earlier">◀</button>
+            <button class="cv-btn-adj" data-id="${c.id}" data-type="start" data-dir="1" aria-label="Move clip start one second later">▶</button>
           </div>
           <div class="cv-adjust-row">
-            <button class="cv-btn-adj" data-id="${c.id}" data-type="end" data-dir="-1">-1s</button>
-            <button class="cv-btn-adj" data-id="${c.id}" data-type="end" data-dir="1">+1s</button>
             <span class="cv-adjust-label">End</span>
+            <button class="cv-btn-adj" data-id="${c.id}" data-type="end" data-dir="-1" aria-label="Move clip end one second earlier">◀</button>
+            <button class="cv-btn-adj" data-id="${c.id}" data-type="end" data-dir="1" aria-label="Move clip end one second later">▶</button>
           </div>
         </div>
       </div>
@@ -803,23 +846,8 @@
       team.sortedCategories = Object.values(team.categories).sort((a, b) => a.order - b.order);
     });
 
-    // Build data structure for URL encoding
-    const clipData = {
-      title: shortTitle,
-      teams: sortedTeams.map(team => ({
-        name: team.name,
-        categories: team.sortedCategories.map(cat => ({
-          name: cat.name,
-          clips: cat.clipData.sort((a, b) => (b[3] || 0) - (a[3] || 0) || a[0] - b[0])
-        }))
-      }))
-    };
-    
-    // Encode data to base64
-    const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(clipData))));
-    
-    // Generate single URL with all clips
-    const clipViewerUrl = `https://courtvision.id/clip.html?v=${videoId}&d=${encodedData}`;
+    const clipData = CourtVisionShare.createPayload(shortTitle, videoId, clips);
+    const clipViewerUrl = CourtVisionShare.createUrl(clipData);
 
     let text = `*GAME ANALYSIS*\n`;
     text += `${shortTitle}\n`;
@@ -897,25 +925,52 @@
     if (settingsTab === 'clip') {
       container.innerHTML = `
         <div class="cv-settings-section">
-          <div class="cv-settings-row">
-            <label>Before tag:</label>
-            <input type="number" id="cv-clip-before" value="${settings.clipBefore}" min="0" max="60"> sec
+          <div class="cv-duration-row">
+            <div class="cv-duration-copy">
+              <span class="cv-duration-title">Before tag</span>
+              <span class="cv-duration-hint">Clip begins before the tagged moment</span>
+            </div>
+            <div class="cv-stepper" role="group" aria-label="Seconds before tag">
+              <button class="cv-stepper-btn" data-setting="clipBefore" data-delta="-1" aria-label="Decrease seconds before tag">◀</button>
+              <span class="cv-stepper-value" id="cv-clip-before">${settings.clipBefore}s</span>
+              <button class="cv-stepper-btn" data-setting="clipBefore" data-delta="1" aria-label="Increase seconds before tag">▶</button>
+            </div>
           </div>
-          <div class="cv-settings-row">
-            <label>After tag:</label>
-            <input type="number" id="cv-clip-after" value="${settings.clipAfter}" min="0" max="120"> sec
+          <div class="cv-duration-row">
+            <div class="cv-duration-copy">
+              <span class="cv-duration-title">After tag</span>
+              <span class="cv-duration-hint">Clip ends after the tagged moment</span>
+            </div>
+            <div class="cv-stepper" role="group" aria-label="Seconds after tag">
+              <button class="cv-stepper-btn" data-setting="clipAfter" data-delta="-1" aria-label="Decrease seconds after tag">◀</button>
+              <span class="cv-stepper-value" id="cv-clip-after">${settings.clipAfter}s</span>
+              <button class="cv-stepper-btn" data-setting="clipAfter" data-delta="1" aria-label="Increase seconds after tag">▶</button>
+            </div>
           </div>
-          <button class="cv-settings-save" id="cv-save-clip-settings">Save</button>
+          <div class="cv-duration-saved" id="cv-duration-saved">Changes save automatically</div>
         </div>
       `;
-      
-      document.getElementById('cv-save-clip-settings').onclick = e => {
-        e.stopPropagation();
-        settings.clipBefore = parseInt(document.getElementById('cv-clip-before').value) || 7;
-        settings.clipAfter = parseInt(document.getElementById('cv-clip-after').value) || 17;
-        saveSettings();
-        showNotif('Settings saved', 'success');
-      };
+
+      container.querySelectorAll('.cv-stepper-btn').forEach(button => {
+        button.onclick = e => {
+          e.stopPropagation();
+          const key = button.dataset.setting;
+          const delta = parseInt(button.dataset.delta, 10);
+          const max = key === 'clipBefore' ? 60 : 120;
+          const current = Number(settings[key]);
+          const fallback = key === 'clipBefore' ? 7 : 17;
+          settings[key] = Math.min(max, Math.max(0, (Number.isFinite(current) ? current : fallback) + delta));
+          document.getElementById(key === 'clipBefore' ? 'cv-clip-before' : 'cv-clip-after').textContent = `${settings[key]}s`;
+          saveSettings();
+
+          const saved = document.getElementById('cv-duration-saved');
+          saved.textContent = 'Saved';
+          clearTimeout(saved._resetTimer);
+          saved._resetTimer = setTimeout(() => {
+            saved.textContent = 'Changes save automatically';
+          }, 900);
+        };
+      });
     } 
     else if (settingsTab === 'teams') {
       container.innerHTML = `
@@ -1146,10 +1201,10 @@
 
       <div class="cv-panel ${isPanelVisible ? '' : 'hidden'}" id="cv-panel">
         <div class="cv-header" id="cv-header">
-          <span class="cv-title">CourtVision <span class="cv-pro">PRO</span></span>
+          <span class="cv-title">CourtVision <span class="cv-pro" id="cv-account-badge">MEMERIKSA</span></span>
           <div class="cv-header-right">
             <span class="cv-time" id="cv-time">0:00</span>
-            <button class="cv-hbtn" id="cv-settings-btn" title="Settings">S</button>
+            <button class="cv-hbtn" id="cv-settings-btn" title="Settings" aria-label="Settings">⚙</button>
             <button class="cv-hbtn" id="cv-min" title="Minimize">−</button>
             <button class="cv-hbtn" id="cv-close" title="Close">✕</button>
           </div>

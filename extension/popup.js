@@ -1,33 +1,86 @@
 /**
  * CourtVision Popup - Full Clips Manager
- * v3.0.0 - Trial System + Polar Payment Integration
+ * v3.4.0 - Production account and Duitku activation
  */
 
 const STORAGE_KEY = 'courtvision_clips';
 const CONFIG_KEY = 'courtvision_config';
-const LICENSE_KEY = 'courtvision_license';
-const TRIAL_KEY = 'courtvision_trial';
-const TRIAL_DAYS = 7;
-const LICENSE_CACHE_KEY = 'courtvision_license_cache';
-const LICENSE_CACHE_DURATION = 6 * 60 * 60 * 1000;  // 6 jam — re-validasi ke Polar setiap 6 jam
-const OFFLINE_GRACE_PERIOD = 24 * 60 * 60 * 1000;   // 24 jam — grace period jika offline
-
-// Polar checkout URLs
-const POLAR_MONTHLY_URL = 'https://buy.polar.sh/polar_cl_PXQUrbSaI7Igt0uyaRINQxhVbtHv534hFWoJd0G6n54';
-const POLAR_YEARLY_URL = 'https://buy.polar.sh/polar_cl_JwHM9741Il0vsxoMgWhKJnRBb3k9lwozlbZiX0hjbJo';
 
 let allClips = [];
 let config = {
   teams: [
-    { id: 'team-1', name: 'My Team', color: '#1E3A5F' },
-    { id: 'team-2', name: 'Opponent', color: '#DC2626' }
+    { id: 'team-1', name: 'My Team', color: '#C9DF57' },
+    { id: 'team-2', name: 'Opponent', color: '#A890ED' }
   ],
   categories: []
 };
 let filterVideo = 'all';
 let filterTeam = 'all';
 let isPro = false;
-let trialStatus = null; // { status: 'trial'|'expired', daysLeft: N }
+let trialStatus = { status: 'signed-out' };
+let licenseAccount = null;
+
+function sendLicenseMessage(message) {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage(message, (response) => {
+      if (chrome.runtime.lastError) {
+        resolve({ error: chrome.runtime.lastError.message });
+        return;
+      }
+      resolve(response || { error: 'Server tidak merespons' });
+    });
+  });
+}
+
+function userStatusFromEntitlement(entitlement) {
+  if (!entitlement) return { status: 'expired' };
+  if (entitlement.status === 'pro') {
+    return { status: 'pro', validUntil: entitlement.validUntil || null };
+  }
+  if (entitlement.status === 'trial') {
+    const seconds = Math.max(0, (entitlement.trialEndsAt || 0) - Math.floor(Date.now() / 1000));
+    return {
+      status: 'trial',
+      daysLeft: Math.max(1, Math.ceil(seconds / 86400)),
+      validUntil: entitlement.trialEndsAt || null
+    };
+  }
+  return { status: 'expired' };
+}
+
+async function loadLicenseAccount() {
+  const accountName = document.getElementById('account-name');
+  const accountDetail = document.getElementById('account-detail');
+  const signIn = document.getElementById('btn-google-signin');
+  const signOut = document.getElementById('btn-google-logout');
+  const result = await sendLicenseMessage({ action: 'licenseServerStatus' });
+  licenseAccount = result.signedIn ? result : null;
+  if (!licenseAccount) {
+    accountName.textContent = 'Belum masuk';
+    accountDetail.textContent = result.error || 'Masuk sekali untuk memulai trial dan menghubungkan akses ke laptop ini.';
+    signIn.classList.remove('hidden');
+    signOut.classList.add('hidden');
+    trialStatus = result.error
+      ? { status: 'error', message: result.error }
+      : { status: 'signed-out' };
+    isPro = false;
+    updateLicenseUI(trialStatus);
+    updateExportButtons();
+    return;
+  }
+
+  accountName.textContent = licenseAccount.user?.name || licenseAccount.user?.email || 'Akun CourtVision';
+  const activeDevices = licenseAccount.devices?.length || 1;
+  const deviceLimit = licenseAccount.maxActiveDevices || 1;
+  accountDetail.textContent = `${activeDevices} dari ${deviceLimit} laptop aktif`;
+  signIn.classList.add('hidden');
+  signOut.classList.remove('hidden');
+  const serverStatus = userStatusFromEntitlement(licenseAccount.entitlement);
+  trialStatus = serverStatus;
+  isPro = serverStatus.status === 'pro';
+  updateLicenseUI(serverStatus);
+  updateExportButtons();
+}
 
 // Format time helper
 function formatTime(s) {
@@ -302,23 +355,8 @@ function generateWhatsAppSummary(clips) {
     team.sortedCategories = Object.values(team.categories).sort((a, b) => a.order - b.order);
   });
 
-  // Build data structure for URL encoding
-  const clipData = {
-    title: shortTitle,
-    teams: sortedTeams.map(team => ({
-      name: team.name,
-      categories: team.sortedCategories.map(cat => ({
-        name: cat.name,
-        clips: cat.clipData.sort((a, b) => a[0] - b[0])
-      }))
-    }))
-  };
-  
-  // Encode data to base64
-  const encodedData = btoa(unescape(encodeURIComponent(JSON.stringify(clipData))));
-  
-  // Generate single URL with all clips
-  const clipViewerUrl = `https://courtvision.id/clip?v=${videoId}&d=${encodedData}`;
+  const clipData = CourtVisionShare.createPayload(shortTitle, videoId, clips);
+  const clipViewerUrl = CourtVisionShare.createUrl(clipData);
 
   // Build WhatsApp text
   let text = `*GAME ANALYSIS*\n`;
@@ -361,223 +399,86 @@ function generateWhatsAppSummary(clips) {
 }
 
 // ============================================
-// TRIAL & LICENSE SYSTEM (v3.0.0)
+// PRODUCTION ACCOUNT STATUS
 // ============================================
 
-// Check user status: 'pro' | 'trial' | 'expired'
-// v3.1.0: Validates license with Polar API on every open (with 6-hour cache)
-async function checkUserStatus() {
-  try {
-    const licenseResult = await chrome.storage.local.get([LICENSE_KEY]);
-    const licenseKey = licenseResult[LICENSE_KEY];
-
-    if (licenseKey && validateLicenseFormat(licenseKey)) {
-      const now = Date.now();
-      const cacheResult = await chrome.storage.local.get([LICENSE_CACHE_KEY]);
-      const cache = cacheResult[LICENSE_CACHE_KEY];
-
-      // Cache masih segar (< 6 jam) dan key sama — pakai cache
-      if (cache && cache.key === licenseKey && cache.valid && (now - cache.timestamp) < LICENSE_CACHE_DURATION) {
-        return { status: 'pro', license: licenseKey };
-      }
-
-      // Cache expired atau tidak ada — validasi ke Polar API
-      const isValid = await validateLicenseWithPolar(licenseKey);
-
-      if (isValid === true) {
-        // Update cache dengan timestamp baru
-        await chrome.storage.local.set({
-          [LICENSE_CACHE_KEY]: { key: licenseKey, valid: true, timestamp: now }
-        });
-        return { status: 'pro', license: licenseKey };
-      }
-
-      // isValid === null = network error, isValid === false = benar-benar invalid
-      // Cek grace period offline (24 jam dari last valid cache)
-      if (isValid === null && cache && cache.key === licenseKey && cache.valid && (now - cache.timestamp) < OFFLINE_GRACE_PERIOD) {
-        console.warn('CourtVision: Polar unreachable, using offline grace period');
-        return { status: 'pro', license: licenseKey };
-      }
-
-      // Keep the key during outages, without extending Pro access beyond grace.
-      if (isValid === null) {
-        return { status: 'error', message: 'Tidak dapat memverifikasi lisensi. Coba lagi saat koneksi tersedia.' };
-      }
-
-      // License benar-benar tidak valid — hapus dari storage
-      await chrome.storage.local.remove([LICENSE_KEY, LICENSE_CACHE_KEY]);
-      // Lanjut ke pengecekan trial di bawah
-    }
-
-    // Cek trial
-    const trialResult = await chrome.storage.local.get([TRIAL_KEY]);
-    let trial = trialResult[TRIAL_KEY];
-
-    if (!trial) {
-      // Install pertama — mulai trial
-      const now = new Date();
-      const expires = new Date(now.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1000);
-      trial = {
-        installDate: now.toISOString(),
-        expiresAt: expires.toISOString()
-      };
-      await chrome.storage.local.set({ [TRIAL_KEY]: trial });
-      return { status: 'trial', daysLeft: TRIAL_DAYS };
-    }
-
-    const expiresAt = new Date(trial.expiresAt);
-    const now = new Date();
-    if (now < expiresAt) {
-      const daysLeft = Math.max(1, Math.ceil((expiresAt - now) / (1000 * 60 * 60 * 24)));
-      return { status: 'trial', daysLeft };
-    }
-
-    return { status: 'expired' };
-  } catch (err) {
-    console.error('Error checking user status:', err);
-    return { status: 'error', message: 'Tidak dapat memverifikasi status. Cek koneksi internet.' };
-  }
+function formatAccessDate(timestamp) {
+  if (!timestamp) return '';
+  return new Intl.DateTimeFormat('id-ID', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  }).format(new Date(timestamp * 1000));
 }
 
-// ============================================
-// TRIAL & LICENSE SYSTEM (v3.0.0)
-// ============================================
-
-const POLAR_ORG_ID = '0be66be6-c4e2-4c59-8980-6e0a418fe30f';
-const POLAR_ACTIVATE_URL = 'https://api.polar.sh/v1/customer-portal/license-keys/activate';
-const POLAR_VALIDATE_URL = 'https://api.polar.sh/v1/customer-portal/license-keys/validate';
-
-// Polar API calls di-route ke background service worker
-async function validateLicenseWithPolar(key) {
-  return new Promise((resolve) => {
-    chrome.runtime.sendMessage(
-      { action: 'polarValidate', key: key.trim() },
-      (response) => {
-        if (chrome.runtime.lastError) {
-          resolve(null);
-          return;
-        }
-        if (!response) resolve(null);
-        else if (response.valid === null) resolve(null);
-        else resolve(response.valid === true ? true : false);
-      }
-    );
-  });
-}
-
-// Activate = validate (key tidak support activations per Polar response)
-async function activateLicenseWithPolar(key) {
-  const result = await validateLicenseWithPolar(key);
-  if (result === true) return { success: true };
-  if (result === null) return { success: false, networkError: true };
-  return { success: false };
-}
-
-// Validate license key format (Polar format: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX)
-function validateLicenseFormat(key) {
-  if (!key) return false;
-  const trimmed = key.trim().toUpperCase();
-  // Format 1: Pure UUID — XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-  const polarPattern = /^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/;
-  // Format 2: CV-prefixed UUID — CV-XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-  const cvUuidPattern = /^CV-[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/;
-  // Format 3: Old short CV format — CV-XXXX-XXXX-XXXX
-  const cvShortPattern = /^CV-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
-  return polarPattern.test(trimmed) || cvUuidPattern.test(trimmed) || cvShortPattern.test(trimmed);
-}
-
-// Load license from storage
-async function loadLicense() {
-  try {
-    const userStatus = await checkUserStatus();
-    trialStatus = userStatus;
-
-    if (userStatus.status === 'pro') {
-      isPro = true;
-    } else {
-      isPro = false;
-    }
-
-    updateLicenseUI(userStatus);
-    updateExportButtons();
-  } catch (err) {
-    console.error('Error loading license:', err);
-    isPro = false;
-  }
-}
-
-// Save license to storage
-async function saveLicense(key) {
-  try {
-    await chrome.storage.local.set({ [LICENSE_KEY]: key.toUpperCase().trim() });
-    isPro = true;
-    const userStatus = { status: 'pro', license: key.toUpperCase().trim() };
-    trialStatus = userStatus;
-    updateLicenseUI(userStatus);
-    updateExportButtons();
-    return true;
-  } catch (err) {
-    console.error('Error saving license:', err);
-    return false;
-  }
-}
-
-// Update license UI based on user status
 function updateLicenseUI(userStatus) {
   const statusEl = document.getElementById('license-status');
   const infoEl = document.getElementById('license-info');
-  const inputEl = document.getElementById('license-key');
   const upgradeBtn = document.getElementById('btn-upgrade');
   const trialBanner = document.getElementById('trial-banner');
+  const badge = document.getElementById('account-badge');
+  if (trialBanner) trialBanner.classList.remove('error');
 
   if (userStatus.status === 'pro') {
-    // PRO USER
-    statusEl.innerHTML = '<span class="license-icon">💎</span><span class="license-text">Pro Version Active</span>';
+    statusEl.innerHTML = '<span class="license-icon">✓</span><span class="license-text">CourtVision PRO aktif</span>';
     statusEl.className = 'license-status pro';
-    infoEl.textContent = 'License: ' + userStatus.license;
+    infoEl.textContent = userStatus.validUntil
+      ? `Akses aktif sampai ${formatAccessDate(userStatus.validUntil)}`
+      : 'Akses PRO aktif pada akun ini.';
     infoEl.className = 'license-info success';
-    if (inputEl) inputEl.value = userStatus.license;
     if (upgradeBtn) upgradeBtn.classList.add('hidden');
     if (trialBanner) trialBanner.style.display = 'none';
+    if (badge) badge.textContent = 'PRO';
 
   } else if (userStatus.status === 'trial') {
-    // TRIAL USER
-    statusEl.innerHTML = `<span class="license-icon">🎁</span><span class="license-text">Free Trial — ${userStatus.daysLeft} day${userStatus.daysLeft !== 1 ? 's' : ''} left</span>`;
+    statusEl.innerHTML = `<span class="license-icon">◷</span><span class="license-text">Trial aktif · ${userStatus.daysLeft} hari tersisa</span>`;
     statusEl.className = 'license-status trial';
+    infoEl.textContent = userStatus.validUntil
+      ? `Trial berakhir ${formatAccessDate(userStatus.validUntil)}`
+      : 'Nikmati semua fitur selama masa trial.';
     infoEl.className = 'license-info';
     if (upgradeBtn) upgradeBtn.classList.remove('hidden');
     if (trialBanner) {
       trialBanner.style.display = 'block';
-      trialBanner.textContent = `🎁 Free Trial: ${userStatus.daysLeft} day${userStatus.daysLeft !== 1 ? 's' : ''} left`;
+      trialBanner.textContent = `Trial · ${userStatus.daysLeft} hari tersisa`;
     }
+    if (badge) badge.textContent = `TRIAL · ${userStatus.daysLeft}H`;
 
   } else if (userStatus.status === 'error') {
-    // ERROR — tidak bisa verifikasi status, lock semua fitur
-    statusEl.innerHTML = '<span class="license-icon">⚠️</span><span class="license-text">Verifikasi Gagal</span>';
+    statusEl.innerHTML = '<span class="license-icon">!</span><span class="license-text">Status belum dapat diperiksa</span>';
     statusEl.className = 'license-status expired';
-    infoEl.textContent = userStatus.message || 'Tidak dapat memverifikasi status. Cek koneksi internet.';
+    infoEl.textContent = userStatus.message || 'Periksa koneksi lalu tekan tombol refresh.';
     infoEl.className = 'license-info error';
     if (upgradeBtn) upgradeBtn.classList.add('hidden');
     if (trialBanner) {
       trialBanner.style.display = 'block';
-      trialBanner.textContent = '⚠️ Koneksi bermasalah — tutup dan buka ulang CourtVision';
-      trialBanner.style.background = '#FEE2E2';
-      trialBanner.style.color = '#DC2626';
+      trialBanner.textContent = 'Koneksi bermasalah · tekan refresh untuk mencoba lagi';
+      trialBanner.classList.add('error');
     }
+    if (badge) badge.textContent = 'OFFLINE';
+
+  } else if (userStatus.status === 'signed-out') {
+    statusEl.innerHTML = '<span class="license-icon">●</span><span class="license-text">Belum masuk</span>';
+    statusEl.className = 'license-status expired';
+    infoEl.textContent = 'Masuk dengan Google untuk memulai trial gratis selama tujuh hari.';
+    infoEl.className = 'license-info';
+    if (upgradeBtn) upgradeBtn.classList.add('hidden');
+    if (trialBanner) {
+      trialBanner.style.display = 'block';
+      trialBanner.textContent = 'Masuk dengan Google untuk memulai trial';
+    }
+    if (badge) badge.textContent = 'BELUM MASUK';
 
   } else {
-    // EXPIRED USER
-    statusEl.innerHTML = '<span class="license-icon">⚠️</span><span class="license-text">Trial Expired</span>';
+    statusEl.innerHTML = '<span class="license-icon">!</span><span class="license-text">Masa akses berakhir</span>';
     statusEl.className = 'license-status expired';
-    infoEl.textContent = 'Your trial has ended. Upgrade to continue exporting.';
+    infoEl.textContent = 'Aktifkan PRO untuk kembali menggunakan fitur ekspor.';
     infoEl.className = 'license-info error';
     if (upgradeBtn) upgradeBtn.classList.remove('hidden');
     if (trialBanner) {
       trialBanner.style.display = 'block';
-      trialBanner.textContent = '⚠️ Trial expired — upgrade to export';
-      trialBanner.style.background = '#FEE2E2';
-      trialBanner.style.color = '#DC2626';
+      trialBanner.textContent = 'Masa trial berakhir · aktifkan PRO untuk melanjutkan';
+      trialBanner.classList.add('error');
     }
+    if (badge) badge.textContent = 'AKSES BERAKHIR';
   }
 }
 
@@ -608,41 +509,6 @@ function updateExportButtons() {
   }
 }
 
-// Format license key as user types
-// Supports: pure UUID, CV-prefixed UUID, old CV-short format
-function formatLicenseInput(input) {
-  const raw = input.value.trim().toUpperCase();
-
-  // Format 1: Pure UUID — biarkan apa adanya
-  const polarPattern = /^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/;
-  if (polarPattern.test(raw)) {
-    input.value = raw;
-    return;
-  }
-
-  // Format 2: CV-prefixed UUID — biarkan apa adanya
-  const cvUuidPattern = /^CV-[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/;
-  if (cvUuidPattern.test(raw)) {
-    input.value = raw;
-    return;
-  }
-
-  // Format 3: Old CV-short — auto-format CV-XXXX-XXXX-XXXX
-  const value = raw.replace(/[^A-Z0-9]/g, '');
-  if (value.startsWith('CV') || value.length === 0) {
-    let formatted = '';
-    const parts = value.replace('CV', '').match(/.{1,4}/g) || [];
-    if (value.startsWith('CV')) {
-      formatted = 'CV';
-      if (parts.length > 0) formatted += '-' + parts[0];
-      if (parts.length > 1) formatted += '-' + parts[1];
-      if (parts.length > 2) formatted += '-' + parts[2];
-    }
-    input.value = formatted;
-  }
-}
-
-
 // ============================================
 // SERVER-SIDE VERSION CHECK (v3.1.6)
 // ============================================
@@ -662,7 +528,7 @@ function showForceUpdateScreen() {
   document.body.innerHTML = `
     <div style="
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #1E3A5F;
+      background: #111813;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -680,12 +546,12 @@ function showForceUpdateScreen() {
         Versi CourtVision ini sudah tidak didukung.<br>
         Update gratis tersedia di Chrome Web Store.
       </div>
-      <a href="https://chrome.google.com/webstore/detail/oklbkdldkcchgihmadhbgojnamadihig"
+      <a href="https://chromewebstore.google.com/detail/oklbkdldkcchgihmadhbgojnamadihig"
          target="_blank"
          style="
            display: block;
-           background: #10B981;
-           color: white;
+           background: #C9DF57;
+           color: #16211B;
            padding: 12px 24px;
            border-radius: 8px;
            text-decoration: none;
@@ -721,7 +587,7 @@ async function checkMinVersion() {
 document.addEventListener('DOMContentLoaded', async () => {
   const versionOk = await checkMinVersion();
   if (!versionOk) return;
-  loadLicense();
+  await loadLicenseAccount();
   loadClips();
   
   // Tab switching
@@ -735,7 +601,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
   
   // Refresh button
-  document.getElementById('btn-refresh').onclick = loadClips;
+  document.getElementById('btn-refresh').onclick = async () => {
+    await loadLicenseAccount();
+    await loadClips();
+  };
   
   // Video filter
   document.getElementById('filter-video').onchange = e => {
@@ -749,66 +618,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderClips();
   };
   
-  // License key input formatting
-  document.getElementById('license-key').addEventListener('input', (e) => {
-    formatLicenseInput(e.target);
-  });
-  
-  // Activate license button
-  document.getElementById('btn-activate').onclick = async () => {
-    const input = document.getElementById('license-key');
-    const infoEl = document.getElementById('license-info');
-    const key = input.value.trim();
-
-    if (!key) {
-      infoEl.textContent = 'Please enter a license key';
-      infoEl.className = 'license-info error';
+  document.getElementById('btn-google-signin').onclick = async () => {
+    const button = document.getElementById('btn-google-signin');
+    const detail = document.getElementById('account-detail');
+    button.disabled = true;
+    button.textContent = 'Menghubungkan…';
+    const result = await sendLicenseMessage({ action: 'licenseServerSignIn' });
+    button.disabled = false;
+    button.textContent = 'Masuk Google';
+    if (result.error) {
+      detail.textContent = result.error;
       return;
     }
-
-    if (!validateLicenseFormat(key)) {
-      infoEl.textContent = 'Invalid key format. Check your email from Polar.';
-      infoEl.className = 'license-info error';
-      return;
-    }
-
-    // Show loading state
-    const btn = document.getElementById('btn-activate');
-    btn.textContent = 'Validating...';
-    btn.disabled = true;
-    infoEl.textContent = 'Checking license with Polar...';
-    infoEl.className = 'license-info';
-    infoEl.style.display = 'block';
-
-    try {
-      // Aktivasi ke Polar API (endpoint yang benar untuk client-side)
-      const result = await activateLicenseWithPolar(key);
-
-      if (result.success) {
-        await chrome.storage.local.set({
-          [LICENSE_KEY]: key.toUpperCase().trim(),
-          [LICENSE_CACHE_KEY]: { key: key.toUpperCase().trim(), valid: true, timestamp: Date.now() }
-        });
-        isPro = true;
-        const userStatus = { status: 'pro', license: key.toUpperCase().trim() };
-        trialStatus = userStatus;
-        updateLicenseUI(userStatus);
-        updateExportButtons();
-      } else if (result.networkError) {
-        infoEl.textContent = 'Tidak dapat terhubung ke server. Cek koneksi internet dan coba lagi.';
-        infoEl.className = 'license-info error';
-      } else {
-        infoEl.textContent = 'License key tidak valid atau sudah dipakai di perangkat lain. Cek email dari Polar.';
-        infoEl.className = 'license-info error';
-      }
-    } catch (err) {
-      infoEl.textContent = 'Network error. Please check your connection and try again.';
-      infoEl.className = 'license-info error';
-    } finally {
-      btn.textContent = 'Activate';
-      btn.disabled = false;
-    }
+    await loadLicenseAccount();
   };
+
+  document.getElementById('btn-google-logout').onclick = async () => {
+    await sendLicenseMessage({ action: 'licenseServerLogout' });
+    await loadLicenseAccount();
+  };
+
+  async function startCheckout(plan, button) {
+    button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
+    const result = await sendLicenseMessage({ action: 'openCheckout', plan });
+    button.disabled = false;
+    button.removeAttribute('aria-busy');
+    if (result.error) {
+      document.getElementById('license-info').textContent = result.error;
+      document.getElementById('license-info').className = 'license-info error';
+    }
+  }
+
+  const monthlyButton = document.getElementById('btn-upgrade-monthly');
+  const yearlyButton = document.getElementById('btn-upgrade-yearly');
+  monthlyButton.onclick = () => startCheckout('monthly', monthlyButton);
+  yearlyButton.onclick = () => startCheckout('yearly', yearlyButton);
   
   // Copy WhatsApp - reliable clipboard method
   document.getElementById('btn-copy-wa').onclick = async () => {
@@ -858,7 +703,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const btn = document.getElementById('btn-copy-wa');
       const originalText = btn.textContent;
       btn.textContent = '✓ Copied!';
-      btn.style.background = '#10B981';
+      btn.style.background = '#AFC63F';
       setTimeout(() => {
         btn.textContent = originalText;
         btn.style.background = '';
@@ -877,6 +722,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     a.download = 'courtvision.json';
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  // Restore a local backup without deleting clips created after the backup.
+  const importInput = document.getElementById('import-json-file');
+  document.getElementById('btn-import-json').onclick = () => {
+    importInput.value = '';
+    importInput.click();
+  };
+  importInput.onchange = async () => {
+    const file = importInput.files?.[0];
+    if (!file) return;
+    try {
+      const parsed = JSON.parse(await file.text());
+      const imported = Array.isArray(parsed) ? parsed : parsed?.clips;
+      if (!Array.isArray(imported) || imported.some(clip => !clip || typeof clip !== 'object')) {
+        throw new Error('invalid_backup');
+      }
+
+      const clipKey = clip => clip.id || [
+        clip.videoId,
+        clip.startTime,
+        clip.endTime,
+        clip.teamId || clip.teamName,
+        clip.categoryId || clip.categoryName,
+        clip.createdAt
+      ].join('|');
+      const merged = new Map(allClips.map(clip => [clipKey(clip), clip]));
+      imported.forEach(clip => merged.set(clipKey(clip), clip));
+      const restored = [...merged.values()];
+      await chrome.storage.local.set({ [STORAGE_KEY]: restored });
+      await loadClips();
+      alert(`${imported.length} klip dibaca. Sekarang tersimpan ${restored.length} klip tanpa menghapus klip yang sudah ada.`);
+    } catch (error) {
+      console.error('Import backup failed:', error);
+      alert('File cadangan tidak valid. Pilih file JSON yang dibuat oleh CourtVision.');
+    }
   };
   
   // Export CSV

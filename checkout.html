@@ -65,6 +65,7 @@
     <section class="checkout">
       <h2>Data pembelian</h2>
       <p class="sandbox-notice">Pembayaran Production Duitku — transaksi menggunakan uang nyata. Pastikan data pembelian dan metode pembayaran sudah benar sebelum melanjutkan.</p>
+      <p class="muted">Gunakan email Google yang sama dengan akun CourtVision di extension agar PRO aktif otomatis setelah pembayaran berhasil.</p>
       <form id="checkout-form">
         <label>Nama lengkap<input id="name" name="name" autocomplete="name" maxlength="50" required placeholder="Nama pembeli"></label>
         <label>Email akun CourtVision<input id="email" name="email" type="email" autocomplete="email" maxlength="50" required placeholder="nama@email.com"></label>
@@ -85,8 +86,13 @@
       const method = document.getElementById('payment-method');
       const status = document.getElementById('status');
       const pay = document.getElementById('pay');
-      const initialPlan = new URLSearchParams(location.search).get('plan');
+      const params = new URLSearchParams(location.search);
+      const initialPlan = params.get('plan');
       if (initialPlan === 'yearly') document.querySelector('[name="plan"][value="yearly"]').checked = true;
+      const initialEmail = params.get('email');
+      const initialName = params.get('name');
+      if (initialEmail) document.getElementById('email').value = initialEmail;
+      if (initialName) document.getElementById('name').value = initialName;
 
       const setStatus = (message, error = false) => {
         status.textContent = message;

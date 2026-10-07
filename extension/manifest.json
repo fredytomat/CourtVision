@@ -3,15 +3,20 @@
 
   "manifest_version": 3,
   "name": "CourtVision - Basketball Video Analysis",
-  "version": "3.2.2",
+  "version": "3.4.0",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAywsjFggZd0YHbunm9llqbR4aVdyae+9KXzvSNwdeOX7/rTVltK0FLrjyhSdsWEPEs7fjg+7JKcH8a4HumKtXVyli2KHxPp7/bx+TDZ7cHNgcv3oJHMdnxgzh/NbMNVKtxB1CqRL1K0oPtPPrFpALIB55H8zkltNWovRwoSRa5DSI/p2bGKw1UfjERU2yd+rSY6/WXb1qvwiDmk+WLxKHkzvOZpXKdjXABt0S+FnUg7A6ccVKcap88uh5hU3VY8NmccD+99Al/chNH/uxL+ko/Ljk3Wq7iJLtaiT3z/utOfCiDjRqhvY+s48pm1kEGLjN4lA/ygoV+IMLumojJs7LhwIDAQAB",
   "description": "Professional basketball video analysis tool for coaches - tag plays, track outcomes, export insights",
   "author": "CourtVision",
-  "permissions": ["storage", "activeTab"],
+  "permissions": ["storage", "activeTab", "identity"],
   "host_permissions": [
     "*://*.youtube.com/*",
-    "*://api.polar.sh/*",
-    "*://courtvision.id/*"
+    "*://courtvision.id/*",
+    "https://courtvision-license-api.fredy-xau.workers.dev/*"
   ],
+  "oauth2": {
+    "client_id": "593776146486-ereu1ifkfk85hf321rjlu8ik3vig85si.apps.googleusercontent.com",
+    "scopes": ["openid", "email", "profile"]
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -27,7 +32,7 @@
   },
   "content_scripts": [{
     "matches": ["*://*.youtube.com/*"],
-    "js": ["content.js"],
+    "js": ["share-format.js", "content.js"],
     "css": ["content-styles.css"],
     "run_at": "document_idle"
   }],

@@ -13,7 +13,7 @@
         <span class="logo">CV</span>
         <div class="brand-text">
           <h1>CourtVision</h1>
-          <span class="pro">PRO</span>
+          <span class="pro account-badge" id="account-badge">MEMERIKSA</span>
         </div>
       </div>
       <button class="btn-icon" id="btn-refresh" title="Refresh">R</button>
@@ -35,13 +35,13 @@
     </div>
 
     <!-- Trial Banner -->
-    <div id="trial-banner" style="display:none; padding: 6px 16px; text-align:center; font-size:11px; font-weight:700; background:#D1FAE5; color:#059669; cursor:pointer;" onclick="document.querySelector('[data-tab=license]').click()">
+    <div id="trial-banner" style="display:none;" onclick="document.querySelector('[data-tab=account]').click()">
     </div>
 
     <div class="tabs">
       <button class="tab active" data-tab="clips">All Clips</button>
       <button class="tab" data-tab="export">Export</button>
-      <button class="tab" data-tab="license">License</button>
+      <button class="tab" data-tab="account">Akun</button>
     </div>
 
     <div class="tab-content active" id="tab-clips">
@@ -65,6 +65,10 @@
 
     <div class="tab-content" id="tab-export">
       <div class="export-section">
+        <div class="local-storage-notice">
+          <strong>Klip tersimpan hanya di laptop ini</strong>
+          <span>Ekspor cadangan JSON sebelum menghapus atau memasang ulang CourtVision.</span>
+        </div>
         <button class="export-btn primary" id="btn-copy-wa">
           Copy for WhatsApp
         </button>
@@ -73,23 +77,28 @@
           <button class="export-btn" id="btn-export-csv">CSV</button>
           <button class="export-btn" id="btn-export-xml">XML</button>
         </div>
+        <button class="export-btn restore" id="btn-import-json">Pulihkan dari JSON</button>
+        <input type="file" id="import-json-file" accept=".json,application/json" hidden>
         <button class="export-btn danger" id="btn-clear-all">
           Delete All Clips
         </button>
       </div>
     </div>
 
-    <div class="tab-content" id="tab-license">
+    <div class="tab-content" id="tab-account">
       <div class="license-section">
+        <div class="account-card" id="account-card">
+          <div>
+            <strong id="account-name">Belum masuk</strong>
+            <small id="account-detail">Masuk sekali untuk memulai trial dan menghubungkan akses ke laptop ini.</small>
+          </div>
+          <button class="account-btn" id="btn-google-signin">Masuk Google</button>
+          <button class="account-btn secondary hidden" id="btn-google-logout">Keluar</button>
+        </div>
+
         <div class="license-status" id="license-status">
           <span class="license-icon">🎁</span>
           <span class="license-text">Free Trial</span>
-        </div>
-
-        <div class="license-input-group">
-          <label for="license-key">Have a license key?</label>
-          <input type="text" id="license-key" placeholder="Paste license key from Polar email" maxlength="50">
-          <button class="license-btn" id="btn-activate">Activate</button>
         </div>
 
         <div class="license-info" id="license-info"></div>
@@ -106,28 +115,26 @@
         </div>
 
         <div class="upgrade-options" id="btn-upgrade">
-          <p class="upgrade-title">Choose your plan:</p>
-          <a href="https://buy.polar.sh/polar_cl_PXQUrbSaI7Igt0uyaRINQxhVbtHv534hFWoJd0G6n54"
-             target="_blank" class="upgrade-btn monthly">
-            <span class="plan-name">Pro Monthly</span>
-            <span class="plan-price">$8 / month</span>
-            <span class="plan-trial">7-day free trial</span>
-          </a>
-          <a href="https://buy.polar.sh/polar_cl_JwHM9741Il0vsxoMgWhKJnRBb3k9lwozlbZiX0hjbJo"
-             target="_blank" class="upgrade-btn yearly">
-            <span class="plan-name">Pro Yearly</span>
-            <span class="plan-price">$64 / year</span>
-            <span class="plan-save">Save 33%</span>
-          </a>
-          <p class="upgrade-note">Cancel anytime · Secure payment by Polar</p>
+          <p class="upgrade-title">Aktifkan CourtVision Pro:</p>
+          <button type="button" id="btn-upgrade-monthly" class="upgrade-btn monthly">
+            <span class="plan-name">Akses 30 hari</span>
+            <span class="plan-price">Rp130.000</span>
+          </button>
+          <button type="button" id="btn-upgrade-yearly" class="upgrade-btn yearly">
+            <span class="plan-name">Akses 365 hari</span>
+            <span class="plan-price">Rp1.040.000</span>
+            <span class="plan-save">Hemat 33%</span>
+          </button>
+          <p class="upgrade-note">Pembayaran aman melalui Duitku · Tidak diperpanjang otomatis</p>
         </div>
       </div>
     </div>
 
     <footer class="footer">
-      <span>v3.2.2</span>
+      <span>v3.4.0 production</span>
     </footer>
   </div>
+  <script src="share-format.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

@@ -70,6 +70,7 @@ body {
   border-radius: 3px;
   letter-spacing: 0.5px;
   color: white;
+  white-space: nowrap;
 }
 
 .btn-icon {
@@ -469,6 +470,23 @@ body {
   margin-bottom: 0;
 }
 
+.local-storage-notice {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid rgba(226, 168, 95, 0.55);
+  border-radius: 8px;
+  background: rgba(226, 168, 95, 0.1);
+  color: var(--cv-text, #1E293B);
+  line-height: 1.35;
+}
+
+.local-storage-notice strong { font-size: 12px; }
+.local-storage-notice span { color: var(--cv-muted, #64748B); font-size: 11px; }
+.export-btn.restore { border-color: var(--cv-success, #10B981); color: var(--cv-success, #059669); }
+
 /* Footer */
 .footer {
   padding: 10px 16px;
@@ -484,6 +502,34 @@ body {
 .license-section {
   padding: 16px;
 }
+
+.account-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  background: #F8FAFC;
+}
+
+.account-card > div { flex: 1 1 180px; min-width: 0; }
+.account-card strong { display: block; font-size: 12px; color: #1E3A5F; }
+.account-card small { display: block; margin-top: 3px; color: #64748B; line-height: 1.35; }
+.account-btn {
+  border: 0;
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: #1E3A5F;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.account-btn.secondary { background: #E2E8F0; color: #334155; }
+.hidden { display: none !important; }
 
 .license-status {
   display: flex;
@@ -696,6 +742,9 @@ body {
   margin-bottom: 8px;
   transition: all 0.2s;
   cursor: pointer;
+  border: 0;
+  font: inherit;
+  text-align: left;
 }
 
 .upgrade-btn.monthly {
@@ -755,4 +804,90 @@ body {
 
 .upgrade-options.hidden {
   display: none;
+}
+
+/* ===== COURTVISION MOBILE DARK THEME ===== */
+:root {
+  --cv-bg: #111813;
+  --cv-surface: #1D2820;
+  --cv-surface-2: #2B382E;
+  --cv-border: #354238;
+  --cv-text: #F4F6EE;
+  --cv-muted: #87958B;
+  --cv-lime: #C9DF57;
+  --cv-lime-dark: #AFC63F;
+  --cv-success: #5CBC82;
+  --cv-danger: #E07265;
+  --cv-warning: #E2A85F;
+}
+
+body { background: var(--cv-bg); color: var(--cv-text); }
+.header { background: var(--cv-bg); border-bottom: 1px solid var(--cv-border); }
+.logo { background: var(--cv-surface-2); color: var(--cv-lime); border: 1px solid var(--cv-border); }
+.pro { background: var(--cv-lime); color: #16211B; }
+.btn-icon { background: var(--cv-surface-2); color: var(--cv-text); border: 1px solid var(--cv-border); }
+.btn-icon:hover { background: var(--cv-border); color: var(--cv-lime); }
+
+.stats-bar, .tabs, .footer { background: var(--cv-bg); border-color: var(--cv-border); }
+.stat { background: var(--cv-surface); border-color: var(--cv-border); }
+.stat.success { border-left-color: var(--cv-success); }
+.stat.fail { border-left-color: var(--cv-danger); }
+.stat-value, .clip-cat, .license-text, .license-features li, .account-card strong { color: var(--cv-text); }
+.stat-label, .empty-state, .empty-state p, .video-title, .clip-time + *, .features-title, .license-input-group label, .account-card small, .upgrade-title, .upgrade-note { color: var(--cv-muted); }
+
+.tab { background: var(--cv-surface); border-color: var(--cv-border); color: var(--cv-muted); }
+.tab:hover { color: var(--cv-lime); border-color: var(--cv-lime); }
+.tab.active { background: var(--cv-lime); border-color: var(--cv-lime); color: #16211B; }
+.filter-bar { background: var(--cv-bg); border-color: var(--cv-border); }
+.filter-select { background: var(--cv-surface); border-color: var(--cv-border); color: var(--cv-text); }
+.filter-select:hover, .filter-select:focus { border-color: var(--cv-lime); }
+.clips-container::-webkit-scrollbar-thumb { background: var(--cv-border); }
+
+.video-title, .clip-card, .export-btn, .account-card, .license-status, .license-features { background: var(--cv-surface); border-color: var(--cv-border); }
+.clip-card:hover, .export-btn:hover { background: var(--cv-surface-2); }
+.clip-card { border-left-color: var(--cv-border); }
+.clip-card.success { border-left-color: var(--cv-success); }
+.clip-card.fail { border-left-color: var(--cv-danger); }
+.clip-time { color: var(--cv-lime); }
+.clip-dur, .clip-outcome, .account-btn.secondary { background: var(--cv-surface-2); border-color: var(--cv-border); color: var(--cv-muted); }
+.clip-outcome.success { background: rgba(92,188,130,.16); color: var(--cv-success); }
+.clip-outcome.fail { background: rgba(224,114,101,.16); color: var(--cv-danger); }
+.clip-adjust { border-color: var(--cv-border); }
+.adj-btn { background: var(--cv-surface-2); color: var(--cv-muted); }
+.adj-btn:hover { background: var(--cv-lime); color: #16211B; }
+.adjust-label { color: var(--cv-muted); }
+.clip-btn.open, .account-btn, .license-btn, .upgrade-btn.monthly { background: var(--cv-surface-2); color: var(--cv-text); }
+.clip-btn.open:hover, .account-btn:hover, .license-btn:hover, .upgrade-btn.monthly:hover { background: var(--cv-border); }
+.clip-btn.delete { background: var(--cv-surface-2); color: var(--cv-muted); }
+.clip-btn.delete:hover, .export-btn.danger:hover { background: var(--cv-danger); color: #160D0B; }
+
+.export-btn { color: var(--cv-text); }
+.export-btn:hover { border-color: var(--cv-lime); }
+.export-btn.primary, .license-upgrade-btn, .upgrade-btn.yearly { background: var(--cv-lime); color: #16211B; }
+.export-btn.primary:hover, .license-upgrade-btn:hover, .upgrade-btn.yearly:hover { background: var(--cv-lime-dark); box-shadow: 0 4px 16px rgba(201,223,87,.18); }
+.export-btn.danger { background: transparent; border-color: var(--cv-danger); color: var(--cv-danger); }
+
+.license-status.pro, .license-status.trial { background: rgba(92,188,130,.13); border-color: var(--cv-success); }
+.license-status.pro .license-text { color: var(--cv-success); }
+.license-status.expired { background: rgba(224,114,101,.12); border-color: var(--cv-danger); }
+.license-status.expired .license-text { color: var(--cv-danger); }
+.license-input-group input { background: var(--cv-surface); border-color: var(--cv-border); color: var(--cv-text); }
+.license-input-group input:focus { border-color: var(--cv-lime); }
+.license-info.success { background: rgba(92,188,130,.14); color: var(--cv-success); }
+.license-info.error { background: rgba(224,114,101,.14); color: var(--cv-danger); }
+
+#trial-banner {
+  padding: 7px 16px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 750;
+  background: rgba(201,223,87,.14) !important;
+  color: var(--cv-lime) !important;
+  border-bottom: 1px solid rgba(201,223,87,.25);
+  cursor: pointer;
+}
+#trial-banner.error {
+  background: rgba(224,114,101,.14) !important;
+  color: var(--cv-danger) !important;
+  border-bottom-color: rgba(224,114,101,.25);
 }
