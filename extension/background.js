@@ -1,5 +1,5 @@
 /**
- * CourtVision - Background Service Worker v3.4.0
+ * CourtVision - Background Service Worker v3.4.1
  */
 
 const STORAGE_KEY = 'courtvision_clips';
@@ -108,6 +108,17 @@ async function licenseServerLogout() {
     await authenticatedApi('/v1/auth/logout', { method: 'POST', body: '{}' }).catch(() => {});
   }
   await chrome.storage.local.remove([LICENSE_AUTH_KEY]);
+  // Remove the cached Google OAuth token as well, so "Keluar" really allows
+  // the coach to choose a different Google account on the next sign-in.
+  await new Promise((resolve) => {
+    chrome.identity.getAuthToken({ interactive: false }, (token) => {
+      if (chrome.runtime.lastError || !token) {
+        resolve();
+        return;
+      }
+      chrome.identity.removeCachedAuthToken({ token }, () => resolve());
+    });
+  });
   return { success: true };
 }
 

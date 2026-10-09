@@ -25,7 +25,7 @@
       <div><span>Paket</span><strong id="plan">-</strong></div>
       <div><span>Nominal</span><strong id="amount">-</strong></div>
     </div>
-    <a href="index.html">Kembali ke CourtVision</a>
+    <a id="next-action" href="https://www.youtube.com/">Kembali ke YouTube</a>
   </main>
   <script>
     (() => {
@@ -36,6 +36,8 @@
       const title = document.getElementById('title');
       const message = document.getElementById('message');
       const details = document.getElementById('details');
+      const nextAction = document.getElementById('next-action');
+      let checks = 0;
       async function show() {
         if (!orderId || !/^[A-Z0-9-]{10,50}$/i.test(orderId)) {
           title.textContent = 'Nomor pesanan tidak ditemukan';
@@ -47,8 +49,8 @@
           const data = await response.json();
           if (!response.ok) throw new Error('Pesanan tidak ditemukan');
           const copy = {
-            paid: ['Pembayaran berhasil', 'Masuk ke CourtVision menggunakan email pembelian yang sama. Akses Pro akan aktif otomatis.'],
-            pending: ['Pembayaran sedang diproses', 'Tunggu konfirmasi dari Duitku. Jangan melakukan pembayaran kedua untuk pesanan yang sama.'],
+            paid: ['Pembayaran berhasil', 'Kembali ke video YouTube lalu buka CourtVision. Status PRO akan diperbarui otomatis dari akun dengan email pembelian yang sama.'],
+            pending: ['Pembayaran sedang diproses', 'CourtVision sedang menunggu konfirmasi Duitku. Halaman ini akan memeriksa ulang secara otomatis—jangan melakukan pembayaran kedua.'],
             failed: ['Pembayaran belum berhasil', 'Anda dapat kembali ke checkout untuk membuat transaksi baru.'],
             expired: ['Pembayaran kedaluwarsa', 'Anda dapat kembali ke checkout untuk membuat transaksi baru.'],
           }[data.status] || ['Status belum tersedia', 'Silakan coba lagi beberapa saat lagi.'];
@@ -58,6 +60,12 @@
           document.getElementById('plan').textContent = data.plan === 'yearly' ? 'Tahunan' : 'Bulanan';
           document.getElementById('amount').textContent = `Rp${Number(data.amount).toLocaleString('id-ID')}`;
           details.hidden = false;
+          nextAction.href = data.status === 'paid' ? 'https://www.youtube.com/' : 'checkout.html';
+          nextAction.textContent = data.status === 'paid' ? 'Kembali ke YouTube' : 'Kembali ke Checkout';
+          if (data.status === 'pending' && checks < 40) {
+            checks += 1;
+            setTimeout(show, 3000);
+          }
         } catch {
           title.textContent = 'Status belum dapat diperiksa';
           message.textContent = 'Silakan coba lagi beberapa saat atau hubungi support@courtvision.id.';

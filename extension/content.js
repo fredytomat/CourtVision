@@ -1,6 +1,6 @@
 /**
  * CourtVision - Professional Basketball Video Analysis
- * Version: 3.4.0 (Production account onboarding)
+ * Version: 3.4.1 (Production release polish)
  */
 (function() {
   'use strict';
@@ -206,8 +206,8 @@
           <span class="cv-outcome-time">${formatTime(time)}</span>
         </div>
         <div class="cv-outcome-btns">
-          <button class="cv-obtn success" data-id="${clipId}" data-outcome="success">Made</button>
-          <button class="cv-obtn fail" data-id="${clipId}" data-outcome="fail">Missed</button>
+          <button class="cv-obtn success" data-id="${clipId}" data-outcome="success">Berhasil</button>
+          <button class="cv-obtn fail" data-id="${clipId}" data-outcome="fail">Gagal</button>
           <button class="cv-obtn skip" data-id="${clipId}" data-outcome="skip">Skip</button>
         </div>
       </div>
@@ -526,7 +526,7 @@
       const countEl = document.querySelector(`[data-count-for="${cat.id}"]`);
       if (countEl) {
         const count = myClips.filter(c => c.category === cat.id).length;
-        countEl.textContent = `${count} ${count === 1 ? 'clip' : 'clips'}`;
+        countEl.textContent = `${count} klip`;
       }
     });
     
@@ -554,7 +554,7 @@
 
     tabsEl.innerHTML = `
       <button class="cv-cat-tab ${currentCategory === 'all' ? 'active' : ''}" data-cat="all">
-        All <span>${counts.all}</span>
+        Semua <span>${counts.all}</span>
       </button>
       ${config.categories.filter(cat => counts[cat.id] > 0).map(cat => `
         <button class="cv-cat-tab ${currentCategory === cat.id ? 'active' : ''}" data-cat="${cat.id}" style="--c:${cat.color}">
@@ -595,7 +595,7 @@
     filtered.sort((a, b) => a.startTime - b.startTime);
 
     if (filtered.length === 0) {
-      list.innerHTML = '<div class="cv-empty">No clips yet</div>';
+      list.innerHTML = '<div class="cv-empty">Belum ada klip</div>';
       return;
     }
 
@@ -659,7 +659,7 @@
           ${isCurrent ? `
             <button class="cv-btn-play" data-start="${c.startTime}" data-end="${c.endTime}" data-vid="${c.videoId}">Play</button>
           ` : `
-            <button class="cv-btn-open" data-start="${c.startTime}" data-vid="${c.videoId}">Open</button>
+            <button class="cv-btn-open" data-start="${c.startTime}" data-vid="${c.videoId}">Buka</button>
           `}
           <button class="cv-btn-pin ${isPinned ? 'active' : ''}" data-id="${c.id}" title="${isPinned ? 'Unpin' : 'Pin klip ini'}">${isPinned ? 'PIN' : 'pin'}</button>
           <button class="cv-btn-del" data-id="${c.id}">X</button>
@@ -672,12 +672,12 @@
         </div>
         <div class="cv-clip-adjust">
           <div class="cv-adjust-row">
-            <span class="cv-adjust-label">Start</span>
+            <span class="cv-adjust-label">Mulai</span>
             <button class="cv-btn-adj" data-id="${c.id}" data-type="start" data-dir="-1" aria-label="Move clip start one second earlier">◀</button>
             <button class="cv-btn-adj" data-id="${c.id}" data-type="start" data-dir="1" aria-label="Move clip start one second later">▶</button>
           </div>
           <div class="cv-adjust-row">
-            <span class="cv-adjust-label">End</span>
+            <span class="cv-adjust-label">Akhir</span>
             <button class="cv-btn-adj" data-id="${c.id}" data-type="end" data-dir="-1" aria-label="Move clip end one second earlier">◀</button>
             <button class="cv-btn-adj" data-id="${c.id}" data-type="end" data-dir="1" aria-label="Move clip end one second later">▶</button>
           </div>
@@ -727,7 +727,7 @@
       
       if (target.classList.contains('cv-btn-del')) {
         e.stopPropagation();
-        if (confirm('Delete clip?')) {
+        if (confirm('Hapus klip ini?')) {
           await deleteClip(target.dataset.id);
           updateUI();
         }
@@ -894,7 +894,7 @@
     const videoClips = clips.filter(c => c.videoId === vid);
     
     if (videoClips.length === 0) {
-      showNotif('No clips for this video', 'error');
+      showNotif('Belum ada klip untuk video ini', 'error');
       return;
     }
 
@@ -902,7 +902,7 @@
     
     try {
       await navigator.clipboard.writeText(text);
-      showNotif('Copied to clipboard!', 'success');
+      showNotif('Tersalin ke clipboard', 'success');
     } catch(e) {
       const ta = document.createElement('textarea');
       ta.value = text;
@@ -910,7 +910,7 @@
       ta.select();
       document.execCommand('copy');
       ta.remove();
-      showNotif('Copied to clipboard!', 'success');
+      showNotif('Tersalin ke clipboard', 'success');
     }
   }
 
@@ -927,8 +927,8 @@
         <div class="cv-settings-section">
           <div class="cv-duration-row">
             <div class="cv-duration-copy">
-              <span class="cv-duration-title">Before tag</span>
-              <span class="cv-duration-hint">Clip begins before the tagged moment</span>
+              <span class="cv-duration-title">Sebelum tag</span>
+              <span class="cv-duration-hint">Klip dimulai sebelum momen yang ditandai</span>
             </div>
             <div class="cv-stepper" role="group" aria-label="Seconds before tag">
               <button class="cv-stepper-btn" data-setting="clipBefore" data-delta="-1" aria-label="Decrease seconds before tag">◀</button>
@@ -938,8 +938,8 @@
           </div>
           <div class="cv-duration-row">
             <div class="cv-duration-copy">
-              <span class="cv-duration-title">After tag</span>
-              <span class="cv-duration-hint">Clip ends after the tagged moment</span>
+              <span class="cv-duration-title">Setelah tag</span>
+              <span class="cv-duration-hint">Klip berakhir setelah momen yang ditandai</span>
             </div>
             <div class="cv-stepper" role="group" aria-label="Seconds after tag">
               <button class="cv-stepper-btn" data-setting="clipAfter" data-delta="-1" aria-label="Decrease seconds after tag">◀</button>
@@ -947,7 +947,7 @@
               <button class="cv-stepper-btn" data-setting="clipAfter" data-delta="1" aria-label="Increase seconds after tag">▶</button>
             </div>
           </div>
-          <div class="cv-duration-saved" id="cv-duration-saved">Changes save automatically</div>
+          <div class="cv-duration-saved" id="cv-duration-saved">Perubahan tersimpan otomatis</div>
         </div>
       `;
 
@@ -964,10 +964,10 @@
           saveSettings();
 
           const saved = document.getElementById('cv-duration-saved');
-          saved.textContent = 'Saved';
+          saved.textContent = 'Tersimpan';
           clearTimeout(saved._resetTimer);
           saved._resetTimer = setTimeout(() => {
-            saved.textContent = 'Changes save automatically';
+            saved.textContent = 'Perubahan tersimpan otomatis';
           }, 900);
         };
       });
@@ -977,11 +977,11 @@
         <div class="cv-settings-section">
           ${config.teams.map((team, i) => `
             <div class="cv-team-edit">
-              <input type="text" class="cv-team-name-input" data-index="${i}" value="${team.name}" placeholder="Team name">
+              <input type="text" class="cv-team-name-input" data-index="${i}" value="${team.name}" placeholder="Nama tim">
               <input type="color" class="cv-team-color-input" data-index="${i}" value="${team.color}">
             </div>
           `).join('')}
-          <button class="cv-settings-save" id="cv-save-teams">Save Teams</button>
+          <button class="cv-settings-save" id="cv-save-teams">Simpan Tim</button>
         </div>
       `;
       
@@ -996,7 +996,7 @@
           config.teams[i].color = input.value;
         });
         await saveConfig();
-        showNotif('Teams saved', 'success');
+        showNotif('Tim tersimpan', 'success');
         refreshTagUI();
       };
     }
@@ -1008,17 +1008,17 @@
               <div class="cv-cat-edit" draggable="true" data-index="${i}">
                 <span class="cv-cat-drag">☰</span>
                 <input type="color" class="cv-cat-color-input" data-index="${i}" value="${cat.color}">
-                <input type="text" class="cv-cat-name-input" data-index="${i}" value="${cat.name}" placeholder="Category name">
+                <input type="text" class="cv-cat-name-input" data-index="${i}" value="${cat.name}" placeholder="Nama kategori">
                 <button class="cv-cat-del-btn" data-index="${i}">✕</button>
               </div>
             `).join('')}
           </div>
           <div class="cv-cat-add-row">
-            <input type="text" id="cv-new-cat-name" placeholder="New category name">
+            <input type="text" id="cv-new-cat-name" placeholder="Nama kategori baru">
             <input type="color" id="cv-new-cat-color" value="#6366F1">
             <button class="cv-cat-add-btn" id="cv-add-cat">+</button>
           </div>
-          <button class="cv-settings-save" id="cv-save-cats">Save Categories</button>
+          <button class="cv-settings-save" id="cv-save-cats">Simpan Kategori</button>
         </div>
       `;
       
@@ -1030,7 +1030,7 @@
           e.stopPropagation();
           const i = parseInt(btn.dataset.index);
           if (config.categories.length <= 1) {
-            showNotif('Need at least 1 category', 'error');
+            showNotif('Minimal harus ada 1 kategori', 'error');
             return;
           }
           config.categories.splice(i, 1);
@@ -1045,7 +1045,7 @@
         const colorInput = document.getElementById('cv-new-cat-color');
         const name = nameInput.value.trim();
         if (!name) {
-          showNotif('Enter category name', 'error');
+          showNotif('Masukkan nama kategori', 'error');
           return;
         }
         config.categories.push({
@@ -1073,7 +1073,7 @@
           }
         });
         await saveConfig();
-        showNotif('Categories saved', 'success');
+        showNotif('Kategori tersimpan', 'success');
         refreshTagUI();
       };
     }
@@ -1147,7 +1147,7 @@
       catsEl.innerHTML = config.categories.map((c, i) => `
         <button class="cv-cat" data-c="${c.id}" style="--c:${c.color}">
           <span class="cv-cat-name">${c.name}</span>
-          <span class="cv-cat-key" data-count-for="${c.id}">0 clips</span>
+          <span class="cv-cat-key" data-count-for="${c.id}">0 klip</span>
         </button>
       `).join('');
       
@@ -1164,7 +1164,7 @@
     const teamFilter = document.querySelector('.cv-team-filter');
     if (teamFilter) {
       teamFilter.innerHTML = `
-        <button class="cv-team-filter-btn active" data-team="all">All</button>
+        <button class="cv-team-filter-btn active" data-team="all">Semua</button>
         ${config.teams.map(team => `
           <button class="cv-team-filter-btn" data-team="${team.id}" style="--team-color: ${team.color}">
             ${team.name.charAt(0)}
@@ -1204,9 +1204,9 @@
           <span class="cv-title">CourtVision <span class="cv-pro" id="cv-account-badge">MEMERIKSA</span></span>
           <div class="cv-header-right">
             <span class="cv-time" id="cv-time">0:00</span>
-            <button class="cv-hbtn" id="cv-settings-btn" title="Settings" aria-label="Settings">⚙</button>
-            <button class="cv-hbtn" id="cv-min" title="Minimize">−</button>
-            <button class="cv-hbtn" id="cv-close" title="Close">✕</button>
+            <button class="cv-hbtn" id="cv-settings-btn" title="Pengaturan" aria-label="Pengaturan">⚙</button>
+            <button class="cv-hbtn" id="cv-min" title="Minimalkan">−</button>
+            <button class="cv-hbtn" id="cv-close" title="Tutup">✕</button>
           </div>
         </div>
         
@@ -1219,15 +1219,15 @@
           
           <!-- WhatsApp Button -->
           <div class="cv-wa-container">
-            <button class="cv-wa-btn" id="cv-wa-btn">Copy for WhatsApp</button>
+            <button class="cv-wa-btn" id="cv-wa-btn">Salin untuk WhatsApp</button>
           </div>
           
           <!-- Settings Panel (Expanded) -->
           <div class="cv-settings hidden" id="cv-settings">
             <div class="cv-settings-tabs">
-              <button class="cv-settings-tab active" data-tab="clip">Duration</button>
-              <button class="cv-settings-tab" data-tab="teams">Teams</button>
-              <button class="cv-settings-tab" data-tab="categories">Categories</button>
+              <button class="cv-settings-tab active" data-tab="clip">Durasi</button>
+              <button class="cv-settings-tab" data-tab="teams">Tim</button>
+              <button class="cv-settings-tab" data-tab="categories">Kategori</button>
             </div>
             <div class="cv-settings-content" id="cv-settings-content"></div>
           </div>
@@ -1235,7 +1235,7 @@
           <!-- Main Tabs -->
           <div class="cv-tabs">
             <button class="cv-tab active" data-t="tag">Tag</button>
-            <button class="cv-tab" data-t="clips">Clips <span id="cv-tab-count">0</span></button>
+            <button class="cv-tab" data-t="clips">Klip <span id="cv-tab-count">0</span></button>
           </div>
           
           <!-- Tag Content -->
@@ -1254,7 +1254,7 @@
               ${config.categories.map((c, i) => `
                 <button class="cv-cat" data-c="${c.id}" style="--c:${c.color}">
                   <span class="cv-cat-name">${c.name}</span>
-                  <span class="cv-cat-key" data-count-for="${c.id}">0 clips</span>
+                  <span class="cv-cat-key" data-count-for="${c.id}">0 klip</span>
                 </button>
               `).join('')}
             </div>
@@ -1263,12 +1263,12 @@
           <!-- Clips Content -->
           <div class="cv-content hidden" id="cv-content-clips">
             <div class="cv-filters">
-              <button class="cv-filter active" data-f="current">This Video</button>
-              <button class="cv-filter" data-f="all">All</button>
+              <button class="cv-filter active" data-f="current">Video Ini</button>
+              <button class="cv-filter" data-f="all">Semua</button>
             </div>
             
             <div class="cv-team-filter">
-              <button class="cv-team-filter-btn active" data-team="all">All</button>
+              <button class="cv-team-filter-btn active" data-team="all">Semua</button>
               ${config.teams.map(team => `
                 <button class="cv-team-filter-btn" data-team="${team.id}" style="--team-color: ${team.color}">
                   ${team.name.charAt(0)}

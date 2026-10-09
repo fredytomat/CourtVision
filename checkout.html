@@ -37,7 +37,8 @@
     button:disabled { opacity:.5; cursor:wait; }
     .status { min-height:24px; color:var(--muted); }
     .status.error { color:var(--danger); }
-    .sandbox-notice { margin:0 0 20px; padding:12px 14px; border:1px solid #6f8730; border-radius:12px; background:#26371b; color:#def58a; font-size:14px; font-weight:750; }
+    .production-notice { margin:0 0 20px; padding:12px 14px; border:1px solid #6f8730; border-radius:12px; background:#26371b; color:#def58a; font-size:14px; font-weight:750; }
+    .field-note { margin:-2px 0 0; color:var(--muted); font-size:12px; font-weight:500; }
     .security { margin:2px 0 0; color:var(--muted); font-size:13px; text-align:center; }
     .support { margin-top:22px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
     @media (max-width:760px) { .layout { grid-template-columns:1fr; padding-top:28px; } .summary,.checkout { padding:22px; border-radius:20px; } }
@@ -64,11 +65,11 @@
     </section>
     <section class="checkout">
       <h2>Data pembelian</h2>
-      <p class="sandbox-notice">Pembayaran Production Duitku — transaksi menggunakan uang nyata. Pastikan data pembelian dan metode pembayaran sudah benar sebelum melanjutkan.</p>
+      <p class="production-notice">Pembayaran resmi CourtVision melalui Duitku. QRIS dan metode lain yang aktif akan muncul pada pilihan di bawah.</p>
       <p class="muted">Gunakan email Google yang sama dengan akun CourtVision di extension agar PRO aktif otomatis setelah pembayaran berhasil.</p>
       <form id="checkout-form">
         <label>Nama lengkap<input id="name" name="name" autocomplete="name" maxlength="50" required placeholder="Nama pembeli"></label>
-        <label>Email akun CourtVision<input id="email" name="email" type="email" autocomplete="email" maxlength="50" required placeholder="nama@email.com"></label>
+        <label>Email akun CourtVision<input id="email" name="email" type="email" autocomplete="email" maxlength="50" required placeholder="nama@email.com"><span class="field-note" id="email-note">Gunakan email Google yang sama dengan akun di extension.</span></label>
         <label>Nomor WhatsApp <span class="muted">(opsional)</span><input id="phone" name="phone" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="08xxxxxxxxxx"></label>
         <label>Metode pembayaran<select id="payment-method" name="paymentMethod" required disabled><option value="">Memuat metode pembayaran…</option></select></label>
         <p id="status" class="status" role="status" aria-live="polite"></p>
@@ -91,7 +92,12 @@
       if (initialPlan === 'yearly') document.querySelector('[name="plan"][value="yearly"]').checked = true;
       const initialEmail = params.get('email');
       const initialName = params.get('name');
-      if (initialEmail) document.getElementById('email').value = initialEmail;
+      if (initialEmail) {
+        const emailInput = document.getElementById('email');
+        emailInput.value = initialEmail;
+        emailInput.readOnly = true;
+        document.getElementById('email-note').textContent = 'Email diambil otomatis dari akun CourtVision. Ganti akun melalui extension jika email ini tidak benar.';
+      }
       if (initialName) document.getElementById('name').value = initialName;
 
       const setStatus = (message, error = false) => {

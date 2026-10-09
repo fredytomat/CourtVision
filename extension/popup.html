@@ -16,7 +16,7 @@
           <span class="pro account-badge" id="account-badge">MEMERIKSA</span>
         </div>
       </div>
-      <button class="btn-icon" id="btn-refresh" title="Refresh">R</button>
+      <button class="btn-icon" id="btn-refresh" title="Perbarui status" aria-label="Perbarui status">↻</button>
     </header>
 
     <div class="stats-bar" id="stats-bar">
@@ -26,11 +26,11 @@
       </div>
       <div class="stat success">
         <span class="stat-value" id="stat-success">0</span>
-        <span class="stat-label">Made</span>
+        <span class="stat-label">Berhasil</span>
       </div>
       <div class="stat fail">
         <span class="stat-value" id="stat-fail">0</span>
-        <span class="stat-label">Missed</span>
+        <span class="stat-label">Gagal</span>
       </div>
     </div>
 
@@ -39,25 +39,25 @@
     </div>
 
     <div class="tabs">
-      <button class="tab active" data-tab="clips">All Clips</button>
-      <button class="tab" data-tab="export">Export</button>
+      <button class="tab active" data-tab="clips">Semua Klip</button>
+      <button class="tab" data-tab="export">Ekspor</button>
       <button class="tab" data-tab="account">Akun</button>
     </div>
 
     <div class="tab-content active" id="tab-clips">
       <div class="filter-bar">
         <select id="filter-video" class="filter-select">
-          <option value="all">All Videos</option>
+          <option value="all">Semua Video</option>
         </select>
         <select id="filter-team" class="filter-select">
-          <option value="all">All Teams</option>
+          <option value="all">Semua Tim</option>
         </select>
       </div>
 
       <div class="clips-container" id="clips-container">
         <div class="empty-state" id="empty-state">
-          <p>No clips yet</p>
-          <small>Open YouTube and start tagging</small>
+          <p>Belum ada klip</p>
+          <small>Buka YouTube dan mulai tagging</small>
         </div>
         <div class="clips-list" id="clips-list"></div>
       </div>
@@ -70,7 +70,7 @@
           <span>Ekspor cadangan JSON sebelum menghapus atau memasang ulang CourtVision.</span>
         </div>
         <button class="export-btn primary" id="btn-copy-wa">
-          Copy for WhatsApp
+          Salin untuk WhatsApp
         </button>
         <div class="export-row">
           <button class="export-btn" id="btn-export-json">JSON</button>
@@ -80,7 +80,7 @@
         <button class="export-btn restore" id="btn-import-json">Pulihkan dari JSON</button>
         <input type="file" id="import-json-file" accept=".json,application/json" hidden>
         <button class="export-btn danger" id="btn-clear-all">
-          Delete All Clips
+          Hapus Semua Klip
         </button>
       </div>
     </div>
@@ -98,19 +98,19 @@
 
         <div class="license-status" id="license-status">
           <span class="license-icon">🎁</span>
-          <span class="license-text">Free Trial</span>
+          <span class="license-text">Trial Gratis</span>
         </div>
 
         <div class="license-info" id="license-info"></div>
 
         <div class="license-features">
-          <p class="features-title">Pro Features:</p>
+          <p class="features-title">Fitur Pro:</p>
           <ul>
             <li>✓ WhatsApp Export</li>
             <li>✓ CSV, JSON & XML Export</li>
-            <li>✓ Unlimited Clips</li>
-            <li>✓ Hudl Sportscode Compatible</li>
-            <li>✓ Priority Support</li>
+            <li>✓ Klip tanpa batas</li>
+            <li>✓ Kompatibel dengan Hudl Sportscode</li>
+            <li>✓ Dukungan prioritas</li>
           </ul>
         </div>
 
@@ -131,7 +131,7 @@
     </div>
 
     <footer class="footer">
-      <span>v3.4.0 production</span>
+      <span>v3.4.1 production</span>
     </footer>
   </div>
   <script src="share-format.js"></script>

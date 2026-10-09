@@ -3,7 +3,7 @@
 
   "manifest_version": 3,
   "name": "CourtVision - Basketball Video Analysis",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAywsjFggZd0YHbunm9llqbR4aVdyae+9KXzvSNwdeOX7/rTVltK0FLrjyhSdsWEPEs7fjg+7JKcH8a4HumKtXVyli2KHxPp7/bx+TDZ7cHNgcv3oJHMdnxgzh/NbMNVKtxB1CqRL1K0oPtPPrFpALIB55H8zkltNWovRwoSRa5DSI/p2bGKw1UfjERU2yd+rSY6/WXb1qvwiDmk+WLxKHkzvOZpXKdjXABt0S+FnUg7A6ccVKcap88uh5hU3VY8NmccD+99Al/chNH/uxL+ko/Ljk3Wq7iJLtaiT3z/utOfCiDjRqhvY+s48pm1kEGLjN4lA/ygoV+IMLumojJs7LhwIDAQAB",
   "description": "Professional basketball video analysis tool for coaches - tag plays, track outcomes, export insights",
   "author": "CourtVision",

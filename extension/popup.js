@@ -1,6 +1,6 @@
 /**
  * CourtVision Popup - Full Clips Manager
- * v3.4.0 - Production account and Duitku activation
+ * v3.4.1 - Production release polish
  */
 
 const STORAGE_KEY = 'courtvision_clips';
@@ -72,7 +72,8 @@ async function loadLicenseAccount() {
   accountName.textContent = licenseAccount.user?.name || licenseAccount.user?.email || 'Akun CourtVision';
   const activeDevices = licenseAccount.devices?.length || 1;
   const deviceLimit = licenseAccount.maxActiveDevices || 1;
-  accountDetail.textContent = `${activeDevices} dari ${deviceLimit} laptop aktif`;
+  const accountEmail = licenseAccount.user?.email ? `${licenseAccount.user.email} · ` : '';
+  accountDetail.textContent = `${accountEmail}${activeDevices} dari ${deviceLimit} laptop aktif`;
   signIn.classList.add('hidden');
   signOut.classList.remove('hidden');
   const serverStatus = userStatusFromEntitlement(licenseAccount.entitlement);
@@ -133,7 +134,7 @@ function updateVideoFilter() {
   const select = document.getElementById('filter-video');
   const videos = [...new Set(allClips.map(c => c.videoId))];
   
-  select.innerHTML = '<option value="all">All Videos</option>';
+  select.innerHTML = '<option value="all">Semua Video</option>';
   
   allClips.forEach(c => {
     if (!select.querySelector(`option[value="${c.videoId}"]`)) {
@@ -149,7 +150,7 @@ function updateVideoFilter() {
 // Update team filter dropdown with dynamic teams
 function updateTeamFilter() {
   const select = document.getElementById('filter-team');
-  select.innerHTML = '<option value="all">All Teams</option>';
+  select.innerHTML = '<option value="all">Semua Tim</option>';
   
   config.teams.forEach(team => {
     const opt = document.createElement('option');
@@ -238,7 +239,7 @@ function clipCardHTML(c) {
         </div>
       </div>
       <div class="clip-actions">
-        <button class="clip-btn open" data-vid="${c.videoId}" data-start="${c.startTime}">Open in YouTube</button>
+        <button class="clip-btn open" data-vid="${c.videoId}" data-start="${c.startTime}">Buka di YouTube</button>
         <button class="clip-btn delete" data-id="${c.id}">X</button>
       </div>
     </div>
@@ -259,7 +260,7 @@ function attachClipListeners() {
   // Delete buttons
   document.querySelectorAll('.clip-btn.delete').forEach(btn => {
     btn.onclick = async () => {
-      if (confirm('Delete this clip?')) {
+      if (confirm('Hapus klip ini?')) {
         const id = btn.dataset.id;
         allClips = allClips.filter(c => c.id !== id);
         await chrome.storage.local.set({ [STORAGE_KEY]: allClips });
@@ -663,7 +664,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     if (clips.length === 0) {
-      alert('No clips available');
+      alert('Belum ada klip yang dapat dibagikan.');
       return;
     }
     
@@ -702,14 +703,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (copySuccess) {
       const btn = document.getElementById('btn-copy-wa');
       const originalText = btn.textContent;
-      btn.textContent = '✓ Copied!';
+      btn.textContent = '✓ Tersalin';
       btn.style.background = '#AFC63F';
       setTimeout(() => {
         btn.textContent = originalText;
         btn.style.background = '';
       }, 2000);
     } else {
-      alert('Copy failed. Please try again or use Export buttons.');
+      alert('Gagal menyalin. Coba lagi atau gunakan tombol ekspor.');
     }
   };
   
@@ -782,7 +783,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Export XML (Hudl Sportscode format)
   document.getElementById('btn-export-xml').onclick = () => {
     if (allClips.length === 0) {
-      alert('No clips to export');
+      alert('Belum ada klip yang dapat diekspor.');
       return;
     }
     
@@ -868,7 +869,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Clear all
   document.getElementById('btn-clear-all').onclick = async () => {
-    if (confirm('Delete ALL clips? This action cannot be undone!')) {
+    if (confirm('Hapus semua klip? Tindakan ini tidak dapat dibatalkan.')) {
       await chrome.storage.local.set({ [STORAGE_KEY]: [] });
       loadClips();
     }
