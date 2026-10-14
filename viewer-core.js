@@ -165,7 +165,13 @@
     const pathMatch = (pathname || '').match(/^\/c\/([A-Za-z0-9_-]+)\/?$/);
     const queryVideoId = safeText(params.get('v'), '');
     const opaqueData = /^[A-Za-z0-9_-]+$/.test(rawSearch) ? rawSearch : '';
-    const data = (pathMatch && pathMatch[1]) || opaqueData || (rawSearch.startsWith('cv2.') ? rawSearch.slice(4) : fragment.get('cv2') || params.get('d'));
+    const segmented = fragment.get('cv3');
+    if (segmented !== null && (segmented.length > MAX_DATA_LENGTH + Math.ceil(MAX_DATA_LENGTH / 120) ||
+        !/^[A-Za-z0-9_-]{1,120}(?:\.[A-Za-z0-9_-]{1,120})*$/.test(segmented))) {
+      throw new Error('Format link tidak valid.');
+    }
+    const data = segmented !== null ? segmented.replace(/\./g, '') :
+      (pathMatch && pathMatch[1]) || opaqueData || (rawSearch.startsWith('cv2.') ? rawSearch.slice(4) : fragment.get('cv2') || params.get('d'));
     let normalized;
 
     if (data) {

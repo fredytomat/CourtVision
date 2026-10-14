@@ -1,5 +1,5 @@
 /**
- * CourtVision - Background Service Worker v3.4.1
+ * CourtVision - Background Service Worker v3.4.2
  */
 
 const STORAGE_KEY = 'courtvision_clips';

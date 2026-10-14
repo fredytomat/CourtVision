@@ -1,6 +1,6 @@
 /**
  * CourtVision Popup - Full Clips Manager
- * v3.4.1 - Production release polish
+ * v3.4.2 - WhatsApp link format fix
  */
 
 const STORAGE_KEY = 'courtvision_clips';

@@ -38,6 +38,6 @@ test('release version is consistent in user-facing extension files', () => {
     read('extension/popup.js'),
     read('extension/popup.html'),
   ];
-  assert.equal(manifest.version, '3.4.1');
-  for (const source of files) assert.match(source, /3\.4\.1/);
+  assert.equal(manifest.version, '3.4.2');
+  for (const source of files) assert.match(source, /3\.4\.2/);
 });

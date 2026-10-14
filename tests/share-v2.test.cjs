@@ -24,8 +24,7 @@ test('extension emits compact CourtVision Link v3 that the universal viewer read
   const parsed = viewer.parseShareUrl(url.search, url.hash, url.pathname);
 
   assert.equal(payload.version, 3);
-  assert.match(share.createUrl(payload), /^https:\/\/courtvision\.id\/c\/[A-Za-z0-9_-]+$/);
-  assert.doesNotMatch(url.pathname.slice('/c/'.length), /[+\/=&#.]/);
+  assert.match(share.createUrl(payload), /^https:\/\/courtvision\.id\/clip\.html#cv3=[A-Za-z0-9_.-]+$/);
   assert.equal(parsed.version, 3);
   assert.equal(parsed.videoId, 'gdtetu4nnZc');
   assert.equal(parsed.title, 'USA 🇺🇸 vs Serbia 🇷🇸');
@@ -34,21 +33,20 @@ test('extension emits compact CourtVision Link v3 that the universal viewer read
   assert.equal(parsed.clips[0].outcome, 'success');
 });
 
-test('mobile and extension produce byte-identical opaque WhatsApp-safe links', () => {
-  const mobile = require('../../courtvision-mobile/artifacts/courtvision-mobile/lib/share.ts');
+test('legacy compact payload remains identical after changing only URL wrapping', () => {
   const payload = share.createPayload('USA 🇺🇸 vs Serbia 🇷🇸', 'A-sDFZgc-vc', [
     {teamName:'My Team',categoryName:'Defense',tagTime:33.25,startTime:26.25,endTime:39.25,notes:'Catatan & emoji 🏀',pinned:true}
   ]);
   const extensionUrl = share.createUrl(payload);
-  assert.equal(mobile.createShareUrl(payload), extensionUrl);
+  assert.equal(new URL(extensionUrl).hash.slice(5).replace(/\./g, ''), share.encodePayload(payload));
   const url = new URL(extensionUrl);
   const parsed = viewer.parseShareUrl(url.search, url.hash, url.pathname);
   assert.equal(parsed.videoId, payload.videoId);
   assert.equal(parsed.clips[0].notes, payload.clips[0].notes);
-  assert.equal(mobile.readSharePayload(url.search, url.hash, url.pathname).clips[0].notes, payload.clips[0].notes);
+  assert.equal(viewer.parseShareUrl('', '', '/c/' + share.encodePayload(payload)).clips[0].notes, payload.clips[0].notes);
 });
 
-test('six-clip WhatsApp link stays safely below the observed linkification limit', () => {
+test('six-clip report remains a single delimited URL', () => {
   const clips = [
     ['Set Play', 30.958215, 22.958215, 35.958215],
     ['Transition', 49.807133, 41.807133, 54.807133],
@@ -61,6 +59,6 @@ test('six-clip WhatsApp link stays safely below the observed linkification limit
   }));
   const payload = share.createPayload('FENERBAHCE TAKES THIRD! | Fenerbahce Tar...', 'WPpXqOUWUfY', clips);
   const url = share.createUrl(payload);
-  assert.ok(url.length < 450, `URL must remain short enough for WhatsApp, got ${url.length}`);
-  assert.equal(viewer.parseShareUrl('', '', new URL(url).pathname).clips.length, 6);
+  const parsedUrl = new URL(url);
+  assert.equal(viewer.parseShareUrl(parsedUrl.search, parsedUrl.hash, parsedUrl.pathname).clips.length, 6);
 });

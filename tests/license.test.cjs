@@ -14,7 +14,7 @@ const content = read('content.js');
 const welcome = read('welcome.js');
 
 test('release uses the production account service and keeps the published extension identity', () => {
-  assert.equal(manifest.version, '3.4.1');
+  assert.equal(manifest.version, '3.4.2');
   assert.ok(manifest.permissions.includes('identity'));
   assert.equal(manifest.oauth2.client_id, '593776146486-ereu1ifkfk85hf321rjlu8ik3vig85si.apps.googleusercontent.com');
   const extensionId = [...crypto.createHash('sha256').update(Buffer.from(manifest.key, 'base64')).digest().subarray(0, 16)]

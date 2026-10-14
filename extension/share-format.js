@@ -61,8 +61,12 @@
   }
 
   function createUrl(payload, viewerUrl = DEFAULT_VIEWER_URL) {
-    const baseUrl = viewerUrl.replace(/\/clip\.html\/?$/, '').replace(/\/$/, '');
-    return `${baseUrl}/c/${encodePayload(payload)}`;
+    const url = new URL(viewerUrl);
+    url.search = '';
+    // Keep one URL, but avoid a long uninterrupted token in link detectors.
+    // The fragment also keeps report data out of the HTTP request URL.
+    url.hash = 'cv3=' + encodePayload(payload).match(/.{1,120}/g).join('.');
+    return url.href;
   }
 
   return { VERSION, DEFAULT_VIEWER_URL, createPayload, encodePayload, createUrl };
