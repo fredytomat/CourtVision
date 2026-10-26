@@ -49,8 +49,8 @@
   <main class="layout">
     <section class="summary">
       <div class="eyebrow">Perangkat lunak analisis video basket</div>
-      <h1>CourtVision Pro Extension</h1>
-      <p class="muted">Extension Chrome desktop untuk Windows, Mac, dan Linux. Tandai momen pertandingan, susun klip, catat hasil, lalu bagikan laporan analisis dari video YouTube. Klip tetap tersimpan secara lokal di laptop Anda.</p>
+      <h1>CourtVision Pro</h1>
+      <p class="muted">Satu akun untuk CourtVision Mobile dan CourtVision Chrome Extension. Tandai pertandingan dari handphone atau laptop, lalu gunakan fitur Pro pada kedua produk.</p>
       <div class="plans" aria-label="Pilih paket">
         <label class="plan"><input type="radio" name="plan" value="monthly" checked><span><strong>Bulanan</strong><small class="muted">Akses Pro selama 30 hari</small></span><span class="price">Rp130.000</span></label>
         <label class="plan"><input type="radio" name="plan" value="yearly"><span><strong>Tahunan</strong><small class="muted">Akses Pro selama 365 hari</small></span><span class="price">Rp1.040.000</span></label>
@@ -59,17 +59,17 @@
         <li>Tagging dan kategori tanpa batas</li>
         <li>Ekspor WhatsApp, JSON, CSV, dan XML</li>
         <li>Pemutaran klip otomatis</li>
-        <li>Satu akun untuk satu laptop aktif</li>
+        <li>Satu handphone Mobile dan satu komputer Extension aktif</li>
       </ul>
-      <p class="muted"><strong>Produk yang dibeli:</strong> CourtVision Chrome Extension. CourtVision Mobile belum termasuk dalam pembelian ini.</p>
+      <p class="muted"><strong>Produk yang dibeli:</strong> CourtVision Pro untuk Mobile dan Chrome Extension.</p>
     </section>
     <section class="checkout">
       <h2>Data pembelian</h2>
       <p class="production-notice">Pembayaran resmi CourtVision melalui Duitku. QRIS dan metode lain yang aktif akan muncul pada pilihan di bawah.</p>
-      <p class="muted">Gunakan email Google yang sama dengan akun CourtVision di extension agar PRO aktif otomatis setelah pembayaran berhasil.</p>
+      <p class="muted">Gunakan email Google yang sama dengan akun CourtVision agar PRO aktif otomatis setelah pembayaran berhasil.</p>
       <form id="checkout-form">
         <label>Nama lengkap<input id="name" name="name" autocomplete="name" maxlength="50" required placeholder="Nama pembeli"></label>
-        <label>Email akun CourtVision<input id="email" name="email" type="email" autocomplete="email" maxlength="50" required placeholder="nama@email.com"><span class="field-note" id="email-note">Gunakan email Google yang sama dengan akun di extension.</span></label>
+        <label>Email akun CourtVision<input id="email" name="email" type="email" autocomplete="email" maxlength="50" required placeholder="nama@email.com"><span class="field-note" id="email-note">Gunakan email Google yang sama dengan akun CourtVision.</span></label>
         <label>Nomor WhatsApp <span class="muted">(opsional)</span><input id="phone" name="phone" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="08xxxxxxxxxx"></label>
         <label>Metode pembayaran<select id="payment-method" name="paymentMethod" required disabled><option value="">Memuat metode pembayaran…</option></select></label>
         <p id="status" class="status" role="status" aria-live="polite"></p>
@@ -96,7 +96,7 @@
         const emailInput = document.getElementById('email');
         emailInput.value = initialEmail;
         emailInput.readOnly = true;
-        document.getElementById('email-note').textContent = 'Email diambil otomatis dari akun CourtVision. Ganti akun melalui extension jika email ini tidak benar.';
+        document.getElementById('email-note').textContent = 'Email diambil otomatis dari akun CourtVision. Ganti akun melalui aplikasi jika email ini tidak benar.';
       }
       if (initialName) document.getElementById('name').value = initialName;
 

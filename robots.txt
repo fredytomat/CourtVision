@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /checkout.html
+Disallow: /payment-result.html
+Disallow: /clip.html
+
+Sitemap: https://courtvision.id/sitemap.xml

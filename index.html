@@ -3,13 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CourtVision - Basketball Video Analysis Tool for Coaches</title>
-  <meta name="description" content="Professional basketball video analysis tool for coaches. Tag plays, track outcomes, and analyze game footage directly on YouTube.">
+  <title>CourtVision — Analisis Video Basket untuk Pelatih</title>
+  <meta id="page-description" name="description" content="Analisis video basket untuk pelatih. Ekstensi Chrome CourtVision tersedia sekarang dan CourtVision Mobile segera hadir.">
   <meta name="keywords" content="basketball, video analysis, coaching, tagging, plays, YouTube, sports analysis">
-  <meta property="og:title" content="CourtVision - Basketball Video Analysis Tool">
-  <meta property="og:description" content="Tag plays, track outcomes, and analyze games directly from YouTube. The affordable alternative to expensive coaching software.">
+  <meta id="og-title" property="og:title" content="CourtVision — Analisis Video Basket untuk Pelatih">
+  <meta id="og-description" property="og:description" content="Tandai momen, tinjau klip, dan bagikan laporan pertandingan langsung dari YouTube.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://CourtVision.id">
+  <meta property="og:url" content="https://courtvision.id/">
+  <meta property="og:site_name" content="CourtVision">
+  <meta id="og-locale" property="og:locale" content="id_ID">
+  <meta property="og:image" content="https://courtvision.id/assets/brand/courtvision-social-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta id="og-image-alt" property="og:image:alt" content="CourtVision bekerja langsung pada video basket di YouTube">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta id="twitter-title" name="twitter:title" content="CourtVision — Analisis Video Basket untuk Pelatih">
+  <meta id="twitter-description" name="twitter:description" content="Tandai momen, tinjau klip, dan bagikan laporan pertandingan langsung dari YouTube.">
+  <meta name="twitter:image" content="https://courtvision.id/assets/brand/courtvision-social-preview.png">
+  <link rel="canonical" href="https://courtvision.id/">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="128x128" href="assets/brand/favicon-128.png">
+  <link rel="apple-touch-icon" href="assets/brand/favicon-128.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -159,6 +173,11 @@
     .nav-cta:hover {
       background: var(--navy-light);
       transform: translateY(-1px);
+    }
+
+    .nav-links a.nav-cta,
+    .nav-links a.nav-cta:hover {
+      color: #17200a;
     }
 
     /* Mobile Menu Button */
@@ -377,8 +396,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
       margin-bottom: 20px;
+    }
+
+    .feature-icon svg {
+      width: 25px;
+      height: 25px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .feature-card h3 {
@@ -493,6 +521,45 @@
       color: var(--gray-500);
       font-size: 16px;
       margin-bottom: 32px;
+    }
+
+    .product-availability {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0 26px;
+    }
+
+    .availability-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 13px;
+      border: 1px solid var(--gray-200);
+      border-radius: 999px;
+      color: var(--gray-500);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .availability-pill::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gray-400);
+    }
+
+    .availability-pill.available {
+      border-color: rgba(201, 238, 67, .45);
+      color: var(--gray-900);
+      background: rgba(201, 238, 67, .08);
+    }
+
+    .availability-pill.available::before {
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(201, 238, 67, .12);
     }
 
     .pricing-toggle {
@@ -775,14 +842,6 @@
       color: white;
     }
 
-    .footer-contact-address {
-      max-width: 280px;
-      margin: 0;
-      color: var(--gray-400);
-      font-size: 14px;
-      line-height: 1.55;
-    }
-
     .footer-bottom {
       display: flex;
       justify-content: space-between;
@@ -912,6 +971,181 @@
         margin: 0 12px;
       }
     }
+    /* 2026 CourtVision product identity refresh */
+    :root {
+      --navy: #c9ee43;
+      --navy-light: #d9f66a;
+      --navy-dark: #07110c;
+      --white: #102019;
+      --gray-50: #0b1811;
+      --gray-100: #16291f;
+      --gray-200: #2a4435;
+      --gray-300: #41604b;
+      --gray-400: #748379;
+      --gray-500: #a5b2aa;
+      --gray-600: #c6d0c8;
+      --gray-700: #dce4de;
+      --gray-800: #eef3ef;
+      --gray-900: #f7faf7;
+      --green: #c9ee43;
+      --green-dark: #aeda27;
+      --orange: #e9aa58;
+    }
+
+    body {
+      background: radial-gradient(circle at 85% 5%, rgba(201,238,67,.12), transparent 28rem), #07110c;
+    }
+    nav { background: rgba(7,17,12,.9); border-color: rgba(201,238,67,.14); }
+    .logo-icon { color: #17200a; background: var(--green); transform: rotate(-4deg); }
+    .logo-text, .nav-links a:hover { color: var(--gray-900); }
+    .lang-toggle { border: 1px solid var(--gray-200); background: var(--gray-100); }
+    .lang-btn.active { color: #17200a; background: var(--green); box-shadow: none; }
+    .nav-cta, .btn-primary, .pricing-cta { color: #17200a; background: var(--green); }
+    .nav-cta:hover, .btn-primary:hover, .pricing-cta:hover { color: #17200a; background: #d9f66a; }
+    .hero { background: transparent; }
+    .hero-content h1 span, .hero-stat-value { color: var(--green); }
+    .btn-secondary { color: var(--gray-900); background: rgba(255,255,255,.02); border-color: var(--gray-200); }
+    .btn-secondary:hover { border-color: var(--green); background: rgba(201,238,67,.06); }
+    .hero-mockup, .feature-card, .pricing-card-single, .faq-item { border-color: var(--gray-200); background: linear-gradient(145deg, #16291f, #0b1811); }
+    .feature-card:hover { border-color: var(--green); }
+    .feature-icon, .section-tag, .step-number { color: #17200a; background: var(--green); }
+    .how-it-works, .faq, .social-proof { background: #0a160f; }
+    .pricing-card-single { border-color: #587445; box-shadow: 0 25px 70px rgba(0,0,0,.35); }
+    .pricing-badge { color: #17200a; }
+    .price-amount { color: var(--green); }
+    .pricing-toggle-btn.active { color: #17200a; background: var(--green); }
+    .pricing-cta-yearly, .pricing-cta-yearly:hover { color: #17200a; background: var(--green) !important; }
+    .cta { background: radial-gradient(circle at 50% 0, rgba(201,238,67,.15), transparent 60%), #102019; }
+    .cta .btn-primary { color: #17200a; background: var(--green); }
+    footer { background: #050d09; }
+
+    .mobile-announcement {
+      margin-top: 76px;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(201,238,67,.16);
+      background: rgba(201,238,67,.075);
+      color: #dce7dd;
+      text-align: center;
+      font-size: 13px;
+    }
+    .mobile-announcement strong {
+      display: inline-block;
+      margin-right: 8px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      color: #17200a;
+      background: var(--green);
+      font-size: 10px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .mobile-coming { padding: 100px 0; }
+    .mobile-coming-panel {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 56px;
+      padding: 56px;
+      border: 1px solid #3e5b45;
+      border-radius: 28px;
+      background: radial-gradient(circle at 90% 0, rgba(201,238,67,.12), transparent 45%), linear-gradient(135deg, #15291f, #0b1911 70%);
+      box-shadow: 0 30px 80px rgba(0,0,0,.34);
+    }
+    .coming-soon-label {
+      display: inline-block;
+      padding: 8px 13px;
+      border-radius: 999px;
+      color: #17200a;
+      background: var(--green);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .mobile-coming h2 { margin: 20px 0 16px; color: var(--gray-900); font-size: 46px; line-height: 1.08; letter-spacing: -.04em; }
+    .mobile-coming-copy { color: var(--gray-500); font-size: 17px; }
+    .mobile-coming-points { display: grid; align-content: center; gap: 12px; }
+    .mobile-coming-point { padding: 16px 18px; border: 1px solid var(--gray-200); border-radius: 14px; background: rgba(7,17,12,.58); color: var(--gray-700); font-size: 14px; font-weight: 600; }
+    .mobile-coming-point::before { content: "✓"; margin-right: 10px; color: var(--green); font-weight: 900; }
+
+    .hero-product-shot {
+      display: block;
+      width: 100%;
+      border: 1px solid var(--gray-200);
+      border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.38);
+    }
+    .hero-mockup { display: none; }
+    .product-showcase { padding: 100px 0; background: #0a160f; }
+    .showcase-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .showcase-card {
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+      border-radius: 22px;
+      background: #102019;
+    }
+    .showcase-card img { display: block; width: 100%; height: auto; object-fit: cover; object-position: center top; }
+    .showcase-card img { height: 430px; object-fit: contain; background: #07110c; }
+    .showcase-caption { padding: 18px 20px; border-top: 1px solid var(--gray-200); }
+    .showcase-caption strong { display: block; color: var(--gray-900); }
+    .showcase-caption span { color: var(--gray-500); font-size: 13px; }
+
+    .demo-section { padding: 100px 0; }
+    .demo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+    .demo-card { overflow: hidden; border: 1px solid var(--gray-200); border-radius: 22px; background: #102019; }
+    .demo-card video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #050d09; object-fit: cover; }
+    .demo-copy { padding: 22px; }
+    .demo-copy strong { display: block; margin-bottom: 7px; color: var(--gray-900); font-size: 18px; }
+    .demo-copy span { color: var(--gray-500); font-size: 14px; }
+
+    .install-section { padding: 100px 0; }
+    .install-panel {
+      padding: 52px;
+      border: 1px solid #587445;
+      border-radius: 28px;
+      background: radial-gradient(circle at 92% 5%, rgba(201,238,67,.14), transparent 40%), #102019;
+    }
+    .install-panel .section-header { margin-bottom: 38px; }
+    .install-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 30px; }
+    .install-step { padding: 24px; border: 1px solid var(--gray-200); border-radius: 17px; background: rgba(7,17,12,.55); }
+    .install-step b { width: 36px; height: 36px; display: grid; place-items: center; margin-bottom: 17px; border-radius: 11px; color: #17200a; background: var(--green); }
+    .install-step strong { display: block; margin-bottom: 7px; color: var(--gray-900); }
+    .install-step span { color: var(--gray-500); font-size: 13px; }
+    .install-action { max-width: 540px; margin: 0 auto; text-align: center; }
+    .install-action .btn-primary { width: 100%; justify-content: center; }
+    .install-note { margin-top: 12px; color: var(--gray-400); font-size: 12px; }
+
+    @media (max-width: 1100px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: block; color: var(--gray-900); }
+      .nav-links.open {
+        position: absolute;
+        top: 76px;
+        left: 20px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 22px;
+        border: 1px solid var(--gray-200);
+        border-radius: 18px;
+        background: #0b1811;
+        box-shadow: 0 24px 60px rgba(0,0,0,.4);
+      }
+      .nav-links.open a { padding: 7px 4px; }
+      .nav-links.open a.nav-cta { padding: 12px 18px; text-align: center; }
+      .nav-links.open .lang-toggle { width: fit-content; }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-announcement { margin-top: 0; padding: 10px 14px; }
+      .mobile-announcement { margin-top: 76px; }
+      .mobile-coming-panel { grid-template-columns: 1fr; padding: 30px 24px; gap: 30px; }
+      .mobile-coming h2 { font-size: 34px; }
+      .showcase-grid, .demo-grid, .install-steps { grid-template-columns: 1fr; }
+      .showcase-card img { height: auto; max-height: 430px; }
+      .install-panel { padding: 30px 20px; }
+    }
   </style>
 </head>
 <body>
@@ -925,77 +1159,128 @@
       <div class="nav-links">
         <a href="guide.html" data-en="Guide" data-id="Panduan">Guide</a>
         <a href="#features" data-en="Features" data-id="Fitur">Features</a>
-        <a href="#how-it-works" data-en="How It Works" data-id="Cara Kerja">How It Works</a>
+        <a href="#mobile" data-en="Mobile" data-id="Mobile">Mobile</a>
+        <a href="#demo" data-en="See It Work" data-id="Lihat Cara Kerja">See It Work</a>
         <a href="#pricing" data-en="Pricing" data-id="Harga">Pricing</a>
         <a href="#faq" data-en="FAQ" data-id="FAQ">FAQ</a>
         <div class="lang-toggle">
           <button class="lang-btn active" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="id">ID</button>
         </div>
-        <a href="https://chromewebstore.google.com/detail/oklbkdldkcchgihmadhbgojnamadihig" target="_blank" class="nav-cta" data-en="Try Free" data-id="Coba Gratis">Try Free</a>
+        <a href="https://chromewebstore.google.com/detail/oklbkdldkcchgihmadhbgojnamadihig" target="_blank" class="nav-cta" data-en="Install CourtVision" data-id="Instal CourtVision">Install CourtVision</a>
       </div>
-      <button class="mobile-menu-btn">☰</button>
+      <button class="mobile-menu-btn" type="button" aria-label="Buka menu" data-aria-en="Open menu" data-aria-id="Buka menu" aria-expanded="false">☰</button>
     </div>
   </nav>
+
+  <div class="mobile-announcement">
+    <strong data-en="Coming Soon" data-id="Segera Hadir">Coming Soon</strong>
+    <span data-en="CourtVision Mobile is being prepared. The Chrome Extension is available now." data-id="CourtVision Mobile sedang dipersiapkan. Ekstensi Chrome tersedia sekarang.">CourtVision Mobile is being prepared. The Chrome Extension is available now.</span>
+  </div>
 
   <!-- Hero Section -->
   <section class="hero">
     <div class="container">
       <div class="hero-content">
-        <h1 data-en="Analyze Basketball Like a <span>Pro Coach</span>" data-id="Analisis Basket Seperti <span>Coach Pro</span>">Analyze Basketball Like a <span>Pro Coach</span></h1>
-        <p data-en="Tag plays, track outcomes, and generate professional game analysis — directly from YouTube videos. The affordable alternative to expensive coaching software." data-id="Tag permainan, lacak hasil, dan buat analisis pertandingan profesional — langsung dari video YouTube. Alternatif terjangkau untuk software coaching mahal.">Tag plays, track outcomes, and generate professional game analysis — directly from YouTube videos. The affordable alternative to expensive coaching software.</p>
+        <h1 data-en="Turn Every Game into a <span>Clear Decision</span>" data-id="Ubah Setiap Pertandingan Menjadi <span>Keputusan yang Jelas</span>">Turn Every Game into a <span>Clear Decision</span></h1>
+        <p data-en="Tag key moments directly from YouTube, review every clip, and share one clear report with your coaching staff." data-id="Tandai momen penting langsung dari YouTube, tinjau setiap klip, lalu bagikan satu laporan yang jelas kepada staf pelatih.">Tag key moments directly from YouTube, review every clip, and share one clear report with your coaching staff.</p>
         <div class="hero-buttons">
           <a href="https://chromewebstore.google.com/detail/oklbkdldkcchgihmadhbgojnamadihig" target="_blank" class="btn-primary">
-            <span>🌐</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <span data-en="Try Free for 7 Days" data-id="Coba Gratis 7 Hari">Try Free for 7 Days</span>
           </a>
-          <a href="#how-it-works" class="btn-secondary">
+          <a href="#demo" class="btn-secondary">
             <span>▶</span>
             <span data-en="See How It Works" data-id="Lihat Cara Kerja">See How It Works</span>
           </a>
         </div>
-        <p class="hero-trial" data-en="<strong>Chrome desktop extension</strong> for Windows, Mac, and Linux" data-id="<strong>Extension Chrome desktop</strong> untuk Windows, Mac, dan Linux"><strong>Chrome desktop extension</strong> for Windows, Mac, and Linux</p>
+        <p class="hero-trial" data-en="<strong>Chrome desktop extension</strong> for Windows, Mac, and Linux" data-id="<strong>Ekstensi Chrome untuk desktop</strong> di Windows, Mac, dan Linux"><strong>Chrome desktop extension</strong> for Windows, Mac, and Linux</p>
         <div class="hero-stats">
           <div class="hero-stat">
             <div class="hero-stat-value">Rp130rb</div>
-            <div class="hero-stat-label" data-en="/month after trial" data-id="/bulan setelah trial">/month after trial</div>
+            <div class="hero-stat-label" data-en="/month after trial" data-id="/bulan setelah uji coba">/month after trial</div>
           </div>
           <div class="hero-stat">
             <div class="hero-stat-value">1-Click</div>
-            <div class="hero-stat-label" data-en="Quick Tagging" data-id="Tag Cepat">Quick Tagging</div>
+            <div class="hero-stat-label" data-en="Quick Tagging" data-id="Penandaan Cepat">Quick Tagging</div>
           </div>
           <div class="hero-stat">
             <div class="hero-stat-value">∞</div>
-            <div class="hero-stat-label" data-en="Unlimited Clips" data-id="Klip Unlimited">Unlimited Clips</div>
+            <div class="hero-stat-label" data-en="Unlimited Clips" data-id="Klip Tanpa Batas">Unlimited Clips</div>
           </div>
         </div>
       </div>
       <div class="hero-image">
-        <svg class="hero-mockup" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="400" height="300" rx="12" fill="#0F172A"/>
-          <rect x="16" y="16" width="368" height="208" rx="8" fill="#1E293B"/>
-          <rect x="32" y="32" width="160" height="90" rx="4" fill="#334155"/>
-          <circle cx="112" cy="77" r="20" fill="#475569"/>
-          <polygon points="106,70 106,84 122,77" fill="white"/>
-          <rect x="32" y="138" width="80" height="10" rx="2" fill="#475569"/>
-          <rect x="32" y="156" width="120" height="8" rx="2" fill="#334155"/>
-          <rect x="220" y="32" width="148" height="176" rx="8" fill="#1E3A5F"/>
-          <rect x="232" y="48" width="124" height="24" rx="4" fill="#2D4A6F"/>
-          <text x="250" y="65" fill="white" font-size="10" font-weight="bold">COURTVISION</text>
-          <rect x="232" y="84" width="56" height="32" rx="4" fill="#334155"/>
-          <text x="245" y="105" fill="white" font-size="14" font-weight="bold">12</text>
-          <rect x="296" y="84" width="56" height="32" rx="4" fill="#10B981" opacity="0.2"/>
-          <text x="313" y="105" fill="#10B981" font-size="14" font-weight="bold">8</text>
-          <rect x="232" y="128" width="124" height="28" rx="4" fill="#F59E0B" opacity="0.2"/>
-          <text x="246" y="147" fill="#F59E0B" font-size="11" font-weight="bold">Transition</text>
-          <rect x="232" y="162" width="124" height="28" rx="4" fill="#10B981" opacity="0.2"/>
-          <text x="246" y="181" fill="#10B981" font-size="11" font-weight="bold">Set Play</text>
-          <rect x="16" y="240" width="368" height="44" rx="8" fill="#1E293B"/>
-          <rect x="32" y="252" width="60" height="20" rx="4" fill="#1E3A5F"/>
-          <rect x="100" y="252" width="60" height="20" rx="4" fill="#334155"/>
-          <rect x="168" y="252" width="60" height="20" rx="4" fill="#334155"/>
-        </svg>
+        <img class="hero-product-shot" src="assets/product/courtvision-on-youtube.webp" alt="CourtVision Extension open beside a basketball video on YouTube">
         <div class="hero-badge" data-en="✓ Works on YouTube" data-id="✓ Untuk YouTube">✓ Works on YouTube</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product showcase -->
+  <section class="product-showcase" aria-labelledby="showcase-title">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-en="Real Product" data-id="Produk Nyata">Real Product</span>
+        <h2 id="showcase-title" data-en="Built directly into the coaching workflow" data-id="Dibuat langsung di dalam alur kerja pelatih">Built directly into the coaching workflow</h2>
+        <p data-en="Tag while watching, then review, back up, and share without leaving the CourtVision workspace." data-id="Lakukan penandaan saat menonton, lalu tinjau, cadangkan, dan bagikan tanpa meninggalkan ruang kerja CourtVision.">Tag while watching, then review, back up, and share without leaving the CourtVision workspace.</p>
+      </div>
+      <div class="showcase-grid">
+        <figure class="showcase-card">
+          <img src="assets/product/courtvision-tagging-panel.png" alt="CourtVision tagging buttons" loading="lazy">
+          <figcaption class="showcase-caption"><strong data-en="Fast, configurable tagging" data-id="Penandaan cepat dan dapat diatur">Fast, configurable tagging</strong><span data-en="Create clips without leaving the game film." data-id="Buat klip tanpa meninggalkan rekaman pertandingan.">Create clips without leaving the game film.</span></figcaption>
+        </figure>
+        <figure class="showcase-card">
+          <img src="assets/product/courtvision-export-panel.png" alt="CourtVision export and backup tools" loading="lazy">
+          <figcaption class="showcase-caption"><strong data-en="Share and back up your work" data-id="Bagikan dan cadangkan pekerjaan Anda">Share and back up your work</strong><span data-en="WhatsApp, JSON, CSV, XML, restore, and clip management in one place." data-id="WhatsApp, JSON, CSV, XML, pemulihan, dan pengelolaan klip dalam satu tempat.">WhatsApp, JSON, CSV, XML, restore, and clip management in one place.</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product demonstrations -->
+  <section class="demo-section" id="demo" aria-labelledby="demo-title">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-en="Product Demo" data-id="Demonstrasi Produk">Product Demo</span>
+        <h2 id="demo-title" data-en="See CourtVision work on a real game" data-id="Lihat CourtVision bekerja pada pertandingan nyata">See CourtVision work on a real game</h2>
+        <p data-en="Two short demonstrations show the complete workflow: tag the moment, then review and refine the clip." data-id="Dua demonstrasi singkat memperlihatkan alur lengkap: tandai momennya, lalu tinjau dan sesuaikan klip.">Two short demonstrations show the complete workflow: tag the moment, then review and refine the clip.</p>
+      </div>
+      <div class="demo-grid">
+        <article class="demo-card">
+          <video controls muted playsinline preload="metadata" poster="assets/demo/tagging-demo-poster.jpg">
+            <source src="assets/demo/tagging-demo.mp4" type="video/mp4">
+          </video>
+          <div class="demo-copy"><strong data-en="1. Tag the key moment" data-id="1. Tandai momen penting">1. Tag the key moment</strong><span data-en="Choose the team and category; CourtVision saves the clip immediately." data-id="Pilih tim dan kategori; CourtVision langsung menyimpan klip.">Choose the team and category; CourtVision saves the clip immediately.</span></div>
+        </article>
+        <article class="demo-card">
+          <video controls muted playsinline preload="metadata" poster="assets/demo/review-demo-poster.jpg">
+            <source src="assets/demo/review-demo.mp4" type="video/mp4">
+          </video>
+          <div class="demo-copy"><strong data-en="2. Review and refine the clip" data-id="2. Tinjau dan sesuaikan klip">2. Review and refine the clip</strong><span data-en="Play the saved moment, adjust its timing, and keep the analysis organized." data-id="Putar momen yang tersimpan, sesuaikan waktunya, dan pertahankan analisis tetap rapi.">Play the saved moment, adjust its timing, and keep the analysis organized.</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation flow -->
+  <section class="install-section" id="install">
+    <div class="container">
+      <div class="install-panel">
+        <div class="section-header">
+          <span class="section-tag" data-en="Easy installation" data-id="Instalasi mudah">Easy installation</span>
+          <h2 data-en="From website to YouTube in three steps" data-id="Dari website ke YouTube dalam tiga langkah">From website to YouTube in three steps</h2>
+          <p data-en="Chrome requires one installation confirmation. CourtVision handles the rest of the onboarding clearly." data-id="Chrome memerlukan satu konfirmasi instalasi. CourtVision menangani proses aktivasi berikutnya dengan jelas.">Chrome requires one installation confirmation. CourtVision handles the rest of the onboarding clearly.</p>
+        </div>
+        <div class="install-steps">
+          <div class="install-step"><b>1</b><strong data-en="Install CourtVision" data-id="Instal CourtVision">Install CourtVision</strong><span data-en="Open the official Chrome Web Store listing." data-id="Buka halaman resmi di Chrome Web Store.">Open the official Chrome Web Store listing.</span></div>
+          <div class="install-step"><b>2</b><strong data-en="Confirm Add to Chrome" data-id="Konfirmasi Add to Chrome">Confirm Add to Chrome</strong><span data-en="Review the permissions and approve the installation." data-id="Periksa izin dan setujui pemasangan.">Review the permissions and approve the installation.</span></div>
+          <div class="install-step"><b>3</b><strong data-en="Sign in, then start" data-id="Masuk, lalu mulai">Sign in, then start</strong><span data-en="Connect Google once; CourtVision opens YouTube so you can choose the video you want to analyze." data-id="Hubungkan Google sekali; CourtVision membuka YouTube. Pilih video yang ingin Anda analisis di YouTube.">Connect Google once; CourtVision opens YouTube so you can choose the video you want to analyze.</span></div>
+        </div>
+        <div class="install-action">
+          <a href="https://chromewebstore.google.com/detail/oklbkdldkcchgihmadhbgojnamadihig" target="_blank" class="btn-primary"><span>↗</span><span data-en="Install CourtVision in Chrome" data-id="Instal CourtVision di Chrome">Install CourtVision in Chrome</span></a>
+          <p class="install-note" data-en="Free to install · 7-day Pro trial · One Chrome confirmation" data-id="Gratis diinstal · Uji coba Pro 7 hari · Satu konfirmasi Chrome">Free to install · 7-day Pro trial · One Chrome confirmation</p>
+        </div>
       </div>
     </div>
   </section>
@@ -1006,74 +1291,57 @@
       <div class="section-header">
         <span class="section-tag" data-en="Features" data-id="Fitur">Features</span>
         <h2 data-en="Everything You Need to Analyze Games" data-id="Semua yang Kamu Butuhkan untuk Analisis">Everything You Need to Analyze Games</h2>
-        <p data-en="Professional-grade analysis tools designed for coaches at every level" data-id="Tools analisis profesional yang dirancang untuk coach di semua level">Professional-grade analysis tools designed for coaches at every level</p>
+          <p data-en="Professional-grade analysis tools designed for coaches at every level" data-id="Alat analisis profesional yang dirancang untuk pelatih di semua tingkat">Professional-grade analysis tools designed for coaches at every level</p>
       </div>
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon">🏀</div>
-          <h3 data-en="1-Click Play Tagging" data-id="Tag Play 1-Klik">1-Click Play Tagging</h3>
-          <p data-en="Tag transition, set plays, defense, BLOB, SLOB and more with a single click. Keyboard shortcuts (Ctrl+1-9) for even faster tagging." data-id="Tag transisi, set play, defense, BLOB, SLOB dan lainnya dengan satu klik. Shortcut keyboard (Ctrl+1-9) untuk tagging lebih cepat.">Tag transition, set plays, defense, BLOB, SLOB and more with a single click. Keyboard shortcuts (Ctrl+1-9) for even faster tagging.</p>
+          <div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 3 6.8 16 2.1-6.1L20 10.8Z"/><path d="m14 14 4 4M17 3v3M21 7h-3"/></svg></div>
+          <h3 data-en="1-Click Play Tagging" data-id="Penandaan 1-Klik">1-Click Play Tagging</h3>
+          <p data-en="Tag transition, set plays, defense, BLOB, SLOB and more with a single click. Keyboard shortcuts (Ctrl+1-9) for even faster tagging." data-id="Tandai transisi, set play, defense, BLOB, SLOB, dan lainnya dengan satu klik. Pintasan keyboard (Ctrl+1-9) membuat penandaan lebih cepat.">Tag transition, set plays, defense, BLOB, SLOB and more with a single click. Keyboard shortcuts (Ctrl+1-9) for even faster tagging.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3 data-en="Outcome Tracking" data-id="Tracking Hasil">Outcome Tracking</h3>
-          <p data-en="Track made/missed for every play. See success rates by play type, team, or game to identify what's working." data-id="Lacak berhasil/gagal untuk setiap play. Lihat persentase sukses per tipe play, tim, atau game.">Track made/missed for every play. See success rates by play type, team, or game to identify what's working.</p>
+          <div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10h4v10M10 20V4h4v16M16 20v-7h4v7M3 20h18"/></svg></div>
+          <h3 data-en="Outcome Tracking" data-id="Pelacakan Hasil">Outcome Tracking</h3>
+          <p data-en="Track made/missed for every play. See success rates by play type, team, or game to identify what's working." data-id="Lacak berhasil/gagal untuk setiap permainan. Lihat tingkat keberhasilan berdasarkan jenis permainan, tim, atau pertandingan.">Track made/missed for every play. See success rates by play type, team, or game to identify what's working.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">⚙️</div>
-          <h3 data-en="Unlimited Custom Categories" data-id="Kategori Custom Unlimited">Unlimited Custom Categories</h3>
-          <p data-en="Create unlimited custom play categories. Rename teams, change colors, drag & drop to reorder — organize plays your way." data-id="Buat kategori play custom tanpa batas. Rename tim, ubah warna, drag & drop untuk reorder — atur play sesuai keinginan.">Create unlimited custom play categories. Rename teams, change colors, drag & drop to reorder — organize plays your way.</p>
+          <div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1a8 8 0 0 0-1.8-1L14.4 3h-4.8l-.3 3.1a8 8 0 0 0-1.8 1l-2.4-1-2 3.4L5.1 11a7 7 0 0 0 0 2l-2 1.5 2 3.4 2.4-1a8 8 0 0 0 1.8 1l.3 3.1h4.8l.3-3.1a8 8 0 0 0 1.8-1l2.4 1 2-3.4-2-1.5a7 7 0 0 0 .1-1Z"/></svg></div>
+          <h3 data-en="Unlimited Custom Categories" data-id="Kategori Khusus Tanpa Batas">Unlimited Custom Categories</h3>
+          <p data-en="Create unlimited custom play categories. Rename teams, change colors, drag & drop to reorder — organize plays your way." data-id="Buat kategori permainan khusus tanpa batas. Ubah nama tim dan warna, lalu seret untuk mengatur urutannya.">Create unlimited custom play categories. Rename teams, change colors, drag & drop to reorder — organize plays your way.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">📱</div>
-          <h3 data-en="WhatsApp Export" data-id="Export WhatsApp">WhatsApp Export</h3>
-          <p data-en="Share game analysis instantly with your team via WhatsApp. Formatted summaries with clickable YouTube timestamps." data-id="Bagikan analisis game ke tim via WhatsApp secara instan. Summary terformat dengan timestamp YouTube yang bisa diklik.">Share game analysis instantly with your team via WhatsApp. Formatted summaries with clickable YouTube timestamps.</p>
+          <div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M9 7h6M10 17h4"/></svg></div>
+          <h3 data-en="WhatsApp Export" data-id="Ekspor ke WhatsApp">WhatsApp Export</h3>
+          <p data-en="Share game analysis instantly with your team via WhatsApp. Formatted summaries with clickable YouTube timestamps." data-id="Bagikan analisis pertandingan kepada tim melalui WhatsApp. Ringkasan tersusun rapi dengan penanda waktu YouTube yang dapat dibuka.">Share game analysis instantly with your team via WhatsApp. Formatted summaries with clickable YouTube timestamps.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🎬</div>
-          <h3 data-en="Auto-Stop Playback" data-id="Auto-Stop Playback">Auto-Stop Playback</h3>
-          <p data-en="Review clips with automatic playback control. Video stops at the exact end of each clip — no manual pausing needed." data-id="Review klip dengan kontrol playback otomatis. Video berhenti tepat di akhir setiap klip — tanpa perlu pause manual.">Review clips with automatic playback control. Video stops at the exact end of each clip — no manual pausing needed.</p>
+          <div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3Z"/></svg></div>
+          <h3 data-en="Auto-Stop Playback" data-id="Pemutaran Berhenti Otomatis">Auto-Stop Playback</h3>
+          <p data-en="Review clips with automatic playback control. Video stops at the exact end of each clip — no manual pausing needed." data-id="Tinjau klip dengan kontrol pemutaran otomatis. Video berhenti tepat di akhir setiap klip tanpa perlu dijeda secara manual.">Review clips with automatic playback control. Video stops at the exact end of each clip — no manual pausing needed.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">📁</div>
-          <h3 data-en="Export Anywhere" data-id="Export Kemana Saja">Export Anywhere</h3>
-          <p data-en="Export all your data in JSON or CSV format. Import into spreadsheets, databases, or other analysis tools." data-id="Export semua data dalam format JSON atau CSV. Import ke spreadsheet, database, atau tools analisis lainnya.">Export all your data in JSON or CSV format. Import into spreadsheets, databases, or other analysis tools.</p>
+          <div class="feature-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M12 10v6m0 0 3-3m-3 3-3-3"/></svg></div>
+          <h3 data-en="Export Anywhere" data-id="Ekspor ke Berbagai Format">Export Anywhere</h3>
+          <p data-en="Export all your data in JSON, CSV, or XML format. Import it into spreadsheets, databases, or compatible analysis tools." data-id="Ekspor semua data dalam format JSON, CSV, atau XML. Impor ke spreadsheet, database, atau alat analisis yang kompatibel.">Export all your data in JSON, CSV, or XML format. Import it into spreadsheets, databases, or compatible analysis tools.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- How It Works -->
-  <section class="how-it-works" id="how-it-works">
+  <!-- CourtVision Mobile Announcement -->
+  <section class="mobile-coming" id="mobile">
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag" data-en="How It Works" data-id="Cara Kerja">How It Works</span>
-        <h2 data-en="Start Analyzing in 60 Seconds" data-id="Mulai Analisis dalam 60 Detik">Start Analyzing in 60 Seconds</h2>
-        <p data-en="No complicated setup. Just install and start tagging." data-id="Tanpa setup rumit. Tinggal install dan mulai tagging.">No complicated setup. Just install and start tagging.</p>
-      </div>
-      <div class="steps">
-        <div class="step">
-          <div class="step-number">1</div>
-          <h3 data-en="Install Extension" data-id="Install Extension">Install Extension</h3>
-          <p data-en="Add CourtVision to Chrome in one click" data-id="Tambahkan CourtVision ke Chrome dengan satu klik">Add CourtVision to Chrome in one click</p>
-          <span class="step-arrow">→</span>
+      <div class="mobile-coming-panel">
+        <div>
+          <span class="coming-soon-label" data-en="CourtVision Mobile · Coming Soon" data-id="CourtVision Mobile · Segera Hadir">CourtVision Mobile · Coming Soon</span>
+          <h2 data-en="The analysis room, in your pocket." data-id="Ruang analisis, di dalam genggaman.">The analysis room, in your pocket.</h2>
+          <p class="mobile-coming-copy" data-en="CourtVision Mobile is being prepared as a PWA for coaches who want to tag YouTube game film from a phone. It is not yet an official public release. When launched, the same paid Google account will connect Pro access across Mobile and Extension." data-id="CourtVision Mobile sedang dipersiapkan sebagai PWA bagi pelatih yang ingin menandai rekaman pertandingan YouTube melalui handphone. Produk ini belum dirilis resmi untuk umum. Saat diluncurkan, akun Google berbayar yang sama akan menghubungkan akses Pro di Mobile dan Ekstensi.">CourtVision Mobile is being prepared as a PWA for coaches who want to tag YouTube game film from a phone. It is not yet an official public release. When launched, the same paid Google account will connect Pro access across Mobile and Extension.</p>
         </div>
-        <div class="step">
-          <div class="step-number">2</div>
-          <h3 data-en="Sign in with Google" data-id="Masuk dengan Google">Sign in with Google</h3>
-          <p data-en="Your 7-day trial starts automatically" data-id="Trial 7 hari aktif otomatis">Your 7-day trial starts automatically</p>
-          <span class="step-arrow">→</span>
-        </div>
-        <div class="step">
-          <div class="step-number">3</div>
-          <h3 data-en="Open a Video" data-id="Buka Video">Open a Video</h3>
-          <p data-en="Use the sample video or any YouTube game" data-id="Gunakan video contoh atau pertandingan YouTube apa pun">Use the sample video or any YouTube game</p>
-          <span class="step-arrow">→</span>
-        </div>
-        <div class="step">
-          <div class="step-number">4</div>
-          <h3 data-en="Create Your First Clip" data-id="Buat Klip Pertama">Create Your First Clip</h3>
-          <p data-en="Press one tag—CourtVision saves the moment" data-id="Tekan satu tag—CourtVision menyimpan momennya">Press one tag—CourtVision saves the moment</p>
+        <div class="mobile-coming-points">
+          <div class="mobile-coming-point" data-en="Tag YouTube video from a phone" data-id="Tag video YouTube dari handphone">Tag YouTube video from a phone</div>
+            <div class="mobile-coming-point" data-en="Review clips while preserving every label" data-id="Tinjau klip dengan tetap mempertahankan setiap label">Review clips while preserving every label</div>
+          <div class="mobile-coming-point" data-en="Share one report through WhatsApp" data-id="Bagikan satu laporan melalui WhatsApp">Share one report through WhatsApp</div>
+          <div class="mobile-coming-point" data-en="One Pro account for both products" data-id="Satu akun Pro untuk kedua produk">One Pro account for both products</div>
         </div>
       </div>
     </div>
@@ -1084,15 +1352,19 @@
     <div class="container">
       <div class="section-header">
         <span class="section-tag" data-en="Pricing" data-id="Harga">Pricing</span>
-        <h2 data-en="Simple, Transparent Pricing" data-id="Harga Simple & Transparan">Simple, Transparent Pricing</h2>
+        <h2 data-en="Simple, Transparent Pricing" data-id="Harga Sederhana dan Transparan">Simple, Transparent Pricing</h2>
         <p data-en="Basketball video-analysis software for coaches and analysts. Start with 7 days free, then choose 30 or 365 days of access." data-id="Perangkat lunak analisis video basket untuk pelatih dan analis. Mulai dengan 7 hari gratis, lalu pilih akses 30 atau 365 hari.">Basketball video-analysis software for coaches and analysts. Start with 7 days free, then choose 30 or 365 days of access.</p>
       </div>
       
       <div class="pricing-card-single">
-        <div class="pricing-badge" data-en="7 Days Free Trial" data-id="Trial 7 Hari Gratis">7 Days Free Trial</div>
+        <div class="pricing-badge" data-en="7 Days Free Trial" data-id="Uji Coba Gratis 7 Hari">7 Days Free Trial</div>
         
-        <h3>CourtVision Pro Extension</h3>
-        <p class="tagline" data-en="Full access to the CourtVision Chrome extension on one active laptop" data-id="Akses penuh ke extension CourtVision Chrome pada satu laptop aktif">Full access to the CourtVision Chrome extension on one active laptop</p>
+        <h3>CourtVision Pro</h3>
+        <p class="tagline" data-en="One CourtVision Pro account for Mobile and Chrome Extension" data-id="Satu akun CourtVision Pro untuk Mobile dan Ekstensi Chrome">One CourtVision Pro account for Mobile and Chrome Extension</p>
+        <div class="product-availability" aria-label="Product availability" data-aria-en="Product availability" data-aria-id="Ketersediaan produk">
+          <span class="availability-pill available" data-en="Chrome Extension · Available now" data-id="Ekstensi Chrome · Tersedia sekarang">Chrome Extension · Available now</span>
+          <span class="availability-pill" data-en="CourtVision Mobile · Coming soon" data-id="CourtVision Mobile · Segera hadir">CourtVision Mobile · Coming soon</span>
+        </div>
         
         <div class="pricing-toggle">
           <button class="pricing-toggle-btn active" data-plan="monthly" data-en="Monthly" data-id="Bulanan">Monthly</button>
@@ -1111,14 +1383,14 @@
         </div>
         
         <ul class="pricing-features">
-          <li><span class="check">✓</span> <span data-en="Unlimited clips & videos" data-id="Klip & video unlimited">Unlimited clips & videos</span></li>
-          <li><span class="check">✓</span> <span data-en="Unlimited custom categories" data-id="Kategori custom unlimited">Unlimited custom categories</span></li>
-          <li><span class="check">✓</span> <span data-en="Custom team names & colors" data-id="Nama & warna tim custom">Custom team names & colors</span></li>
-          <li><span class="check">✓</span> <span data-en="Outcome tracking (Made/Missed)" data-id="Tracking hasil (Berhasil/Gagal)">Outcome tracking (Made/Missed)</span></li>
-          <li><span class="check">✓</span> <span data-en="WhatsApp, JSON, CSV & XML export" data-id="Export WhatsApp, JSON, CSV & XML">WhatsApp, JSON, CSV & XML export</span></li>
+          <li><span class="check">✓</span> <span data-en="Unlimited clips & videos" data-id="Klip dan video tanpa batas">Unlimited clips & videos</span></li>
+          <li><span class="check">✓</span> <span data-en="Unlimited custom categories" data-id="Kategori khusus tanpa batas">Unlimited custom categories</span></li>
+          <li><span class="check">✓</span> <span data-en="Custom team names & colors" data-id="Nama dan warna tim dapat disesuaikan">Custom team names & colors</span></li>
+          <li><span class="check">✓</span> <span data-en="Outcome tracking (Made/Missed)" data-id="Pelacakan hasil (Berhasil/Gagal)">Outcome tracking (Made/Missed)</span></li>
+          <li><span class="check">✓</span> <span data-en="WhatsApp, JSON, CSV & XML export" data-id="Ekspor WhatsApp, JSON, CSV, dan XML">WhatsApp, JSON, CSV & XML export</span></li>
           <li><span class="check">✓</span> <span data-en="Hudl Sportscode compatible" data-id="Kompatibel dengan Hudl Sportscode">Hudl Sportscode compatible</span></li>
-          <li><span class="check">✓</span> <span data-en="Auto-stop clip playback" data-id="Auto-stop playback klip">Auto-stop clip playback</span></li>
-          <li><span class="check">✓</span> <span data-en="Priority email support" data-id="Email support prioritas">Priority email support</span></li>
+          <li><span class="check">✓</span> <span data-en="Auto-stop clip playback" data-id="Pemutaran klip berhenti otomatis">Auto-stop clip playback</span></li>
+          <li><span class="check">✓</span> <span data-en="Priority email support" data-id="Dukungan email prioritas">Priority email support</span></li>
         </ul>
 
         <!-- Monthly CTA -->
@@ -1140,9 +1412,9 @@
            data-id="Coba Gratis 7 Hari">
           Try Free for 7 Days
         </a>
-        <p class="pricing-note" data-en="This purchase is for the ready-to-use CourtVision Chrome desktop extension. CourtVision Mobile is not included. Payments are securely processed by Duitku." data-id="Pembelian ini khusus untuk extension CourtVision Chrome desktop yang siap digunakan. CourtVision Mobile tidak termasuk. Pembayaran diproses dengan aman oleh Duitku.">This purchase is for the ready-to-use CourtVision Chrome desktop extension. CourtVision Mobile is not included. Payments are securely processed by Duitku.</p>
+        <p class="pricing-note" data-en="One payment activates CourtVision Pro on Mobile and Chrome Extension when both use the same Google account. Chrome Extension is available now; Mobile access begins when it is officially released. Payments are securely processed by Duitku." data-id="Satu pembayaran mengaktifkan CourtVision Pro di Mobile dan Ekstensi Chrome ketika keduanya memakai akun Google yang sama. Ekstensi Chrome tersedia sekarang; akses Mobile dimulai saat resmi dirilis. Pembayaran diproses dengan aman oleh Duitku.">One payment activates CourtVision Pro on Mobile and Chrome Extension when both use the same Google account. Chrome Extension is available now; Mobile access begins when it is officially released. Payments are securely processed by Duitku.</p>
 
-        <p class="pricing-guarantee" data-en="No payment is required for the 7-day trial. Paid access starts after a successful payment." data-id="Trial 7 hari tidak memerlukan pembayaran. Masa akses berbayar dimulai setelah pembayaran berhasil.">No payment is required for the 7-day trial. Paid access starts after a successful payment.</p>
+        <p class="pricing-guarantee" data-en="No payment is required for the 7-day trial. Paid access starts after a successful payment." data-id="Uji coba 7 hari tidak memerlukan pembayaran. Masa akses berbayar dimulai setelah pembayaran berhasil.">No payment is required for the 7-day trial. Paid access starts after a successful payment.</p>
         <p class="pricing-powered" style="text-align:center; font-size:11px; color:#94A3B8; margin-top:8px;">
           <span data-en="Indonesian payments are securely processed by Duitku" data-id="Pembayaran Indonesia diproses dengan aman oleh Duitku">Indonesian payments are securely processed by Duitku</span>
         </p>
@@ -1159,8 +1431,16 @@
       </div>
       <div class="faq-grid">
         <div class="faq-item">
+          <h3 data-en="Is CourtVision Mobile available now?" data-id="Apakah CourtVision Mobile sudah tersedia?">Is CourtVision Mobile available now?</h3>
+          <p data-en="Not yet. CourtVision Mobile is being prepared and will be announced when it is ready for public use. The Chrome Extension is available now." data-id="Belum. CourtVision Mobile sedang dipersiapkan dan akan diumumkan setelah siap digunakan publik. Ekstensi Chrome tersedia sekarang.">Not yet. CourtVision Mobile is being prepared and will be announced when it is ready for public use. The Chrome Extension is available now.</p>
+        </div>
+        <div class="faq-item">
+          <h3 data-en="Will one payment cover Extension and Mobile?" data-id="Apakah satu pembayaran mencakup Ekstensi dan Mobile?">Will one payment cover Extension and Mobile?</h3>
+          <p data-en="Yes. Use the same paid Google account. Extension works now, and Mobile access will be included when the official Mobile release is available." data-id="Ya. Gunakan akun Google berbayar yang sama. Ekstensi dapat digunakan sekarang, dan akses Mobile akan disertakan saat versi Mobile resmi tersedia.">Yes. Use the same paid Google account. Extension works now, and Mobile access will be included when the official Mobile release is available.</p>
+        </div>
+        <div class="faq-item">
           <h3 data-en="How does the free trial work?" data-id="Bagaimana cara kerja trial gratis?">How does the free trial work?</h3>
-          <p data-en="You get 7 days of full access to all CourtVision Pro features. No payment is required to start. After the trial, choose monthly access (Rp130,000) or yearly access (Rp1,040,000)." data-id="Kamu mendapat 7 hari akses penuh ke semua fitur CourtVision Pro tanpa pembayaran. Setelah trial, pilih akses bulanan Rp130.000 atau tahunan Rp1.040.000.">You get 7 days of full access to all CourtVision Pro features. No payment is required to start. After the trial, choose monthly access (Rp130,000) or yearly access (Rp1,040,000).</p>
+          <p data-en="You get 7 days of full access to all CourtVision Pro features. No payment is required to start. After the trial, choose monthly access (Rp130,000) or yearly access (Rp1,040,000)." data-id="Anda memperoleh akses penuh ke semua fitur CourtVision Pro selama 7 hari tanpa pembayaran. Setelah masa uji coba, pilih akses bulanan Rp130.000 atau tahunan Rp1.040.000.">You get 7 days of full access to all CourtVision Pro features. No payment is required to start. After the trial, choose monthly access (Rp130,000) or yearly access (Rp1,040,000).</p>
         </div>
         <div class="faq-item">
           <h3 data-en="What happens after my trial ends?" data-id="Apa yang terjadi setelah trial selesai?">What happens after my trial ends?</h3>
@@ -1168,7 +1448,7 @@
         </div>
         <div class="faq-item">
           <h3 data-en="What payment methods do you accept?" data-id="Metode pembayaran apa yang diterima?">What payment methods do you accept?</h3>
-          <p data-en="QRIS and other active Indonesian payment channels are displayed securely on the Duitku checkout page." data-id="QRIS dan metode pembayaran Indonesia lain yang aktif ditampilkan secara aman di halaman checkout Duitku.">QRIS and other active Indonesian payment channels are displayed securely on the Duitku checkout page.</p>
+          <p data-en="QRIS and other active Indonesian payment channels are displayed securely on the Duitku checkout page." data-id="QRIS dan metode pembayaran Indonesia lain yang aktif ditampilkan secara aman di halaman pembayaran Duitku.">QRIS and other active Indonesian payment channels are displayed securely on the Duitku checkout page.</p>
         </div>
         <div class="faq-item">
           <h3 data-en="Can I cancel anytime?" data-id="Bisakah saya batalkan kapan saja?">Can I cancel anytime?</h3>
@@ -1176,11 +1456,11 @@
         </div>
         <div class="faq-item">
           <h3 data-en="Does it work with any YouTube video?" data-id="Apakah bisa untuk semua video YouTube?">Does it work with any YouTube video?</h3>
-          <p data-en="Yes! CourtVision works with any YouTube video — professional games, amateur footage, practice sessions, or game film your team recorded." data-id="Ya! CourtVision berfungsi dengan video YouTube apapun — pertandingan profesional, rekaman amatir, sesi latihan, atau rekaman game timmu.">Yes! CourtVision works with any YouTube video — professional games, amateur footage, practice sessions, or game film your team recorded.</p>
+          <p data-en="Yes! CourtVision works with any YouTube video — professional games, amateur footage, practice sessions, or game film your team recorded." data-id="Ya. CourtVision dapat digunakan pada video YouTube apa pun—pertandingan profesional, rekaman amatir, sesi latihan, atau rekaman pertandingan tim Anda.">Yes! CourtVision works with any YouTube video — professional games, amateur footage, practice sessions, or game film your team recorded.</p>
         </div>
         <div class="faq-item">
           <h3 data-en="Is my data secure?" data-id="Apakah data saya aman?">Is my data secure?</h3>
-          <p data-en="Your clip data stays locally on your device and is not uploaded to CourtVision's servers. Only limited account, license, device, and payment-status records are processed to provide access." data-id="Data klip tetap tersimpan lokal di perangkat dan tidak diunggah ke server CourtVision. Hanya data terbatas tentang akun, lisensi, perangkat, dan status pembayaran yang diproses untuk memberikan akses.">Your clip data stays locally on your device and is not uploaded to CourtVision's servers. Only limited account, license, device, and payment-status records are processed to provide access.</p>
+          <p data-en="Extension clips and settings stay locally on the device. Limited account, license, device, payment-status, and shared-report records are processed when needed to provide CourtVision services." data-id="Klip dan pengaturan Ekstensi tetap tersimpan secara lokal di perangkat. Data terbatas mengenai akun, lisensi, perangkat, status pembayaran, dan laporan bersama diproses bila diperlukan untuk menyediakan layanan CourtVision.">Extension clips and settings stay locally on the device. Limited account, license, device, payment-status, and shared-report records are processed when needed to provide CourtVision services.</p>
         </div>
       </div>
     </div>
@@ -1190,9 +1470,9 @@
   <section class="cta" id="download">
     <div class="container">
       <h2 data-en="Ready to Coach Smarter?" data-id="Siap Melatih Lebih Cerdas?">Ready to Coach Smarter?</h2>
-      <p data-en="Join coaches who are using CourtVision to analyze games faster and more effectively." data-id="Bergabung dengan coach yang menggunakan CourtVision untuk analisis game lebih cepat dan efektif.">Join coaches who are using CourtVision to analyze games faster and more effectively.</p>
+      <p data-en="Join coaches who are using CourtVision to analyze games faster and more effectively." data-id="Bergabunglah dengan pelatih yang menggunakan CourtVision untuk menganalisis pertandingan dengan lebih cepat dan efektif.">Join coaches who are using CourtVision to analyze games faster and more effectively.</p>
       <a href="https://chromewebstore.google.com/detail/oklbkdldkcchgihmadhbgojnamadihig" target="_blank" class="btn-primary">
-        <span>🌐</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span data-en="Try Free on Chrome Web Store" data-id="Coba Gratis di Chrome Web Store">Try Free on Chrome Web Store</span>
       </a>
       <p class="cta-trial" data-en="Free to install • Pro access Rp130,000/month" data-id="Gratis diinstal • Akses Pro Rp130.000/bulan">Free to install • Pro access Rp130,000/month</p>
@@ -1211,6 +1491,7 @@
           <div class="footer-links-col">
             <h4>Product</h4>
             <a href="#features" data-en="Features" data-id="Fitur">Features</a>
+            <a href="#mobile" data-en="Mobile · Coming Soon" data-id="Mobile · Segera Hadir">Mobile · Coming Soon</a>
             <a href="#pricing" data-en="Pricing" data-id="Harga">Pricing</a>
             <a href="#faq" data-en="FAQ" data-id="FAQ">FAQ</a>
             <a href="guide.html" data-en="User Guide" data-id="Panduan">User Guide</a>
@@ -1224,7 +1505,6 @@
             <h4>Contact</h4>
             <a href="mailto:support@CourtVision.id">support@CourtVision.id</a>
             <a href="https://wa.me/6281343447079" target="_blank" rel="noopener noreferrer">WhatsApp: 081343447079</a>
-            <p class="footer-contact-address">Apartemen Bassura City, Tower C, Unit 22 CP, Jalan Basuki Rahmat No. 1A</p>
           </div>
         </div>
       </div>
@@ -1241,7 +1521,26 @@
   <script>
     // Language Toggle
     const langBtns = document.querySelectorAll('.lang-btn');
-    let currentLang = 'en';
+    const pageCopy = {
+      en: {
+        title: 'CourtVision — Basketball Video Analysis for Coaches',
+        description: 'Basketball video analysis for coaches. The CourtVision Chrome Extension is available now, with CourtVision Mobile coming soon.',
+        socialDescription: 'Tag moments, review clips, and share game reports directly from YouTube.',
+        socialImageAlt: 'CourtVision working directly beside a basketball video on YouTube',
+        locale: 'en_US'
+      },
+      id: {
+        title: 'CourtVision — Analisis Video Basket untuk Pelatih',
+        description: 'Analisis video basket untuk pelatih. Ekstensi Chrome CourtVision tersedia sekarang dan CourtVision Mobile segera hadir.',
+        socialDescription: 'Tandai momen, tinjau klip, dan bagikan laporan pertandingan langsung dari YouTube.',
+        socialImageAlt: 'CourtVision bekerja langsung pada video basket di YouTube',
+        locale: 'id_ID'
+      }
+    };
+    const savedLang = localStorage.getItem('courtvision-language');
+    let currentLang = savedLang === 'en' || savedLang === 'id'
+      ? savedLang
+      : (navigator.language.toLowerCase().startsWith('id') ? 'id' : 'en');
 
     function setLanguage(lang) {
       currentLang = lang;
@@ -1254,12 +1553,26 @@
         el.innerHTML = el.dataset[lang];
       });
 
+      document.querySelectorAll('[data-aria-en][data-aria-id]').forEach(el => {
+        el.setAttribute('aria-label', el.dataset[`aria${lang === 'en' ? 'En' : 'Id'}`]);
+      });
+
       document.documentElement.lang = lang;
+      document.title = pageCopy[lang].title;
+      document.getElementById('page-description').setAttribute('content', pageCopy[lang].description);
+      document.getElementById('og-title').setAttribute('content', pageCopy[lang].title);
+      document.getElementById('og-description').setAttribute('content', pageCopy[lang].socialDescription);
+      document.getElementById('og-locale').setAttribute('content', pageCopy[lang].locale);
+      document.getElementById('og-image-alt').setAttribute('content', pageCopy[lang].socialImageAlt);
+      document.getElementById('twitter-title').setAttribute('content', pageCopy[lang].title);
+      document.getElementById('twitter-description').setAttribute('content', pageCopy[lang].socialDescription);
+      localStorage.setItem('courtvision-language', lang);
     }
 
     langBtns.forEach(btn => {
       btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
     });
+    setLanguage(currentLang);
 
     // Pricing Toggle
     const pricingBtns = document.querySelectorAll('.pricing-toggle-btn');
@@ -1309,6 +1622,24 @@
       } else {
         nav.style.boxShadow = 'none';
       }
+    });
+
+    // Responsive navigation
+    const mobileMenuButton = document.querySelector('.mobile-menu-btn');
+    const navigationLinks = document.querySelector('.nav-links');
+
+    mobileMenuButton.addEventListener('click', () => {
+      const isOpen = navigationLinks.classList.toggle('open');
+      mobileMenuButton.setAttribute('aria-expanded', String(isOpen));
+      mobileMenuButton.textContent = isOpen ? '×' : '☰';
+    });
+
+    navigationLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navigationLinks.classList.remove('open');
+        mobileMenuButton.setAttribute('aria-expanded', 'false');
+        mobileMenuButton.textContent = '☰';
+      });
     });
   </script>
 </body>
